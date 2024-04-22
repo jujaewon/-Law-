@@ -3,6 +3,11 @@ import { useState } from 'react';
 import Button from '@components/Button/Button';
 
 import reactLogo from './assets/react.svg';
+import styled from '@emotion/styled';
+
+const ThemeTest1 = styled.div`
+  color: ${(props) => props.theme.primary};
+`;
 
 function App() {
   const [count, setCount] = useState(0);
