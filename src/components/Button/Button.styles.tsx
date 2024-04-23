@@ -14,18 +14,19 @@ export const ButtonStyle = styled.button<ButtonProps>`
   justify-content: center;
   svg {
     width: 2em;
-    margin-right: 1em;
+    margin-right: 0.8rem;
   }
+  margin: ${({ margin }) => margin && '0 0 1rem 0'};
   ${({ size }) => size && SIZES[size]}
   ${({ color }) => COLORS[color]}
+  ${({ custom }) => custom && CUSTOM[custom]}
 `;
 
 const SIZES = {
   full: css`
     width: 100%;
-    padding: 1rem 2rem;
+    padding: 12px 0px;
     font-size: 18px;
-    font-weight: 700;
   `,
   large: css`
     width: 480px;
@@ -61,8 +62,8 @@ const COLORS = {
     border: 1px solid ${theme.primary};
     color: ${theme.white};
     &:hover:enabled {
-      background-color: ${theme.secondary2};
-      color: ${theme.primary};
+      background-color: ${theme.secondary1};
+      border: 1px solid ${theme.secondary1};
     }
   `,
   gray: css`
@@ -84,5 +85,29 @@ const COLORS = {
     border: 2px solid ${theme.secondary2};
     color: ${theme.primary};
     font-weight: 700;
+  `,
+};
+const CUSTOM = {
+  category: css`
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+
+    width: auto !important;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    height: 20px;
+    padding: 12px 10px;
+    position: relative;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
+
+    svg {
+      margin: 0;
+    }
   `,
 };

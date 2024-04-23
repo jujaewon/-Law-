@@ -14,6 +14,8 @@ export interface ButtonProps {
   /** 버튼 비활성화 */
   // disabled?: boolean;
   /** 커스텀 속성 */
+  margin?: boolean;
+  custom?: 'category';
 }
 
 const Button = ({
@@ -21,11 +23,12 @@ const Button = ({
   type = 'button',
   color = 'primary',
   onClick,
+  margin = false,
   children = '더보기',
   ...props
 }: ButtonProps) => {
   return (
-    <ButtonStyle size={size} type={type} color={color} onClick={onClick} {...props}>
+    <ButtonStyle size={size} type={type} color={color} onClick={onClick} margin={margin} {...props}>
       {children}
     </ButtonStyle>
   );
