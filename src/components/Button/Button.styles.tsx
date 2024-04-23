@@ -23,7 +23,7 @@ export const ButtonStyle = styled.button<ButtonProps>`
 const SIZES = {
   full: css`
     width: 100%;
-    padding: 19px 0px;
+    padding: 1rem 2rem;
     font-size: 18px;
     font-weight: 700;
   `,
@@ -86,55 +86,3 @@ const COLORS = {
     font-weight: 700;
   `,
 };
-
-// export const Container = styled.button<Omit<ButtonProps, 'children'>>`
-//   text-align: center;
-//   cursor: pointer;
-//   transition: all 0.5s ease-in-out;
-//   cursor: pointer;
-//   ${({ border }) =>
-//     border
-//       ? css`
-//           border: 1px solid #808080;
-//         `
-//       : css`
-//           border: none;
-//         `}
-//   ${({ radius }) =>
-//     radius === 'square'
-//       ? css`
-//           border-radius: 0.3rem;
-//         `
-//       : radius === 'circle'
-//         ? css`
-//             border-radius: 2rem;
-//           `
-//         : css`
-//             border-radius: 0;
-//           `}
-
-//         ${({ size }) =>
-//     size === 'xs'
-//       ? css`
-//           padding: 0.4rem 0.8rem;
-//           font-size: 0.8rem;
-//         `
-//       : size === 'sm'
-//         ? css`
-//             padding: 0.5rem 1.5rem;
-//             font-size: 1rem;
-//           `
-//         : size === 'md'
-//           ? css`
-//               padding: 0.7rem 2rem;
-//               font-size: 1.2rem;
-//             `
-//           : css`
-//               padding: 1rem 2.5rem;
-//               font-size: 1.2rem;
-//             `}
-//   ${themeVariants}
-
-//   background-color: ${({ color }) => color && colors[color]};
-//   color: ${({ textColor }) => textColor && colors[textColor]};
-// `;
