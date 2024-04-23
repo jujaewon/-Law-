@@ -16,7 +16,7 @@ export interface ButtonProps {
   /** 커스텀 속성 */
 }
 
-export const Button = ({
+const Button = ({
   size = 'medium',
   type = 'button',
   color = 'primary',
@@ -30,3 +30,4 @@ export const Button = ({
     </ButtonStyle>
   );
 };
+export default Button;
