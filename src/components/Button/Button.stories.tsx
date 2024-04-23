@@ -1,9 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import styled from '@emotion/styled';
 import { fn } from '@storybook/test';
+
+import Icon from '@components/Icon/Icon';
+
 import { Button } from './Button';
 
+import type { Meta, StoryObj } from '@storybook/react';
+
 const meta = {
-  title: 'Components/Button',
+  title: 'components/Button',
   component: Button,
   parameters: {
     layout: 'centered',
@@ -42,4 +47,24 @@ export const Small: Story = {
     color: 'primary',
     type: 'button',
   },
+};
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const WithIcon = {
+  render: () => (
+    <Wrapper>
+      <Button type="button" size="medium_small" color="primary">
+        <Icon icon="test" />
+        상품 업로드
+      </Button>
+      <Button type="button" size="medium_small" color="primary">
+        <Icon icon="test" />
+        판매자 센터
+      </Button>
+    </Wrapper>
+  ),
 };

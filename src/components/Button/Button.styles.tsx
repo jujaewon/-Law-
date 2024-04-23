@@ -1,16 +1,26 @@
-import { ButtonProps } from './Button';
 import { css } from '@emotion/react';
-import theme from '@styles/theme';
 import styled from '@emotion/styled';
 
+import theme from '@styles/theme';
+
+import { ButtonProps } from './Button';
+
 export const ButtonStyle = styled.button<ButtonProps>`
-  border-radius: 5px;
-  color: var(--color-white);
+  border-radius: 10px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  svg {
+    width: 2em;
+    margin-right: 1em;
+  }
   ${({ size }) => size && SIZES[size]}
   ${({ color }) => COLORS[color]}
 `;
 
-export const SIZES = {
+const SIZES = {
   full: css`
     width: 100%;
     padding: 19px 0px;
@@ -40,48 +50,40 @@ export const SIZES = {
     font-size: 16px;
   `,
 };
-export const COLORS = {
+const COLORS = {
+  primaryonly: css`
+    background-color: ${theme.primary};
+    border: 1px solid ${theme.primary};
+    color: ${theme.white};
+  `,
   primary: css`
     background-color: ${theme.primary};
-    &:disabled {
-      background-color: var(--content-color-light);
+    border: 1px solid ${theme.primary};
+    color: ${theme.white};
+    &:hover:enabled {
+      background-color: ${theme.secondary2};
+      color: ${theme.primary};
     }
   `,
   gray: css`
-    background-color: var(--color-white);
-    color: var(--content-color-dark);
-    border: 1px solid var(--content-color-light);
+    background-color: ${theme.gray2};
+    border: 1px solid ${theme.gray2};
+    color: ${theme.black};
     &:hover:enabled {
-      border: 1px solid var(--content-color-dark);
-      color: var(--color-black);
-    }
-    &:disabled {
-      background-color: var(--content-color-light);
+      border: 1px solid ${theme.gray1};
+      color: ${theme.primary};
     }
   `,
   secondary1: css`
-    background-color: var(--content-color-light);
-    color: var(--content-color-dark);
-    border: 1px solid var(--content-color-dark);
-    &:hover:enabled {
-      background-color: var(--content-color-dark);
-      color: var(--color-white);
-    }
-    &:disabled {
-      background-color: var(--content-color-light);
-    }
+    background-color: ${theme.secondary1};
+    color: ${theme.white};
+    border: 1px solid ${theme.secondary1};
   `,
-  secondary2: css`
-    background-color: var(--content-color-dark);
-    color: var(--color-white);
-    border: 1px solid var(--content-color-dark);
-    &:hover:enabled {
-      background-color: var(--color-white);
-      color: var(--content-color-dark);
-    }
-    &:disabled {
-      background-color: var(--content-color-light);
-    }
+  secondary3: css`
+    background-color: ${theme.secondary3};
+    border: 2px solid ${theme.secondary2};
+    color: ${theme.primary};
+    font-weight: 700;
   `,
 };
 

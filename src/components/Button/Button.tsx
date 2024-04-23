@@ -8,11 +8,11 @@ export interface ButtonProps {
   /** 버튼 타입을 설정 */
   type: 'button' | 'submit' | 'reset' | undefined;
   /** 버튼 색상을 설정 */
-  color: 'primary' | 'gray' | 'secondary1' | 'secondary2';
+  color: 'primaryonly' | 'primary' | 'gray' | 'secondary1' | 'secondary3';
   /** 버튼 크기를 설정 */
   size?: 'full' | 'large' | 'medium' | 'medium_small' | 'small';
   /** 버튼 비활성화 */
-  disabled?: boolean;
+  // disabled?: boolean;
   /** 커스텀 속성 */
 }
 
