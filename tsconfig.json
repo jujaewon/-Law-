@@ -24,6 +24,7 @@
       "@styles/*": ["src/styles/*"],
       "@utils/*": ["src/utils/*"],
       "@test/*": ["src/test/*"],
+      "@store/*": ["src/store/*"],  
       "@@types/*": ["src/types/*"],
       "@/*": ["src/*"]
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
@@ -61,7 +62,7 @@
     "skipDefaultLibCheck": true /* Skip type checking .d.ts files that are included with TypeScript. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["src", "custom.d.ts"],
+  "include": ["src", "src/@types"],
   "exclude": ["node_modules", "**/*.test.ts"],
   "types": ["@emotion/react/types/css-prop"]
 }
