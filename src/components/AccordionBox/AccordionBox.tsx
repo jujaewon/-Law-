@@ -1,23 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { GoSearch } from 'react-icons/go';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 
-import { AccordionQData } from '@test/data';
+import { AccordionDataType, AQuestionType, CategoryType, RankDataType } from '@@types/custom';
+import { getCategoryData, setCategoryData } from '@store/sidebarStore';
+import { AccordionQData, AccordionSData } from '@test/data';
 
 import AccordionItemQ from './AccordionItemQ';
+import AccordionItemR from './AccordionItemR';
+import AccordionItemS from './AccordionItemS';
 
-interface SidebarComponentProps {
-  isOpen: boolean;
-}
 const AccordionBoxContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0px;
   align-items: flex-start;
   justify-content: flex-start;
-  flex-shrink: 0;
   position: relative;
 `;
 
@@ -51,24 +50,62 @@ const ContentsContainer = styled.div<{ $isOpen: boolean; $isActive: boolean }>`
   display: ${(props) => (props.$isActive ? '' : 'none')};
   width: 100%;
 `;
-
-const AccordionBox = ({ isOpen }: SidebarComponentProps) => {
-  const [isActive, setIsActive] = useState(false);
-  const [data, setData] = useState(AccordionQData);
+interface AccordionBoxProps {
+  data: AccordionDataType;
+  isOpen: boolean;
+}
+type AccordionItemType = AQuestionType | CategoryType | RankDataType;
+const AccordionBox = ({ data, isOpen }: AccordionBoxProps) => {
+  const [isActive, setIsActive] = useState(data.title === '실시간 인기 법률');
+  const [childrenData, setChildrenData] = useState<AccordionItemType[]>([]);
+  const rankData = getCategoryData();
+  const setCategory = setCategoryData();
   const handleDelete = (id: number) => {
-    setData(AccordionQData.filter((item) => item.id !== id)); // 삭제된 아이템을 제외한 새로운 배열 생성
+    setChildrenData(childrenData.filter((item: any) => item.id !== id)); // 삭제된 아이템을 제외한 새로운 배열 생성
+  };
+  const renderAccordionItem = (item: AccordionItemType) => {
+    if ('bigCategory' in item) {
+      return <AccordionItemQ key={item.id} item={item} onDelete={handleDelete} />;
+    } else if ('text' in item) {
+      return <AccordionItemS key={item.id} item={item} />;
+    } else {
+      return <AccordionItemR key={item.rank} item={item} />;
+    }
+  };
+  useEffect(() => {
+    console.log('type', data.type);
+    let items: AccordionItemType[] = [];
+    switch (data.type) {
+      case 'question':
+        items = AccordionQData;
+        break;
+      case 'category':
+        items = AccordionSData;
+        break;
+      case 'rank':
+        items = rankData;
+        break;
+    }
+    setChildrenData(items);
+  }, [data.type, rankData]);
+
+  useEffect(() => {
+    console.log('childrenData', childrenData);
+  }, [childrenData]);
+  const backCategory = () => {
+    if (data.type === 'rank') {
+      setCategory({ isSelect: false, title: '', data: [] });
+    }
   };
   return (
     <AccordionBoxContainer>
       <Header onClick={() => setIsActive(!isActive)} $isActive={isActive} $isOpen={isOpen}>
-        <GoSearch />
-        {isOpen && <HeaderText>최근 질문목록</HeaderText>}
+        <div onClick={backCategory}>{data.icon}</div>
+        {isOpen && <HeaderText>{data.title}</HeaderText>}
         {isOpen ? isActive ? <IoIosArrowUp /> : <IoIosArrowDown /> : null}
       </Header>
       <ContentsContainer $isOpen={isOpen} $isActive={isActive}>
-        {data.map((item) => {
-          return <AccordionItemQ key={item.id} item={item} onDelete={handleDelete} />;
-        })}
+        {childrenData.map(renderAccordionItem)}
       </ContentsContainer>
     </AccordionBoxContainer>
   );
