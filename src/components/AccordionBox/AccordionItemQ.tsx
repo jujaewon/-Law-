@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { LuPlusSquare } from 'react-icons/lu';
 
+import { AQuestionType } from '@@types/custom';
 import Button from '@components/Button/Button';
 
 const QuestionTitleWrapper = styled.div`
@@ -55,10 +56,9 @@ const ContentContainer = styled.div`
   position: relative;
 `;
 const DeleteButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
+  position: absolute;
+  top: 12px;
+  right: 4px;
   width: auto !important;
   svg {
     color: ${(props) => props.theme.gray1};
@@ -73,12 +73,7 @@ const DeleteButton = styled.button`
   }
 `;
 interface AccordionItemQProps {
-  item: {
-    id: number;
-    title: string;
-    bigCategory: string;
-    smallCategory: string;
-  };
+  item: AQuestionType;
   onDelete: (id: number) => void;
 }
 const AccordionItemQ = ({ item, onDelete }: AccordionItemQProps) => {
@@ -102,7 +97,7 @@ const AccordionItemQ = ({ item, onDelete }: AccordionItemQProps) => {
       <QuestionTitleWrapper>
         <QuestionTitle>{title}</QuestionTitle>
         <DeleteButton onClick={handleDelete}>
-          <FaRegTrashAlt />
+          <FaRegTrashAlt size={'14'} />
         </DeleteButton>
       </QuestionTitleWrapper>
       <ButtonsWrapper>
