@@ -35,7 +35,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(authorizeRequests -> authorizeRequests
 				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-				.requestMatchers(new AntPathRequestMatcher("/login/oauth2/code")).permitAll()
+				.requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
 				.requestMatchers(new AntPathRequestMatcher("/oauth2/authorize/**")).permitAll()
 				.requestMatchers(new AntPathRequestMatcher("/kakao-oauth/**")).permitAll()
 				.anyRequest().authenticated()
@@ -44,7 +44,6 @@ public class SecurityConfig {
 			)
 			.csrf(AbstractHttpConfigurer::disable
 			)
-
 			.logout(AbstractHttpConfigurer::disable
 			)
 			.formLogin(AbstractHttpConfigurer::disable
@@ -56,15 +55,12 @@ public class SecurityConfig {
 				.redirectionEndpoint(redirectionEndpoint -> redirectionEndpoint
 					.baseUri("/kakao-oauth/**")
 				)
-
 			)
 			.sessionManagement(sessionManagement -> sessionManagement
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			)
-
 			.addFilter(corsConfig.corsFilter())
 			.addFilterBefore(new JWTAuthenticationFilter(authservice, jwtProvider),
-				// 이 부분 확인
 				UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
