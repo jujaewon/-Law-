@@ -86,7 +86,6 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
     }
   };
   useEffect(() => {
-    console.log('type', data.type);
     let items: AccordionItemType[] = [];
     switch (data.type) {
       case 'question':
@@ -102,9 +101,6 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
     setChildrenData(items);
   }, [data.type, rankData]);
 
-  useEffect(() => {
-    console.log('childrenData', childrenData);
-  }, [childrenData]);
   const backCategory = () => {
     if (data.type === 'rank') {
       setCategory({ isSelect: false, title: '', data: [] });

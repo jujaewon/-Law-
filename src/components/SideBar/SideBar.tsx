@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
+import useModal from '@hooks/useModal';
 import { FaRegStar } from 'react-icons/fa';
 import { GoSearch } from 'react-icons/go';
 import { LuPlusSquare } from 'react-icons/lu';
@@ -119,7 +120,19 @@ const CATEGORY_DATA = {
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [isSelect, setIsSelect] = useState(false);
+  const { openModal } = useModal();
 
+  const test = () => {
+    openModal({
+      type: 'test',
+      props: {
+        title: ' confirm 모달',
+        message: '컨펌하시겠습니까?',
+        btnText: 'yes',
+        onSubmit: () => window.alert('submit'),
+      },
+    });
+  };
   const selectStatus = getCategorySelect();
   useEffect(() => {
     setIsSelect(selectStatus);
