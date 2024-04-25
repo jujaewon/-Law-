@@ -1,6 +1,8 @@
 package com.hellolaw.auth.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import com.hellolaw.auth.dto.TokenResponse;
 import com.hellolaw.auth.dto.UserInfoResponse;
@@ -66,5 +68,14 @@ public class UserServiceImpl implements UserService {
 		authService.saveRefreshToken(accessToken, refreshToken);
 
 		return new TokenResponse(accessToken, refreshToken);
+	}
+
+	@Override
+	public void logout(Long principal, AuthProvider authProvider) {
+		redisService.deleteValues("RT:".concat(String.valueOf(principal)));
+		MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+		formData.add("target_id_type", "user_id");
+		formData.add("target_id", String.valueOf(principal));
+		authProvider.logout(formData);
 	}
 }

@@ -10,4 +10,6 @@ public interface AuthProvider {
 	String getSocialId(String token);
 
 	UserInfoResponse getUserInfo(String accessToken);
+
+	String logout(MultiValueMap<String, String> formData);
 }
