@@ -50,7 +50,6 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public void saveRefreshToken(String accessToken, String refreshToken) {
-
 		Long principal = jwtProvider.getClaims(accessToken).get("id", Long.class);
 		redisService.setValuesWithTimeout("RT" + ":" + principal,
 			refreshToken,

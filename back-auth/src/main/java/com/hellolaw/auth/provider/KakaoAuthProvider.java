@@ -2,10 +2,8 @@ package com.hellolaw.auth.provider;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClient;
 
 import com.hellolaw.auth.client.kakao.KakaoAuthApiClient;
-import com.hellolaw.auth.client.kakao.KakaoProfileResponse;
 import com.hellolaw.auth.dto.KakaoUserInfoResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -22,18 +20,16 @@ public class KakaoAuthProvider implements AuthProvider {
 
 	@Override
 	public String getSocialId(String token) {
-		KakaoProfileResponse response = kakaoAuthApiClient.getProfileInfo("Bearer " + token);
-		return response.getId();
+		return kakaoAuthApiClient.getProfileInfo("Bearer " + token).getId();
 	}
 
 	@Override
-	public KakaoUserInfoResponse getUserInfo(String accessToken) {
-		return RestClient.create()
-			.post()
-			.uri("https://kapi.kakao.com/v2/user/me")
-			.header("Authorization", "Bearer " + accessToken)
-			.header("Content-type", "application/x-www-form-urlencoded;charset=utf-8")
-			.retrieve()
-			.body(KakaoUserInfoResponse.class);
+	public KakaoUserInfoResponse getUserInfo(String token) {
+		return kakaoAuthApiClient.getUserInfo("Bearer " + token);
+	}
+
+	@Override
+	public String logout(MultiValueMap<String, String> formData) {
+		return kakaoAuthApiClient.logoutKakao(formData);
 	}
 }

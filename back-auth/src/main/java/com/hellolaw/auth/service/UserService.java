@@ -7,4 +7,6 @@ import com.hellolaw.auth.provider.AuthProvider;
 public interface UserService {
 
 	TokenResponse login(UserInfoResponse userInfoResponse, AuthProvider authProvider);
+
+	void logout(Long principal, AuthProvider authProvider);
 }

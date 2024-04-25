@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,8 +64,18 @@ public class AuthController {
 		return ResponseEntity.ok(ApiResponse.success());
 	}
 
-	@DeleteMapping("/logout")
-	ResponseEntity<ApiResponse<Void>> logout() {
+	@GetMapping("/logout")
+	ResponseEntity<ApiResponse<Void>> logout(
+		Authentication authentication,
+		HttpServletResponse response
+	) {
+		Cookie cookie = new Cookie("access-token", "empty");
+		cookie.setHttpOnly(false);
+		cookie.setMaxAge(60 * 60 * 24 * 30);
+		cookie.setPath("/");
+		response.addCookie(cookie);
+		userService.logout((Long)authentication.getPrincipal(), authProviderFinder.findAuthProvider("카카오"));
+		SecurityContextHolder.clearContext();
 		return ResponseEntity.ok(ApiResponse.success());
 	}
 
