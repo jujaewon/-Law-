@@ -2,11 +2,10 @@ package com.hellolaw.auth.controller;
 
 import java.io.IOException;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,17 +31,25 @@ public class AuthController {
 	private final UserService userService;
 	private final AuthProviderFinder authProviderFinder;
 
-	@GetMapping("/login/oauth2/code")
-	ResponseEntity<ApiResponse<Void>> login(
+	@GetMapping("/login/oauth2/code/kakao")
+	ResponseEntity<ApiResponse<Void>> kakaoLogin(
 		@RequestParam("code") String code,
-		// @RequestParam("provider") String provider,
 		HttpServletResponse response) throws IOException {
-
-		log.info("login 로직 시작");
 		AuthProvider authProvider = authProviderFinder.findAuthProvider("카카오");
-		log.info(authProvider.toString());
+		return login(code, response, authProvider);
+	}
+
+	@GetMapping("/login/oauth2/code/google")
+	ResponseEntity<ApiResponse<Void>> googleLogin(
+		@RequestParam("code") String code,
+		HttpServletResponse response) throws IOException {
+		AuthProvider authProvider = authProviderFinder.findAuthProvider("구글");
+		return login(code, response, authProvider);
+	}
+
+	private ResponseEntity<ApiResponse<Void>> login(String code, HttpServletResponse response,
+		AuthProvider authProvider) throws IOException {
 		String accessToken = authService.getAccessToken(code, authProvider);
-		log.info("kakao-accessToken: " + accessToken);
 		UserInfoResponse userInfo = authService.getUserInfo(accessToken, authProvider);
 		TokenResponse tokenResponse = userService.login(userInfo, authProvider);
 
@@ -52,13 +59,9 @@ public class AuthController {
 		cookie.setPath("/");
 		response.addCookie(cookie);
 
-		try {
-			response.sendRedirect("https://k10a506.p.ssafy.io");
-			return null;
-		} catch (IOException e) {
-			log.error("리다이렉트 실패: ", e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
+		// todo 메인페이지로 변경
+		response.sendRedirect("http://localhost:3000");
+		return ResponseEntity.ok(ApiResponse.success());
 	}
 
 	@DeleteMapping("/logout")
@@ -66,9 +69,10 @@ public class AuthController {
 		return ResponseEntity.ok(ApiResponse.success());
 	}
 
-	@PostMapping("/authentication")
-	ResponseEntity<ApiResponse<Void>> authentication(
+	@GetMapping("/authentication")
+	ResponseEntity<ApiResponse<Long>> authentication(
+		Authentication authentication
 	) {
-		return null;
+		return ResponseEntity.ok(ApiResponse.success((Long)authentication.getPrincipal()));
 	}
 }
