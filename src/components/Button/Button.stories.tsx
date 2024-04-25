@@ -3,11 +3,11 @@ import { fn } from '@storybook/test';
 
 import Icon from '@components/Icon/Icon';
 
-import Button from './Button';
+import Button, { ButtonProps } from './Button';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta = {
+const meta: Meta<ButtonProps> = {
   title: 'components/Button',
   component: Button,
   parameters: {
