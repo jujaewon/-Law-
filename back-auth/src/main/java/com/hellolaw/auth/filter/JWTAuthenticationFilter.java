@@ -28,21 +28,14 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest req,
 		HttpServletResponse res,
 		FilterChain filterChain) throws ServletException, IOException {
-
-		log.info("JWT필터~~~");
-		log.info(req.getRequestURI());
 		String accessToken = getAccessToken(req);
 
-		log.info("accessToken : {}", accessToken);
-
-		//
 		if (accessToken != null) {
 			if (jwtProvider.isValidateToken(accessToken)) {
 				Authentication authentication = jwtProvider.getAuthentication(accessToken);
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			} else if (authService.validateRefreshTokenInRedis(accessToken)) {
 				accessToken = reIssueAccessToken(accessToken);
-				log.info("재발급되니");
 				Cookie cookie = new Cookie("access-token", accessToken);
 				cookie.setHttpOnly(true);
 				cookie.setMaxAge(60 * 60 * 24 * 30);
@@ -51,9 +44,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 			} else {
 				SecurityContextHolder.clearContext();
 				res.setHeader("Authorization", null);
-
 			}
-
 		}
 		filterChain.doFilter(req, res);
 	}
