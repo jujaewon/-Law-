@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService {
 		if (socialProviderRepository.findSocialProviderBySocialId(
 			userInfoResponse.getId()).isEmpty()) {
 			createUser(userInfoResponse.getId(), userInfoResponse.getNickname());
-			log.info("최초 로그인 가입");
 		}
 
 		SocialProvider socialProvider = socialProviderRepository.findSocialProviderBySocialId(
