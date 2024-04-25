@@ -3,7 +3,7 @@ import { fn } from '@storybook/test';
 
 import Icon from '@components/Icon/Icon';
 
-import { Button } from './Button';
+import Button from './Button';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

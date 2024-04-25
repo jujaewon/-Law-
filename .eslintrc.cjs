@@ -1,7 +1,16 @@
 module.exports = {
   root: true,
   env: { browser: true, es2020: true, jest: true, node: true },
-  extends: ['eslint:recommended', 'plugin:import/recommended', 'plugin:import/typescript', 'plugin:@typescript-eslint/recommended', 'plugin:react-hooks/recommended', 'plugin:prettier/recommended', 'plugin:storybook/recommended'],
+  extends: [
+    'eslint:recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:prettier/recommended',
+    'plugin:storybook/recommended',
+    'plugin:tailwindcss/recommended',
+  ],
   ignorePatterns: ['vite.config.ts', 'dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -11,7 +20,7 @@ module.exports = {
     createDefaultProgram: true,
     project: ['tsconfig.json'],
   },
-  plugins: ['import', 'react', 'react-hooks', 'react-refresh', '@typescript-eslint', 'prettier'],
+  plugins: ['import', 'react', 'react-hooks', 'react-refresh', '@typescript-eslint', 'prettier', 'tailwindcss'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-one-expression-per-line': 'off',
