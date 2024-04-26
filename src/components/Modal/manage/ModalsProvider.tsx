@@ -21,14 +21,13 @@ const ModalsProvider = ({ children }: PropsWithChildren) => {
   const [openedModals, setOpenedModals] = useState<Modals[]>([]);
 
   const open = ({ type, props }: Modals) => {
-    console.log('open');
     disableScroll();
     setOpenedModals((modals) => {
       const modalIndex = modals.findIndex((modal) => modal.type === type);
       if (modalIndex !== -1) {
         // 모달이 이미 배열에 있는 경우, 해당 모달의 isOpen 값을 true로 변경
-        modals[modalIndex].isOpen = true;
         modals[modalIndex].props = props;
+        modals[modalIndex].isOpen = true;
         return [...modals];
       }
       return [...modals, { type, props, isOpen: true }];
@@ -42,6 +41,7 @@ const ModalsProvider = ({ children }: PropsWithChildren) => {
 
   // open과 close 함수를 메모이징하여 불필요한 리렌더링을 방지
   const dispatch = useMemo(() => ({ open, close }), []);
+
   return (
     <ModalsStateContext.Provider value={openedModals}>
       <ModalsDispatchContext.Provider value={dispatch}>
