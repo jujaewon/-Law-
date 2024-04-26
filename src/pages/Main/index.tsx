@@ -1,10 +1,14 @@
 import styled from '@emotion/styled';
+
+import BottomBar from '@components/BottomBar/BottomBar';
+import ContainerBox from '@components/ContainerBox/ContainerBox';
 import SideBar from '@components/SideBar/SideBar';
 import { breakpoints } from '@styles/breakpoints';
 
 const MainContainer = styled.div`
   background-color: ${(props) => props.theme.white};
   display: flex;
+
   width: 100%;
   height: 100vh;
 
@@ -50,52 +54,52 @@ const StyledText = styled.span`
   }
 `;
 
-const FraudAlertContainer = styled.div`
+const LawContainer = styled.div`
   width: 835px;
   height: auto;
   padding: 25px 46px;
-  background-color: #f8fafc; 
+  background-color: #f8fafc;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 50px;
+  margin-top: 30px;
 `;
 
-const AlertHeader = styled.div`
+const LawHeader = styled.div`
   display: flex;
-  align-items: center; 
-  width: 100%; 
-  justify-content: start; 
-  margin-bottom: 20px; 
+  align-items: center;
+  width: 100%;
+  justify-content: start;
+  margin-bottom: 20px;
 `;
 
-const AlertImage = styled.img`
+const LawImage = styled.img`
   width: 47.5px;
   height: 40px;
   margin-left: 16px;
 `;
 
-const AlertMainText = styled.div`
-  width: 128px; 
-  height: 48px; 
+const LawMainText = styled.div`
+  width: 128px;
+  height: 48px;
   text-align: start;
-  color: #3b82f6; 
+  color: #3b82f6;
   font-size: 32px;
-  font-weight: 600; 
+  font-weight: 600;
   font-family: 'Pretendard Variable', sans-serif;
-  margin-left: 16px; 
+  margin-left: 16px;
 `;
 
-const AlertDetailText = styled.div`
+const LawDetailText = styled.div`
   width: 735px;
   height: 82px;
-  color: #64748b; 
+  color: #64748b;
   font-size: 23px;
-  font-weight: 400; 
+  font-weight: 400;
   font-family: 'Inter', sans-serif;
-  margin-left: 16px; 
+  margin-left: 16px;
   text-align: start;
 `;
 
@@ -107,52 +111,29 @@ function Main() {
         <StyledTextContainer>
           <StyledText>누구나 쉽게 받는 법률 조언</StyledText>
           <StyledText color="sky-500">“헬로(Law)!“</StyledText>
-          <FraudAlertContainer>
-            <AlertHeader>
-              <AlertImage src="" />
-              <AlertMainText>사기</AlertMainText>
-            </AlertHeader>
-            <AlertDetailText>제가 사기를 당했어요 보이스피싱에 당했는데 실수로 2천만원을 송금했어요 어떻게 해야하나요?</AlertDetailText>
-          </FraudAlertContainer>
-          <FraudAlertContainer>
-            <AlertHeader>
-              <AlertImage src="" />
-              <AlertMainText>교통사고</AlertMainText>
-            </AlertHeader>
-            <AlertDetailText>제가 사기를 당했어요 보이스피싱에 당했는데 실수로 2천만원을 송금했어요 어떻게 해야하나요?</AlertDetailText>
-          </FraudAlertContainer>
-          <OptionAlertContainer />
+          <LawContainer>
+            <LawHeader>
+              <LawImage src="" />
+              <LawMainText>사기</LawMainText>
+            </LawHeader>
+            <LawDetailText>
+              제가 사기를 당했어요 보이스피싱에 당했는데 실수로 2천만원을 송금했어요 어떻게 해야하나요?
+            </LawDetailText>
+          </LawContainer>
+          <LawContainer className="mb-8">
+            <LawHeader>
+              <LawImage src="" />
+              <LawMainText>교통사고</LawMainText>
+            </LawHeader>
+            <LawDetailText>
+              제가 사기를 당했어요 보이스피싱에 당했는데 실수로 2천만원을 송금했어요 어떻게 해야하나요?
+            </LawDetailText>
+          </LawContainer>
+          <ContainerBox />
+          <BottomBar />
         </StyledTextContainer>
       </ContentsContainer>
     </MainContainer>
-  );
-}
-
-function OptionAlertContainer() {
-  return (
-    <div className="mt-24 w-full max-w-4xl flex flex-col gap-2">
-      <div className="px-4 py-4 bg-white rounded-lg border border-zinc-200 flex items-center justify-center gap-2 transform -translate-x-40 max-w-2xl whitespace-nowrap">
-        <p className="text-sky-500 text-lg font-bold">추가 옵션을 선택해주신다면 더 정확도 높은 답변이 나와요!</p>
-      </div>
-      <div className="flex flex-col sm:flex-row justify-start items-start gap-5 transform -translate-x-40">
-        <Option text="옵션 1" color="text-sky-500" />
-        <Option text="옵션 2" color="text-neutral-900" />
-      </div>
-    </div>
-  );
-}
-
-interface OptionProps {
-  text: string;
-  color: string;
-}
-
-function Option({ text, color }: OptionProps) {
-  return (
-    <div className="w-20 h-6 px-2 flex justify-center items-center gap-1">
-      <p className={`h-6 text-center ${color} text-sm font-bold`}>{text}</p>
-      <div className="w-4 h-4 relative" />
-    </div>
   );
 }
 
