@@ -1,12 +1,13 @@
 // ModalsContext.tsx
 import { createContext } from 'react';
 
-import { TestModal } from '@components/Modal/Modal';
+import { TestModal, LogoModal } from '@components/Modal/Modal';
 
-export type ModalType = 'test';
+export type ModalType = 'test' | 'logo';
 
 export const MODAL_COMPONENTS = {
   test: TestModal,
+  logo: LogoModal,
 };
 export interface Modals {
   type: ModalType;
@@ -14,8 +15,10 @@ export interface Modals {
   isOpen?: boolean;
 }
 export interface ModalProps {
-  onClose: () => void;
+  onClose?: () => void;
   onSubmit?: () => void;
+  isOpen?: boolean;
+  type?: string;
   title?: string;
   message?: string;
   btnText?: string;
@@ -25,7 +28,7 @@ export interface ModalProps {
 export const ModalsStateContext = createContext<Modals[]>([]);
 
 type ModalsDispatch = {
-  open: ({ type, props, isOpen }: Modals) => void;
+  open: ({ type, props }: Modals) => void;
   close: (type: ModalType) => void;
 };
 

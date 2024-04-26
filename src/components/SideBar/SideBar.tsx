@@ -124,8 +124,9 @@ const Sidebar = () => {
 
   const test = () => {
     openModal({
-      type: 'test',
+      type: 'logo',
       props: {
+        type: 'login',
         title: ' confirm 모달',
         message: '컨펌하시겠습니까?',
         btnText: 'yes',
