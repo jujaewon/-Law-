@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
-import useModal from '@hooks/useModal';
 import { FaRegStar } from 'react-icons/fa';
 import { GoSearch } from 'react-icons/go';
 import { LuPlusSquare } from 'react-icons/lu';
