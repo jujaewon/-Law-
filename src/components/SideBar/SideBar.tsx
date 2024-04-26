@@ -130,7 +130,6 @@ const Sidebar = () => {
         title: ' confirm 모달',
         message: '컨펌하시겠습니까?',
         btnText: 'yes',
-        onSubmit: () => window.alert('submit'),
       },
     });
   };

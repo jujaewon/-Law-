@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
+import { IoClose } from 'react-icons/io5';
 
 import Button from '@components/Button/Button';
 import Icon from '@components/Icon/Icon';
@@ -35,7 +36,7 @@ const ModalOverlay = styled.div<{ $isOpen: boolean }>`
     }
   }
 `;
-const ModalContainer = styled.div`
+const ModalContainer = styled.div<{ $type?: string }>`
   z-index: 2;
   width: 430px;
   min-height: 200px;
@@ -89,6 +90,35 @@ const KakaoLoginButtonImg = styled.div`
     padding-top: 2px;
   }
 `;
+
+const InfoTitleWrapper = styled.div`
+  position: relative;
+  margin-top: 20px;
+  min-height: 30px;
+  padding: 10px 0;
+  color: ${(props) => props.theme.primary};
+  font-weight: 700;
+  font-size: 20px;
+`;
+const InfoMessageWrapper = styled.div`
+  position: relative;
+  margin-top: 20px;
+  min-height: 30px;
+  font-weight: 500;
+  font-size: 15px;
+`;
+const CloseButton = styled.div`
+  color: ${(props) => props.theme.gray1};
+  padding: 10px;
+  border-radius: 50%;
+  position: absolute;
+  top: -10px;
+  right: -30px;
+
+  :hover {
+    background-color: ${(props) => props.theme.gray2};
+  }
+`;
 export const TestModal = ({ onClose, isOpen }: ModalProps) => {
   useEffect(() => {
     console.log(isOpen);
@@ -97,6 +127,22 @@ export const TestModal = ({ onClose, isOpen }: ModalProps) => {
     <div>
       <button onClick={onClose}>닫기</button>
     </div>
+  );
+};
+
+export const InfoModal = ({ onClose, isOpen, title, message }: ModalProps) => {
+  return (
+    <ModalOverlay $isOpen={isOpen!}>
+      <ModalContainer $type={'info'}>
+        <InfoTitleWrapper>
+          {title}
+          <CloseButton onClick={onClose}>
+            <IoClose />
+          </CloseButton>
+        </InfoTitleWrapper>
+        <InfoMessageWrapper>{message}</InfoMessageWrapper>
+      </ModalContainer>
+    </ModalOverlay>
   );
 };
 export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
