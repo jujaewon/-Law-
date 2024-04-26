@@ -76,6 +76,7 @@ interface AccordionItemQProps {
   item: AQuestionType;
   onDelete: (id: number) => void;
 }
+// const AccordionItemQ = ({ item, onDelete }: AccordionItemQProps) => {
 const AccordionItemQ = ({ item }: AccordionItemQProps) => {
   const { title, bigCategory, smallCategory } = item;
 

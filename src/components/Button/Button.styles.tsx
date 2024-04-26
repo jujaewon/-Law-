@@ -42,7 +42,7 @@ const SIZES = {
   `,
   medium_small: css`
     width: 168px;
-    padding: 16px 0;
+    padding: 18px 0;
     font-size: 16px;
   `,
   small: css`
@@ -72,7 +72,7 @@ const COLORS = {
     color: ${theme.black};
     &:hover:enabled {
       border: 1px solid ${theme.gray1};
-      color: ${theme.primary};
+      color: ${theme.gray1};
     }
   `,
   secondary1: css`
@@ -85,6 +85,10 @@ const COLORS = {
     border: 2px solid ${theme.secondary2};
     color: ${theme.primary};
     font-weight: 700;
+  `,
+  kakao: css`
+    background-color: #fee500;
+    margin-top: 4rem !important; //임시
   `,
 };
 const CUSTOM = {
