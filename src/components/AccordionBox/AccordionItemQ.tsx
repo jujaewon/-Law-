@@ -76,8 +76,8 @@ interface AccordionItemQProps {
   item: AQuestionType;
   onDelete: (id: number) => void;
 }
-const AccordionItemQ = ({ item, onDelete }: AccordionItemQProps) => {
-  const { id, title, bigCategory, smallCategory } = item;
+const AccordionItemQ = ({ item }: AccordionItemQProps) => {
+  const { title, bigCategory, smallCategory } = item;
 
   const handleDelete = async () => {
     // console.log('삭제', id);
