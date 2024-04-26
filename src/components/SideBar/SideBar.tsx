@@ -11,6 +11,7 @@ import { VscSignOut } from 'react-icons/vsc';
 import AccordionBox from '@components/AccordionBox/AccordionBox';
 import Avatar from '@components/Avatar/Avatar';
 import Button from '@components/Button/Button';
+import useModal from '@hooks/useModal';
 import { getCategoryTitle, getCategorySelect } from '@store/sidebarStore';
 
 const SidebarContainer = styled.div<{ $isOpen: boolean }>`
