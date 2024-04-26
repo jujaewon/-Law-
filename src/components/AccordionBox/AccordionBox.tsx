@@ -63,6 +63,7 @@ const AccordionBox = ({ data, isOpen }: AccordionBoxProps) => {
   const handleDelete = (id: number) => {
     setChildrenData(childrenData.filter((item: any) => item.id !== id)); // 삭제된 아이템을 제외한 새로운 배열 생성
   };
+
   const renderAccordionItem = (item: AccordionItemType) => {
     if ('bigCategory' in item) {
       return <AccordionItemQ key={item.id} item={item} onDelete={handleDelete} />;
@@ -73,7 +74,6 @@ const AccordionBox = ({ data, isOpen }: AccordionBoxProps) => {
     }
   };
   useEffect(() => {
-    console.log('type', data.type);
     let items: AccordionItemType[] = [];
     switch (data.type) {
       case 'question':
@@ -89,9 +89,6 @@ const AccordionBox = ({ data, isOpen }: AccordionBoxProps) => {
     setChildrenData(items);
   }, [data.type, rankData]);
 
-  useEffect(() => {
-    console.log('childrenData', childrenData);
-  }, [childrenData]);
   const backCategory = () => {
     if (data.type === 'rank') {
       setCategory({ isSelect: false, title: '', data: [] });
