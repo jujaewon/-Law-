@@ -1,13 +1,14 @@
 // ModalsContext.tsx
 import { createContext } from 'react';
 
-import { TestModal, LogoModal } from '@components/Modal/Modal';
+import { TestModal, LogoModal, InfoModal } from '@components/Modal/Modal';
 
-export type ModalType = 'test' | 'logo';
+export type ModalType = 'test' | 'logo' | 'info';
 
 export const MODAL_COMPONENTS = {
   test: TestModal,
   logo: LogoModal,
+  info: InfoModal,
 };
 export interface Modals {
   type: ModalType;

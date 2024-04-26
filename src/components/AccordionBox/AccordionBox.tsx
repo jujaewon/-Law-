@@ -63,6 +63,7 @@ const AccordionBox = ({ data, isOpen }: AccordionBoxProps) => {
   const handleDelete = (id: number) => {
     setChildrenData(childrenData.filter((item: any) => item.id !== id)); // 삭제된 아이템을 제외한 새로운 배열 생성
   };
+
   const renderAccordionItem = (item: AccordionItemType) => {
     if ('bigCategory' in item) {
       return <AccordionItemQ key={item.id} item={item} onDelete={handleDelete} />;
