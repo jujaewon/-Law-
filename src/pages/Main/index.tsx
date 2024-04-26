@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 
 import BottomBar from '@components/BottomBar/BottomBar';
-import ContainerBox from '@components/ContainerBox/ContainerBox';
 import SideBar from '@components/SideBar/SideBar';
 import { breakpoints } from '@styles/breakpoints';
 
@@ -42,13 +41,13 @@ const AnswerContainer = styled.div`
   padding: 20px 20px 0px;
 `;
 
-const StyledTextContainer = styled.div`
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
+// const StyledTextContainer = styled.div`
+//   text-align: center;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   flex-direction: column;
+// `;
 
 const StyledText = styled.span`
   font-size: 50px;
