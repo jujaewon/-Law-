@@ -26,6 +26,7 @@
       "@test/*": ["src/test/*"],
       "@store/*": ["src/store/*"],  
       "@@types/*": ["src/types/*"],
+      "@hooks/*": ["src/hooks/*"],  
       "@/*": ["src/*"]
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
 

@@ -10,6 +10,7 @@ import { VscSignOut } from 'react-icons/vsc';
 import AccordionBox from '@components/AccordionBox/AccordionBox';
 import Avatar from '@components/Avatar/Avatar';
 import Button from '@components/Button/Button';
+import useModal from '@hooks/useModal';
 import { getCategoryTitle, getCategorySelect } from '@store/sidebarStore';
 
 const SidebarContainer = styled.div<{ $isOpen: boolean }>`
@@ -119,7 +120,19 @@ const CATEGORY_DATA = {
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [isSelect, setIsSelect] = useState(false);
+  const { openModal } = useModal();
 
+  const test = () => {
+    openModal({
+      type: 'logo',
+      props: {
+        type: 'login',
+        title: ' confirm 모달',
+        message: '컨펌하시겠습니까?',
+        btnText: 'yes',
+      },
+    });
+  };
   const selectStatus = getCategorySelect();
   useEffect(() => {
     setIsSelect(selectStatus);
