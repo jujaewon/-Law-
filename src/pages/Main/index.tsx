@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 
 import BottomBar from '@components/BottomBar/BottomBar';
-import ContainerBox from '@components/ContainerBox/ContainerBox';
 import SideBar from '@components/SideBar/SideBar';
 import { breakpoints } from '@styles/breakpoints';
 
@@ -24,34 +23,37 @@ const MainContainer = styled.div`
     font-size: 22px;
   }
 `;
-
 const ContentsContainer = styled.div`
-  flex: 1;
+  display: flex;
   flex-direction: column;
-  gap: 20px;
-  justify-items: center;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+`;
+const AnswerContainer = styled.div`
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 20px;
-  height: 100%;
-  margin: 60px 0;
+  justify-content: center;
+  padding: 20px 20px 0px;
 `;
 
-const StyledTextContainer = styled.div`
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
+// const StyledTextContainer = styled.div`
+//   text-align: center;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   flex-direction: column;
+// `;
 
 const StyledText = styled.span`
   font-size: 50px;
   font-weight: 600; // font-semibold에 해당
   font-family: 'Pretendard Variable', sans-serif;
   color: ${(props) => (props.color === 'sky-500' ? '#0ea5e9' : 'black')};
-  &:first-child {
-    margin-bottom: 10px;
-  }
 `;
 
 const LawContainer = styled.div`
@@ -108,9 +110,11 @@ function Main() {
     <MainContainer>
       <SideBar />
       <ContentsContainer>
-        <StyledTextContainer>
-          <StyledText>누구나 쉽게 받는 법률 조언</StyledText>
-          <StyledText color="sky-500">“헬로(Law)!“</StyledText>
+        <AnswerContainer>
+          <div>
+            <StyledText>누구나 쉽게 받는 법률 조언</StyledText>
+            <StyledText color="sky-500">“헬로(Law)!“</StyledText>
+          </div>
           <LawContainer>
             <LawHeader>
               <LawImage src="" />
@@ -129,9 +133,8 @@ function Main() {
               제가 사기를 당했어요 보이스피싱에 당했는데 실수로 2천만원을 송금했어요 어떻게 해야하나요?
             </LawDetailText>
           </LawContainer>
-          <ContainerBox />
-          <BottomBar />
-        </StyledTextContainer>
+        </AnswerContainer>
+        <BottomBar />
       </ContentsContainer>
     </MainContainer>
   );

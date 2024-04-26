@@ -157,7 +157,7 @@ const Sidebar = () => {
           <StyledParagraph $isOpen={isOpen}>헬로(Law)</StyledParagraph>
         </Header>
         <SidebarContentsContainer $isOpen={isOpen}>
-          <Button type="button" color="primary" size="full">
+          <Button type="button" color="primary" size="full" onClick={test}>
             <LuPlusSquare color="white" />
             {isOpen && '질문하기'}
           </Button>
