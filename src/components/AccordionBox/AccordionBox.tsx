@@ -53,13 +53,26 @@ const ContentsContainer = styled.div<{ $isOpen: boolean; $isActive: boolean }>`
 interface AccordionBoxProps {
   data: AccordionDataType;
   isOpen: boolean;
+  handleOpen: () => void;
 }
 type AccordionItemType = AQuestionType | CategoryType | RankDataType;
-const AccordionBox = ({ data, isOpen }: AccordionBoxProps) => {
+const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
   const [isActive, setIsActive] = useState(data.title === '실시간 인기 법률');
   const [childrenData, setChildrenData] = useState<AccordionItemType[]>([]);
   const rankData = getCategoryData();
   const setCategory = setCategoryData();
+
+  useEffect(() => {
+    if (!isOpen) setIsActive(false);
+  }, [isOpen]);
+
+  const handleActive = () => {
+    if (!isOpen) {
+      handleOpen();
+      setIsActive(!isActive);
+    } else setIsActive(!isActive);
+  };
+
   const handleDelete = (id: number) => {
     setChildrenData(childrenData.filter((item: any) => item.id !== id)); // 삭제된 아이템을 제외한 새로운 배열 생성
   };
@@ -96,7 +109,7 @@ const AccordionBox = ({ data, isOpen }: AccordionBoxProps) => {
   };
   return (
     <AccordionBoxContainer>
-      <Header onClick={() => setIsActive(!isActive)} $isActive={isActive} $isOpen={isOpen}>
+      <Header onClick={handleActive} $isActive={isActive} $isOpen={isOpen}>
         <div onClick={backCategory}>{data.icon}</div>
         {isOpen && <HeaderText>{data.title}</HeaderText>}
         {isOpen ? isActive ? <IoIosArrowUp /> : <IoIosArrowDown /> : null}
