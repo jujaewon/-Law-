@@ -13,18 +13,21 @@ import Button from '@components/Button/Button';
 import { getCategoryTitle, getCategorySelect } from '@store/sidebarStore';
 
 const SidebarContainer = styled.div<{ $isOpen: boolean }>`
+  background-color: ${(props) => props.theme.white};
   width: 56px;
-  height: auto;
   min-height: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   position: relative;
   padding: ${(props) => (props.$isOpen ? '30px 15px' : '30px 0px 30px 5px')};
-  background: ${(props) => props.theme.white};
   border-right: 2px solid ${(props) => props.theme.gray1};
   transition: width 0.4s;
   width: ${(props) => (props.$isOpen ? '300px' : '56px')};
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
+  overflow-x: hidden;
   ::-webkit-scrollbar {
     width: 8px;
   }
@@ -78,8 +81,8 @@ const StyledParagraph = styled.p<{ $isOpen: boolean }>`
   font-size: 2rem;
 `;
 
-const UserContainer = styled.div`
-  margin-top: 200px;
+const UserContainer = styled.div<{ $isOpen: boolean }>`
+  margin-top: 50px;
   display: flex;
   flex-direction: row;
   padding: 12px 8px;
@@ -89,6 +92,10 @@ const UserContainer = styled.div`
   align-self: stretch;
   flex-shrink: 0;
   height: 40px;
+  width: auto;
+  button {
+    margin-left: ${(props) => (props.$isOpen ? '' : '-10px')};
+  }
 `;
 const UserNameWrapper = styled.div`
   text-align: left;
@@ -123,30 +130,41 @@ const Sidebar = () => {
     icon: <RiArrowGoBackLine />,
     type: 'rank',
   };
+
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
   return (
     <SidebarContainer $isOpen={isOpen}>
-      <Header>
-        <OpenButton $isOpen={isOpen} onClick={() => setIsOpen(!isOpen)}>
-          🧠
-        </OpenButton>
-        <StyledParagraph $isOpen={isOpen}>헬로(Law)</StyledParagraph>
-      </Header>
-      <SidebarContentsContainer $isOpen={isOpen}>
-        <Button type="button" color="primary" size="full">
-          <LuPlusSquare color="white" />
-          {isOpen && '질문하기'}
-        </Button>
-        <AccordionBox data={QUESTION_DATA} isOpen={isOpen} />
-        {isSelect ? (
-          <AccordionBox data={PICK_DATA} isOpen={isOpen} />
-        ) : (
-          <AccordionBox data={CATEGORY_DATA} isOpen={isOpen} />
-        )}
-      </SidebarContentsContainer>
-      <UserContainer>
+      <div>
+        <Header>
+          <OpenButton $isOpen={isOpen} onClick={() => setIsOpen(!isOpen)}>
+            🧠
+          </OpenButton>
+          <StyledParagraph $isOpen={isOpen}>헬로(Law)</StyledParagraph>
+        </Header>
+        <SidebarContentsContainer $isOpen={isOpen}>
+          <Button type="button" color="primary" size="full">
+            <LuPlusSquare color="white" />
+            {isOpen && '질문하기'}
+          </Button>
+          <AccordionBox data={QUESTION_DATA} isOpen={isOpen} handleOpen={handleOpen} />
+          {isSelect ? (
+            <AccordionBox data={PICK_DATA} isOpen={isOpen} handleOpen={handleOpen} />
+          ) : (
+            <AccordionBox data={CATEGORY_DATA} isOpen={isOpen} handleOpen={handleOpen} />
+          )}
+        </SidebarContentsContainer>
+      </div>
+
+      <UserContainer $isOpen={isOpen}>
         <Avatar />
-        <UserNameWrapper>이가영</UserNameWrapper>
-        <VscSignOut color="red" />
+        {isOpen && (
+          <>
+            <UserNameWrapper>이가영</UserNameWrapper>
+            <VscSignOut color="red" />
+          </>
+        )}
       </UserContainer>
     </SidebarContainer>
   );
