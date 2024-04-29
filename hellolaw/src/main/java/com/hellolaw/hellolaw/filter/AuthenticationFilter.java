@@ -42,7 +42,7 @@ public class AuthenticationFilter implements Filter {
 		try {
 			userId = WebClient.create()
 				.get()
-				.uri("http://localhost:8099/authentication")
+				.uri(authUrl)
 				.header("Cookie", "access-token=" + cookieValue)
 				.retrieve()
 				.bodyToMono(Long.class)
