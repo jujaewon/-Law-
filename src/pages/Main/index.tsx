@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 
 import BottomBar from '@components/BottomBar/BottomBar';
+import ChatDefault from '@components/Chat/ChatDefault';
 import GuideBox from '@components/GuideBox/GuideBox';
 import SideBar from '@components/SideBar/SideBar';
+import { chatsStore } from '@store/chatsStore';
 import { breakpoints } from '@styles/breakpoints';
 
 const MainContainer = styled.div`
@@ -43,13 +45,12 @@ const AnswerContainer = styled.div`
 `;
 
 const Main = () => {
+  const isChat = chatsStore((state) => state.isChat);
   return (
     <MainContainer>
       <SideBar />
       <ContentsContainer>
-        <AnswerContainer>
-          <GuideBox />
-        </AnswerContainer>
+        <AnswerContainer>{isChat ? <ChatDefault /> : <GuideBox />}</AnswerContainer>
         <BottomBar />
       </ContentsContainer>
     </MainContainer>
