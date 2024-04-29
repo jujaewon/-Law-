@@ -1,13 +1,15 @@
-from fastapi import FastAPI
+import crawl
+import category
+from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+@app.get("/law/{name}")
+async def getLawInfo(name: str):
+    print("name ", name)
+    try:
+        contents = crawl.getLawContents(name)
+        return {"contents": contents,
+                "category": category.getCategory(name, contents)}
+    except:
+        raise HTTPException(status_code=400, detail="더 이상 시행되지 않는 법입니다.")
