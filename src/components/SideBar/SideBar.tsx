@@ -80,6 +80,7 @@ const StyledParagraph = styled.p<{ $isOpen: boolean }>`
   transition: 0.3s;
   color: ${(props) => props.theme.primary};
   font-size: 2rem;
+  font-family: 'TmonMonsori';
 `;
 
 const UserContainer = styled.div<{ $isOpen: boolean }>`

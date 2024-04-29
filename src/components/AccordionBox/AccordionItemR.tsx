@@ -21,7 +21,6 @@ const ContentContainer = styled.button`
   }
 `;
 const TextWrapper = styled.div`
-  font-family: 'Pretendard-Medium', sans-serif;
   font-size: 14px;
   font-weight: 500;
 `;
