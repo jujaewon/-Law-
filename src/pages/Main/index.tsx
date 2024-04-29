@@ -1,10 +1,14 @@
+import { useEffect } from 'react';
+
 import styled from '@emotion/styled';
 
 import BottomBar from '@components/BottomBar/BottomBar';
 import ChatDefault from '@components/Chat/ChatDefault';
 import GuideBox from '@components/GuideBox/GuideBox';
 import SideBar from '@components/SideBar/SideBar';
+import useModal from '@hooks/useModal';
 import { chatsStore } from '@store/chatsStore';
+import { userStore } from '@store/userStore';
 import { breakpoints } from '@styles/breakpoints';
 
 const MainContainer = styled.div`
@@ -46,6 +50,21 @@ const AnswerContainer = styled.div`
 
 const Main = () => {
   const isChat = chatsStore((state) => state.isChat);
+
+  const nickname = userStore((state) => state.nickname);
+  const { openModal } = useModal();
+
+  useEffect(() => {
+    if (!nickname) {
+      openModal({
+        type: 'logo',
+        props: {
+          type: 'login',
+        },
+      });
+    }
+  }, [nickname]);
+
   return (
     <MainContainer>
       <SideBar />

@@ -6,6 +6,7 @@ import { IoClose } from 'react-icons/io5';
 
 import Button from '@components/Button/Button';
 import Icon from '@components/Icon/Icon';
+import { handleKaKaoLogin } from '@utils/login';
 
 import { ModalProps } from './manage/ModalsContext';
 
@@ -165,7 +166,7 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
         )}
         {type === 'login' && (
           <>
-            <CustomButton type="button" size="medium_small" color="kakao">
+            <CustomButton type="button" size="medium_small" color="kakao" onClick={handleKaKaoLogin}>
               <KakaoLoginButtonImg>
                 <Icon icon="kakao" />
               </KakaoLoginButtonImg>
