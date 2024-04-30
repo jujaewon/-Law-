@@ -1,30 +1,48 @@
 import React, { useState } from 'react';
 
+import './ContentBox.css';
+import { Theme, css } from '@emotion/react';
+import styled from '@emotion/styled';
+
 import theme from '@styles/theme';
 
-const categories = [
-  '스토킹',
-  '성범죄',
-  '폭행/상해',
-  '사기',
-  '상속/가사',
-  '이혼',
-  '교통사고/음주운전',
-  '마약',
-  '대여금/미수금/채권추심',
-  '행정소송',
-  '소비자분쟁',
-  '기타',
-];
+interface DynamicColorTextProps {
+  theme: Theme;
+  isSelected: boolean;
+}
+
+const DynamicColorText = styled.div<DynamicColorTextProps>(
+  ({ theme, isSelected }) => css`
+    font-family: 'Pretendard Variable';
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: tight;
+    color: ${isSelected ? theme.primary : theme.gray1};
+  `,
+);
 
 const FirstContent: React.FC<{ onCategoryClick: (category: string) => void }> = ({ onCategoryClick }) => {
+  const categories = [
+    ['스토킹', '성범죄', '폭행/상해'],
+    ['사기', '상속/가사', '이혼'],
+    ['교통사고/음주운전', '마약'],
+    ['대여금/미수금/채권추심', '행정소송'],
+    ['소비자분쟁', '기타'],
+  ];
+
   return (
-    <div>
-      {categories.map((category) => (
-        <div key={category} onClick={() => onCategoryClick(category)}>
-          {category}
-        </div>
-      ))}
+    <div className="inline-flex flex-wrap gap-5 rounded-lg border border-zinc-200 bg-white p-[10px] shadow">
+      {categories.map((subCategories, index) =>
+        subCategories.map((category, subIndex) => (
+          <div
+            key={`${index}-${subIndex}`} // 고유한 key를 생성합니다.
+            className="w-500 h-300 flex cursor-pointer items-center justify-center rounded-md font-['Pretendard_Variable'] text-3xl font-bold leading-tight hover:bg-slate-100" // 너비, 높이, 글자 크기 조정
+            onClick={() => onCategoryClick(category)}
+          >
+            {category}
+          </div>
+        )),
+      )}
     </div>
   );
 };
@@ -36,19 +54,13 @@ interface SecondContentProps {
 
 const SecondContent: React.FC<SecondContentProps> = ({ selectedText, onTextClick }) => (
   <div className="inline-flex size-auto items-start justify-start gap-5 rounded-lg border border-zinc-200 bg-white p-[25px] shadow">
-    <div
-      className={`font-['Pretendard Variable'] size-auto text-xl font-bold leading-tight ${selectedText === 'victim' ? 'text-sky-500' : 'text-slate-400'}`}
-      onClick={() => onTextClick('victim')}
-    >
+    <DynamicColorText isSelected={selectedText === 'victim'} theme={theme} onClick={() => onTextClick('victim')}>
       피해자
       <br />
-    </div>
-    <div
-      className={`font-['Pretendard Variable'] size-auto text-xl font-bold leading-tight ${selectedText === 'offender' ? 'text-sky-500' : 'text-slate-400'}`}
-      onClick={() => onTextClick('offender')}
-    >
+    </DynamicColorText>
+    <DynamicColorText isSelected={selectedText === 'offender'} theme={theme} onClick={() => onTextClick('offender')}>
       가해자
-    </div>
+    </DynamicColorText>
   </div>
 );
 
@@ -59,13 +71,13 @@ const ContentBox: React.FC = () => {
   const [selectedText, setSelectedText] = useState('');
 
   const handleCategoryClick = (category: string) => {
-    setSelectedCategory(category); // 카테고리 클릭 시 상태 업데이트
-    setShowOptions1(false); // 옵션 창 닫기
+    setSelectedCategory(category);
+    setShowOptions1(false);
   };
 
   const handleTextClick = (text: string) => {
     setSelectedText(text);
-    setShowOptions2(false); // 클릭 시 옵션 숨기기
+    setShowOptions2(false);
   };
 
   const getDynamicMinusText = () => {
@@ -80,43 +92,59 @@ const ContentBox: React.FC = () => {
   };
 
   return (
-    <div className="inline-flex h-[100px] w-[800px] flex-col items-start justify-start gap-[7px]">
-      <div className="inline-flex items-start justify-start gap-5">
-        <div className="flex h-6 w-[76px] items-center justify-center gap-[5px] px-[5px]">
-          <div className="flex items-center" onClick={() => setShowOptions1(!showOptions1)}>
+    <div className="inline-flex h-[120px] w-[900px] flex-col items-start justify-start gap-[2px]">
+      <div className="inline-flex items-start justify-start">
+        <div className="relative flex h-[30px] w-[250px] items-center justify-center gap-[4px] px-[20px]">
+          <div className="flex items-center">
             <div
-              style={{ color: theme.primary }}
-              className="flex h-6 w-[45px] items-center justify-center font-['Pretendard_Variable'] text-xl font-bold leading-none"
+              style={{
+                color: theme.primary,
+                fontSize: '20px',
+                margin: '2px',
+                position: 'absolute',
+                left: '10px',
+                minWidth: '120px',
+              }} // minWidth를 적용하여 첫 번째 "-"의 위치를 고정하고, 카테고리 이름이 한 줄에 나타나도록 함
+              className="flex h-[30px] items-center justify-center font-['Pretendard_Variable'] text-xl font-bold leading-none"
             >
               {selectedCategory || '-'}
             </div>
             <div
-              style={{ color: theme.primary }}
-              className="flex h-6 w-[45px] items-center justify-center font-['Pretendard_Variable'] text-xl font-bold leading-none"
+              style={{ color: theme.primary, fontSize: '20px', margin: '2px', position: 'absolute', right: '0px' }}
+              className="flex h-[30px] w-[60px] items-center justify-center font-['Pretendard_Variable'] text-xl font-bold leading-none"
+              onClick={() => setShowOptions1(!showOptions1)}
             >
               -
             </div>
-            {showOptions1 && <FirstContent onCategoryClick={handleCategoryClick} />}
           </div>
+          {showOptions1 && (
+            <div className="first-dropdown-box">
+              <FirstContent onCategoryClick={handleCategoryClick} />
+            </div>
+          )}
         </div>
 
-        <div className="flex h-6 w-[76px] items-center justify-center gap-[5px] px-[5px]">
+        <div className="flex h-[30px] w-[250px] items-center justify-center gap-[4px] px-[10px]">
           <div className="flex items-center" onClick={() => setShowOptions2(!showOptions2)}>
             <div
-              style={{ color: theme.black }}
-              className="flex h-6 w-[45px] items-center justify-center font-['Pretendard_Variable'] text-xl font-bold leading-none"
+              style={{ color: theme.black, fontSize: '20px', margin: '2px' }}
+              className="flex h-[30px] w-[60px] items-center justify-center font-['Pretendard_Variable'] font-bold leading-none"
             >
               {getDynamicMinusText()}
             </div>
             <div
-              style={{ color: theme.black }} // 선택된 값에 따라 색상 적용
-              className="flex h-6 w-[45px] items-center justify-center font-['Pretendard_Variable'] text-xl font-bold leading-none"
+              style={{ color: theme.black, fontSize: '20px', margin: '2px' }}
+              className="flex h-[30px] w-[60px] items-center justify-center font-['Pretendard_Variable'] font-bold leading-none"
             >
               -
             </div>
           </div>
         </div>
-        {showOptions2 && <SecondContent selectedText={selectedText} onTextClick={handleTextClick} />}
+        {showOptions2 && (
+          <div className="second-dropdown-box">
+            <SecondContent selectedText={selectedText} onTextClick={handleTextClick} />
+          </div>
+        )}
       </div>
     </div>
   );
