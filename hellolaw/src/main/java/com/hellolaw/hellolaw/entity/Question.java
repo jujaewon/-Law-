@@ -25,9 +25,6 @@ public class Question extends BaseEntity {
 	@Column(name = "victim")
 	private boolean victim;
 
-	@Column(name = "category")
-	private String category;
-
 	@OneToOne(mappedBy = "question")
 	private Answer answer;
 
