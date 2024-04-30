@@ -6,7 +6,7 @@ import { IoClose } from 'react-icons/io5';
 
 import Button from '@components/Button/Button';
 import Icon from '@components/Icon/Icon';
-import { handleKaKaoLogin } from '@utils/login';
+import useModal from '@hooks/useModal';
 
 import { ModalProps } from './manage/ModalsContext';
 
@@ -147,6 +147,20 @@ export const InfoModal = ({ onClose, isOpen, title, message }: ModalProps) => {
   );
 };
 export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
+  const { openModal, closeModal } = useModal();
+  const goLogin = () => {
+    openModal({
+      type: 'logo',
+      props: {
+        type: 'login',
+      },
+    });
+  };
+  const moveKaKaoLogin = () => {
+    closeModal('logo');
+    window.location.href = '/login/kakao';
+  };
+
   useEffect(() => {
     console.log(isOpen);
   }, [isOpen]);
@@ -156,7 +170,15 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
         <ModalHeader>헬로(Law)</ModalHeader>
         {type === 'first' && (
           <>
-            <CustomButton type="button" color="gray" size="medium_small" onClick={onClose}>
+            <CustomButton
+              type="button"
+              color="gray"
+              size="medium_small"
+              onClick={() => {
+                onClose();
+                goLogin();
+              }}
+            >
               처음 오셨나요?
             </CustomButton>
             <CustomButton type="button" color="primary" size="medium_small" onClick={onClose}>
@@ -166,7 +188,7 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
         )}
         {type === 'login' && (
           <>
-            <CustomButton type="button" size="medium_small" color="kakao" onClick={handleKaKaoLogin}>
+            <CustomButton type="button" size="medium_small" color="kakao" onClick={moveKaKaoLogin}>
               <KakaoLoginButtonImg>
                 <Icon icon="kakao" />
               </KakaoLoginButtonImg>

@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import AuthCheck from '@pages/AuthCheck';
 import Main from '@pages/Main';
-import { handleKaKaoLogin } from '@utils/login';
 
 const Router = () => (
   <BrowserRouter>
@@ -12,7 +12,4 @@ const Router = () => (
   </BrowserRouter>
 );
 
-function AuthCheck() {
-  return handleKaKaoLogin();
-}
 export default Router;

@@ -16,7 +16,7 @@ export interface Modals {
   isOpen?: boolean;
 }
 export interface ModalProps {
-  onClose?: () => void;
+  onClose: () => void;
   onSubmit?: () => void;
   isOpen?: boolean;
   type?: string;

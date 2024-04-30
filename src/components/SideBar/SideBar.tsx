@@ -12,7 +12,7 @@ import Avatar from '@components/Avatar/Avatar';
 import Button from '@components/Button/Button';
 import { chatsStore } from '@store/chatsStore';
 import { getCategoryTitle, getCategorySelect } from '@store/sidebarStore';
-import { userStore } from '@store/userStore';
+import { removeCookie } from '@utils/cookies';
 
 const SidebarContainer = styled.div<{ $isOpen: boolean }>`
   background-color: ${(props) => props.theme.white};
@@ -108,6 +108,17 @@ const UserNameWrapper = styled.div`
   position: relative;
   flex: 1;
 `;
+
+const LogoutButton = styled.button`
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  :hover {
+    background-color: ${(props) => props.theme.gray1};
+    color: ${(props) => props.theme.white};
+  }
+`;
 const QUESTION_DATA = {
   title: '최근 질문목록',
   icon: <GoSearch />,
@@ -118,8 +129,10 @@ const CATEGORY_DATA = {
   icon: <FaRegStar />,
   type: 'category',
 };
-
-const Sidebar = () => {
+interface SidebarProps {
+  nickname: string;
+}
+const Sidebar = ({ nickname }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isSelect, setIsSelect] = useState(false);
 
@@ -141,8 +154,11 @@ const Sidebar = () => {
   const handleOpen = () => {
     setIsOpen(true);
   };
-
-  const nickname = userStore((state) => state.nickname);
+  const logout = () => {
+    removeCookie('nickname');
+    removeCookie('refreshToken');
+    window.location.href = '/';
+  };
 
   return (
     <SidebarContainer $isOpen={isOpen}>
@@ -172,7 +188,9 @@ const Sidebar = () => {
         {isOpen && (
           <>
             <UserNameWrapper>{nickname}</UserNameWrapper>
-            <VscSignOut color="red" />
+            <LogoutButton onClick={logout}>
+              <VscSignOut color="red" />
+            </LogoutButton>
           </>
         )}
       </UserContainer>

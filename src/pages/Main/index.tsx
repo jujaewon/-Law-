@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -8,8 +8,8 @@ import GuideBox from '@components/GuideBox/GuideBox';
 import SideBar from '@components/SideBar/SideBar';
 import useModal from '@hooks/useModal';
 import { chatsStore } from '@store/chatsStore';
-import { userStore } from '@store/userStore';
 import { breakpoints } from '@styles/breakpoints';
+import { getCookie, setCookie } from '@utils/cookies';
 
 const MainContainer = styled.div`
   background-color: ${(props) => props.theme.white};
@@ -50,24 +50,29 @@ const AnswerContainer = styled.div`
 
 const Main = () => {
   const isChat = chatsStore((state) => state.isChat);
-
-  const nickname = userStore((state) => state.nickname);
+  const [nickname, setNickname] = useState('');
   const { openModal } = useModal();
-
+  const nickFromCookie = getCookie('nickname');
   useEffect(() => {
-    if (!nickname) {
+    console.log('쿠키닉네임', nickFromCookie);
+    setCookie('nickname', 'testName', {
+      path: '/',
+      sameSite: 'strict',
+    });
+    if (nickFromCookie) {
+      setNickname(nickFromCookie.toString());
+    } else {
       openModal({
         type: 'logo',
         props: {
-          type: 'login',
+          type: 'first',
         },
       });
     }
-  }, [nickname]);
-
+  }, [nickFromCookie]);
   return (
     <MainContainer>
-      <SideBar />
+      <SideBar nickname={nickname} />
       <ContentsContainer>
         <AnswerContainer>{isChat ? <ChatDefault /> : <GuideBox />}</AnswerContainer>
         <BottomBar />
