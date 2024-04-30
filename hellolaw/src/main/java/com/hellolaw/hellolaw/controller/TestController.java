@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
   private final UserRepository userRepository;
-  @GetMapping("/test")
+  @GetMapping("/api/test")
   public String test() {
     log.info("test");
 
