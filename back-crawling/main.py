@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
-@app.get("/law/{name}")
+@app.get("/crawling/law/{name}")
 async def getLawInfo(name: str):
     print("name ", name)
     try:
