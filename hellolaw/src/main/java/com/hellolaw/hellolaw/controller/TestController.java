@@ -13,19 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
   private final UserRepository userRepository;
-  @GetMapping("/api/test")
+  @GetMapping("/test")
   public String test() {
-    log.info("test");
-
-    User user = User.builder()
-        .nickname("test")
-        .build();
-
-    userRepository.save(user);
+//    log.info("test");
     User test = userRepository.findByNickname("test").orElseThrow();
     log.info(test.getNickname());
-
-
     return "test";
   }
 
