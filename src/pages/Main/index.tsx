@@ -7,7 +7,6 @@ import { breakpoints } from '@styles/breakpoints';
 const MainContainer = styled.div`
   background-color: ${(props) => props.theme.white};
   display: flex;
-
   width: 100%;
   height: 100vh;
 
@@ -23,13 +22,17 @@ const MainContainer = styled.div`
     font-size: 22px;
   }
 `;
+
 const ContentsContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  justify-content: center;
+  align-items: center;
   position: relative;
   overflow: hidden;
 `;
+
 const AnswerContainer = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
@@ -41,19 +44,11 @@ const AnswerContainer = styled.div`
   padding: 20px 20px 0px;
 `;
 
-// const StyledTextContainer = styled.div`
-//   text-align: center;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   flex-direction: column;
-// `;
-
 const StyledText = styled.span`
   font-size: 50px;
   font-weight: 600; // font-semibold에 해당
   font-family: 'Pretendard Variable', sans-serif;
-  color: ${(props) => (props.color === 'sky-500' ? '#0ea5e9' : 'black')};
+  color: ${(props) => (props.color === 'primary' ? '#0080FF' : '#282c37')};
 `;
 
 const LawContainer = styled.div`
@@ -113,7 +108,9 @@ function Main() {
         <AnswerContainer>
           <div>
             <StyledText>누구나 쉽게 받는 법률 조언</StyledText>
-            <StyledText color="sky-500">“헬로(Law)!“</StyledText>
+          </div>
+          <div>
+            <StyledText color="primary">“헬로(Law)!“</StyledText>
           </div>
           <LawContainer>
             <LawHeader>
