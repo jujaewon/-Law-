@@ -44,7 +44,7 @@ def getCategory(name, content):
         messages=[
             {"role": "user", "content": createPrompt(name, content)}
         ],
-        max_tokens=2000,
+        max_tokens=4000,
         stop=None,
         temperature=1.0
     )
