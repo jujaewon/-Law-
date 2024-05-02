@@ -1,0 +1,7 @@
+uvicorn==0.29.0
+fastapi==0.110.2
+openai==1.23.6
+pip==24.0
+python-dotenv==1.0.1
+selenium==4.20.0
+webdriver-manager==4.0.1
