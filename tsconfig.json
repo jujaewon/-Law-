@@ -64,6 +64,6 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": ["src", "src/@types"],
-  "exclude": ["node_modules", "**/*.test.ts"],
+  "exclude": ["node_modules", "**/*.test.ts","**/browser.ts","**/handler.ts"],
   "types": ["@emotion/react/types/css-prop"]
 }
