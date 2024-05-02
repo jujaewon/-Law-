@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import ContentBox from '@components/ContentBox/ContentBox';
+import theme from '@styles/theme';
 
 const Wrapper = styled.div`
-  height: 80px;
-  // background-color: #f8f8f8;
+  height: 100px;
   width: 100%;
   position: relative;
   display: flex;
@@ -15,38 +14,53 @@ const Wrapper = styled.div`
 `;
 
 const Test = styled.div`
-  width: 50px;
+  width: 60px;
   position: absolute;
   top: -120px;
   left: calc(50% - 422.5px);
   transform: translateX(0);
 `;
 
-const BottomBar = () => {
-  const theme = useTheme();
-  const [message, setMessage] = useState('어떤 문제가 있으신가요?');
-  const [isEditing, setIsEditing] = useState(false);
+const BottomBar: React.FC = () => {
+  const [message, setMessage] = useState<string>('어떤 문제가 있으신가요?');
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [divHeight, setDivHeight] = useState<string>('70px'); // 동적으로 조정될 div의 높이 상태
 
-  // 메시지 업데이트 핸들러
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage(event.target.value);
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newMessage = event.target.value;
+    setMessage(newMessage);
+
+    // textarea 높이 자동 조정
+    event.target.style.height = 'auto';
+    event.target.style.height = `${event.target.scrollHeight}px`;
+
+    // div 높이 동적 조정 로직 (복잡한 로직이 필요할 경우 여기를 조정)
+    const numberOfLines = newMessage.split('\n').length;
+    const newDivHeight = Math.max(70, 20 * numberOfLines); // 예시 로직: 줄 수에 따라 높이 조정
+    setDivHeight(`${newDivHeight}px`);
   };
 
-  // 입력 모드 활성화 및 기본 메시지 삭제
   const activateEdit = () => {
     if (message === '어떤 문제가 있으신가요?') {
-      setMessage(''); // 기본 메시지일 때만 내용을 비웁니다.
+      setMessage('');
     }
     setIsEditing(true);
   };
 
-  // 입력 모드 비활성화 및 입력 값 저장
   const deactivateEdit = () => {
     setIsEditing(false);
     if (message.trim() === '') {
       setMessage('어떤 문제가 있으신가요?');
     }
   };
+
+  useEffect(() => {
+    const textarea = document.getElementById('autoresizetextarea') as HTMLTextAreaElement;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, [message]);
 
   return (
     <Wrapper>
@@ -65,42 +79,51 @@ const BottomBar = () => {
           </div>
         </div>
       </Test>
-      <div
-        className="relative h-[60px] w-[845px] rounded-[30px] bg-white shadow"
-        style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}
-      >
-        <div className="absolute left-[20px] top-[13px] inline-flex w-[673px] items-center justify-start gap-2">
-          <div className="flex items-center justify-start gap-2">
-            <div className="relative mr-4 h-[34px] w-[23px]" onClick={activateEdit}>
-              <div className="font-['Mier A'] absolute left-[4px] top-[12px] text-base font-medium leading-snug text-black">
-                🧠
-              </div>
-              <div className="font-['Mier A'] absolute left-0 top-0 text-[22.40px] font-medium leading-loose text-black">
-                🧠
-              </div>
-            </div>
 
-            {isEditing ? (
-              <input
-                type="text"
-                value={message}
-                onChange={handleChange}
-                onBlur={deactivateEdit}
-                autoFocus
-                style={{ fontSize: '20px' }}
-                className="font-['Pretendard Variable'] font-normal leading-tight text-black text-opacity-40"
-              />
-            ) : (
-              <div
-                style={{ fontSize: '20px' }}
-                className="font-['Pretendard Variable'] font-normal leading-tight text-black text-opacity-40"
-                onClick={activateEdit}
-              >
-                {message}
-              </div>
-            )}
+      <div
+        className="relative rounded-[30px] bg-white shadow"
+        style={{
+          width: '845px',
+          position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          height: divHeight,
+        }}
+      >
+        <div
+          className="absolute left-[20px] top-[13px] flex w-[700px] items-center justify-start gap-2"
+          style={{ alignItems: 'center' }}
+        >
+          <div className="relative mr-4 h-[50px] w-[23px]" onClick={activateEdit}>
+            🧠
           </div>
-          <div className="absolute left-[782px] top-[6px] inline-flex size-12 items-end justify-end gap-2.5 rounded-[60px] bg-sky-500 p-2.5 shadow">
+          {isEditing ? (
+            <textarea
+              id="autoresizetextarea"
+              value={message}
+              onChange={handleChange}
+              onBlur={deactivateEdit}
+              autoFocus
+              style={{
+                fontSize: '20px',
+                overflow: 'hidden',
+                width: '100%',
+              }}
+              className="font-['Pretendard Variable'] font-normal leading-tight text-black text-opacity-40"
+            />
+          ) : (
+            <div
+              style={{ fontSize: '20px' }}
+              className="font-['Pretendard Variable'] font-normal leading-tight text-black text-opacity-40"
+              onClick={activateEdit}
+            >
+              {message}
+            </div>
+          )}
+          <div
+            className="absolute left-[782px] top-[6px] inline-flex size-12 items-end justify-end gap-2.5 rounded-[60px] bg-sky-500 p-2.5 shadow"
+            onClick={() => window.location.reload()}
+          >
             <div className="relative size-6">
               <div className="absolute left-0 top-0 size-6"></div>
             </div>
