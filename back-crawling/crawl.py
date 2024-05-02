@@ -24,7 +24,9 @@ def crawlLawContents(url):
 def getLawContents(name):
     path = name.split()
     url = ""
+    name = ""
     for p in path:
         url = url + p + "/"
+        name = name + p + " "
     url = baseUrl + url
-    return crawlLawContents(url)
+    return name.strip(), crawlLawContents(url)
