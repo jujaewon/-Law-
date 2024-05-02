@@ -66,18 +66,18 @@ def LLM_infer(input):
 
 
 def getLLM(model_id):
-    bnb_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_use_double_quant=True,
-        bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.bfloat16
-    )
+    # bnb_config = BitsAndBytesConfig(
+    #     load_in_4bit=True,
+    #     bnb_4bit_use_double_quant=True,
+    #     bnb_4bit_quant_type="nf4",
+    #     bnb_4bit_compute_dtype=torch.bfloat16
+    # )
 
 
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
         low_cpu_mem_usage=True,
-        quantization_config=bnb_config,
+        # quantization_config=bnb_config,
     )
     peftModel = getPeftModel(model_id, model)
     peftModel.eval()
