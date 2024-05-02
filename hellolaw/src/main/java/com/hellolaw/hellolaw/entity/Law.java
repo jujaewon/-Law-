@@ -2,13 +2,12 @@ package com.hellolaw.hellolaw.entity;
 
 import java.util.List;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,11 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Law extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@Column(name = "name")
+	@Column(name = "name", unique = true, nullable = false)
 	private String name;
 
 	@Column(name = "contents")
@@ -38,6 +33,7 @@ public class Law extends BaseEntity {
 	private Category category;
 
 	@Column(name = "count")
+	@ColumnDefault("1")
 	private Long count;
 
 	@OneToMany(mappedBy = "law")
