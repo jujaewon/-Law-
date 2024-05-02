@@ -22,6 +22,7 @@ module.exports = {
   },
   plugins: ['import', 'react', 'react-hooks', 'react-refresh', '@typescript-eslint', 'prettier', 'tailwindcss'],
   rules: {
+    'no-typeof-undefined': true,
     'react/react-in-jsx-scope': 'off',
     'react/jsx-one-expression-per-line': 'off',
     'react/prop-types': 'off',

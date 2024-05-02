@@ -55,10 +55,6 @@ const Main = () => {
   const nickFromCookie = getCookie('nickname');
   useEffect(() => {
     console.log('쿠키닉네임', nickFromCookie);
-    setCookie('nickname', 'testName', {
-      path: '/',
-      sameSite: 'strict',
-    });
     if (nickFromCookie) {
       setNickname(nickFromCookie.toString());
     } else {
