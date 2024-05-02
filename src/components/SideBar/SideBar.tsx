@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import styled from '@emotion/styled';
+import { instance } from '@api/instance';
 import { FaRegStar } from 'react-icons/fa';
 import { GoSearch } from 'react-icons/go';
 import { LuPlusSquare } from 'react-icons/lu';
@@ -12,7 +14,7 @@ import Avatar from '@components/Avatar/Avatar';
 import Button from '@components/Button/Button';
 import { chatsStore } from '@store/chatsStore';
 import { getCategoryTitle, getCategorySelect } from '@store/sidebarStore';
-import { removeCookie } from '@utils/cookies';
+import { getCookie, removeCookie } from '@utils/cookies';
 
 const SidebarContainer = styled.div<{ $isOpen: boolean }>`
   background-color: ${(props) => props.theme.white};
@@ -81,7 +83,6 @@ const StyledParagraph = styled.p<{ $isOpen: boolean }>`
   transition: 0.3s;
   color: ${(props) => props.theme.primary};
   font-size: 2rem;
-  font-family: 'TmonMonsori';
 `;
 
 const UserContainer = styled.div<{ $isOpen: boolean }>`
@@ -135,7 +136,7 @@ interface SidebarProps {
 const Sidebar = ({ nickname }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isSelect, setIsSelect] = useState(false);
-
+  const navigate = useNavigate();
   const setIsChat = chatsStore((state) => state.setIsChat);
   const test = () => {
     setIsChat(false);
@@ -155,9 +156,18 @@ const Sidebar = ({ nickname }: SidebarProps) => {
     setIsOpen(true);
   };
   const logout = () => {
-    removeCookie('nickname');
-    removeCookie('refreshToken');
-    window.location.href = '/';
+    instance
+      .post('/api/logout/kakao')
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          removeCookie('nickname');
+          window.location.href = '/';
+        }
+      })
+      .catch((err) => {
+        return console.log('에러', err);
+      });
   };
 
   return (

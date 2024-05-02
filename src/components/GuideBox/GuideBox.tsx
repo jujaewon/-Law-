@@ -7,7 +7,6 @@ const StyledText = styled.div`
   font-weight: 600;
   text-align: center;
   color: ${(props) => (props.color === 'sky-500' ? props.theme.primary : 'black')};
-  font-family: 'TmonMonsori';
   ${breakpoints.md} {
     font-size: 30px;
   }
