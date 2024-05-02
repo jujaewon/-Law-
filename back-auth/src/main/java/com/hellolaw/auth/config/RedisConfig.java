@@ -1,5 +1,6 @@
 package com.hellolaw.auth.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,16 +29,16 @@ import lombok.RequiredArgsConstructor;
 public class RedisConfig {
 
 	private final RedisProperties redisProperties;
-	//
-	// @Value("${spring.data.redis.password}")
-	// private String REDIS_PASSWORD;
+
+	@Value("${spring.data.redis.password}")
+	private String REDIS_PASSWORD;
 
 	@Bean
 	public RedisConnectionFactory redisConnectionFactory() {
 		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
 		redisStandaloneConfiguration.setHostName(redisProperties.getHost());
 		redisStandaloneConfiguration.setPort(redisProperties.getPort());
-		// redisStandaloneConfiguration.setPassword(REDIS_PASSWORD);
+		redisStandaloneConfiguration.setPassword(REDIS_PASSWORD);
 		return new LettuceConnectionFactory(redisStandaloneConfiguration);
 	}
 
