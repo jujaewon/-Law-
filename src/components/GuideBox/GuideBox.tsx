@@ -1,3 +1,4 @@
+import Icon from '@components/Icon/Icon';
 import styled from '@emotion/styled';
 
 import { breakpoints } from '@styles/breakpoints';
@@ -34,7 +35,7 @@ const LawHeader = styled.div`
   align-items: center;
   width: 100%;
   justify-content: start;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
 
 const LawImage = styled.img`
@@ -46,17 +47,16 @@ const LawImage = styled.img`
 const LawMainText = styled.div`
   text-align: start;
   color: #0ea5e9;
-  font-size: 28px;
+  font-size: 25px;
   font-weight: 600;
-  margin-left: 16px;
+  margin-left: 12px;
 `;
 
 const LawDetailText = styled.div`
   color: #64748b;
   font-size: 18px;
   font-weight: 400;
-  line-height: 1.5;
-  margin-left: 16px;
+  line-height: 1.3;
   text-align: start;
 `;
 
@@ -64,7 +64,14 @@ const LawGuideContainer = styled.div`
   width: 100%;
   flex: 1;
   overflow: hidden;
-  padding: 30px 40px 0px;
+  padding: 30px 120px 0px;
+
+  ${breakpoints.md} {
+    padding: 30px 40px 0px;
+  }
+  ${breakpoints.sm} {
+    padding: 30px 20px 0px;
+  }
 `;
 const GuideBox = () => {
   return (
@@ -74,7 +81,7 @@ const GuideBox = () => {
       <LawGuideContainer>
         <LawContainer>
           <LawHeader>
-            <LawImage src="" />
+            <Icon icon="cheat" fill="primary" size="40" />
             <LawMainText>사기</LawMainText>
           </LawHeader>
           <LawDetailText>
@@ -83,9 +90,9 @@ const GuideBox = () => {
             서류에 대해서도 안내받고 싶습니다.
           </LawDetailText>
         </LawContainer>
-        <LawContainer className="mb-8">
+        <LawContainer>
           <LawHeader>
-            <LawImage src="" />
+            <Icon icon="car" fill="primary" size="40" />
             <LawMainText>교통사고</LawMainText>
           </LawHeader>
           <LawDetailText>

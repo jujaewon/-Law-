@@ -16,61 +16,61 @@ export const AccordionSData = [
   {
     id: 1,
     text: '스토킹',
-    icon: 'test',
+    icon: 'stalking',
   },
   {
     id: 2,
     text: '성범죄',
-    icon: 'test',
+    icon: 'gender',
   },
   {
     id: 3,
     text: '교통사고/음주운전',
-    icon: 'test',
+    icon: 'car',
   },
   {
     id: 4,
     text: '폭행/상해',
-    icon: 'test',
+    icon: 'punch',
   },
   {
     id: 5,
     text: '마약',
-    icon: 'test',
+    icon: 'drug',
   },
   {
     id: 6,
     text: '사기',
-    icon: 'test',
+    icon: 'cheat',
   },
   {
     id: 7,
     text: '이혼',
-    icon: 'test',
+    icon: 'heart',
   },
   {
     id: 8,
     text: '상속/가사',
-    icon: 'test',
+    icon: 'family',
   },
   {
     id: 9,
     text: '대여금/미수금/채권추심',
-    icon: 'test',
+    icon: 'money',
   },
   {
     id: 10,
     text: '행정소송',
-    icon: 'test',
+    icon: 'paper',
   },
   {
     id: 11,
     text: '소비자분쟁',
-    icon: 'test',
+    icon: 'customer',
   },
   {
     id: 12,
     text: '기타',
-    icon: 'test',
+    icon: 'etc',
   },
 ];

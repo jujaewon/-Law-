@@ -58,11 +58,11 @@ export const WithIcon = {
   render: () => (
     <Wrapper>
       <Button type="button" size="medium_small" color="primary">
-        <Icon icon="test" />
+        <Icon icon="default" />
         상품 업로드
       </Button>
       <Button type="button" size="medium_small" color="primary">
-        <Icon icon="test" />
+        <Icon icon="default" />
         판매자 센터
       </Button>
     </Wrapper>

@@ -65,7 +65,9 @@ const DeleteButton = styled.button`
   }
 
   &:hover {
-    background-color: red;
+    padding: 3px;
+    transition: all 0.3s;
+    background-color: ${(props) => props.theme.gray1};
     svg {
       color: white;
     }
