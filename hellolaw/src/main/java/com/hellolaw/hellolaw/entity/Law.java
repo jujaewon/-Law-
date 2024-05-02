@@ -2,6 +2,8 @@ package com.hellolaw.hellolaw.entity;
 
 import java.util.List;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,7 +29,7 @@ public class Law extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name")
+	@Column(name = "name", unique = true, nullable = false)
 	private String name;
 
 	@Column(name = "contents")
@@ -38,6 +40,7 @@ public class Law extends BaseEntity {
 	private Category category;
 
 	@Column(name = "count")
+	@ColumnDefault("1")
 	private Long count;
 
 	@OneToMany(mappedBy = "law")
