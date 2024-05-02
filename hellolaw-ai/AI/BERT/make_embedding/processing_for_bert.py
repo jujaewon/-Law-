@@ -1,8 +1,9 @@
+import pickle
+
 import numpy as np
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
-import pickle
 
 print("실행되고 있는 중")
 

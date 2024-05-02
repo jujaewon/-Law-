@@ -3,11 +3,9 @@ import pickle
 import time
 
 import numpy as np
-import torch
-import pandas as pd
 from pydantic import BaseModel
-from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+
 
 class Precedent(BaseModel):
     index: int

@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
-from AI.LLM.infer import *
+
 from AI.BERT.search.search_precedent import *
+from AI.LLM.infer import *
 
 app = FastAPI()
 

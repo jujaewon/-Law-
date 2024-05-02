@@ -1,11 +1,10 @@
-import gc
-
-from peft import PeftModel, PeftConfig
-import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
-import time
 import math
 import os
+import time
+
+import torch
+from peft import PeftModel, PeftConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
 
 def getAnswer(text):
