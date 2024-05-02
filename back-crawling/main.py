@@ -1,10 +1,10 @@
 import crawl
 import category
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(root_path="/crawling/")
 
-@app.get("/crawling/law/{name}")
+@app.get("law/{name}")
 async def getLawInfo(name: str):
     print("name ", name)
     try:
@@ -12,4 +12,5 @@ async def getLawInfo(name: str):
         return {"contents": contents,
                 "category": category.getCategory(name, contents)}
     except:
-        raise HTTPException(status_code=400, detail="더 이상 시행되지 않는 법입니다.")
+        return {"contents": "더 이상 시행되지 않는 법입니다.",
+                "category": "기타"}
