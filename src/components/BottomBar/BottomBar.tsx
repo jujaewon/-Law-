@@ -30,11 +30,9 @@ const BottomBar: React.FC = () => {
     const newMessage = event.target.value;
     setMessage(newMessage);
 
-    // textarea 높이 자동 조정
-    event.target.style.height = 'auto';
     event.target.style.height = `${event.target.scrollHeight}px`;
 
-    // div 높이 동적 조정 로직 (복잡한 로직이 필요할 경우 여기를 조정)
+    // div 높이 동적 조정 로직
     const numberOfLines = newMessage.split('\n').length;
     const newDivHeight = Math.max(70, 20 * numberOfLines); // 예시 로직: 줄 수에 따라 높이 조정
     setDivHeight(`${newDivHeight}px`);
@@ -87,16 +85,24 @@ const BottomBar: React.FC = () => {
           position: 'absolute',
           left: '50%',
           transform: 'translateX(-50%)',
-          height: divHeight,
+          height: divHeight, // 높이를 상태 변수로 관리
+          minHeight: '70px', // 최소 높이를 설정
         }}
       >
         <div
-          className="absolute left-[20px] top-[13px] flex w-[700px] items-center justify-start gap-2"
+          className="absolute left-[20px] top-[23px] flex w-[700px] items-center justify-start gap-2"
           style={{ alignItems: 'center' }}
         >
-          <div className="relative mr-4 h-[50px] w-[23px]" onClick={activateEdit}>
+          <div
+            className="relative mr-4 h-[25px] w-[23px]"
+            onClick={activateEdit}
+            style={{
+              transform: 'none', // 항상 'none'으로 설정하여 회전하지 않음.
+            }}
+          >
             🧠
           </div>
+
           {isEditing ? (
             <textarea
               id="autoresizetextarea"
@@ -105,7 +111,7 @@ const BottomBar: React.FC = () => {
               onBlur={deactivateEdit}
               autoFocus
               style={{
-                fontSize: '20px',
+                fontSize: '16px',
                 overflow: 'hidden',
                 width: '100%',
               }}
@@ -121,12 +127,10 @@ const BottomBar: React.FC = () => {
             </div>
           )}
           <div
-            className="absolute left-[782px] top-[6px] inline-flex size-12 items-end justify-end gap-2.5 rounded-[60px] bg-sky-500 p-2.5 shadow"
+            className="absolute left-[782px] inline-flex size-12 items-end justify-end gap-2.5 rounded-[60px] bg-sky-500 p-2.5 shadow"
             onClick={() => window.location.reload()}
           >
-            <div className="relative size-6">
-              <div className="absolute left-0 top-0 size-6"></div>
-            </div>
+            <div className="relative size-6"></div>
           </div>
         </div>
       </div>
