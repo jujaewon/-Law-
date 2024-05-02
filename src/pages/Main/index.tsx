@@ -14,7 +14,6 @@ import { getCookie } from '@utils/cookies';
 const MainContainer = styled.div`
   background-color: ${(props) => props.theme.white};
   display: flex;
-
   width: 100%;
   height: 100vh;
 
@@ -30,13 +29,17 @@ const MainContainer = styled.div`
     font-size: 22px;
   }
 `;
+
 const ContentsContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  justify-content: center;
+  align-items: center;
   position: relative;
   overflow: hidden;
 `;
+
 const AnswerContainer = styled.div`
   overflow-y: auto;
   overflow-x: hidden;

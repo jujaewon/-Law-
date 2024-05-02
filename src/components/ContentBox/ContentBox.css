@@ -1,0 +1,48 @@
+
+.first-dropdown-box {
+    position: relative;
+    top: -10%; /* 박스의 높이에 따라 조정해야 할 수도 있습니다 */
+    right: -80%;
+    transform: translateY(-70%); /* 박스를 정확히 버튼 위로 옮기기 위해 */
+    }
+
+ 
+.second-dropdown-box {
+    position: relative;
+    top: -70%; /* 박스의 높이에 따라 조정해야 할 수도 있습니다 */
+    left: -15%;
+    transform: translateY(-90%); /* 박스를 정확히 버튼 위로 옮기기 위해 */
+    }
+
+.text-container {
+    display: flex;
+    flex-direction: row; /* 가로 방향으로 아이템들을 배열 */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    }
+
+.category-group {
+    display: flex;
+    justify-content: space-between; /* 카테고리를 공간에 균등하게 분포 */
+    margin-bottom: 10px; /* 그룹 간격 */
+    }
+  
+.category-item {
+    cursor: pointer;
+    }
+  
+/* 글로벌 CSS 예시 */
+.custom-width {
+    width: 500px;
+  }
+  
+.custom-height {
+    height: 300px;
+  }
+  
+/* 드롭다운 컨테이너의 너비를 조절하는 클래스 */
+.dropdown-container {
+    width: 100%; /* 예: 100% 또는 특정 px */
+    max-width: 600px; /* 최대 너비를 설정하여 조절 */
+  }
+  
