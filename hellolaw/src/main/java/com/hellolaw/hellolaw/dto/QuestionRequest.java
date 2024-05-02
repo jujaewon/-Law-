@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class QuestionRequest {
-	String category;
-	Boolean victim;
-	String question;
+	private String category;
+	private Boolean victim;
+	private String question;
 }
