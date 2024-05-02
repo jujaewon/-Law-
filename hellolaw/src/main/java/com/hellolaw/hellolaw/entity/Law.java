@@ -6,6 +6,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,6 +23,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Law extends BaseEntity {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
 	@Column(name = "name")
 	private String name;
 
@@ -27,6 +34,7 @@ public class Law extends BaseEntity {
 	private String contents;
 
 	@Enumerated(EnumType.STRING)
+	@Column(name = "category")
 	private Category category;
 
 	@Column(name = "count")
