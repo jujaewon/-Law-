@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { AQuestionType } from '@@types/custom';
 import Button from '@components/Button/Button';
-import FindCIcon from '@utils/findCIcon';
+import GetCategoryIcon from '@utils/findIcon';
 
 const QuestionTitleWrapper = styled.div`
   padding: 5px 0px 5px 0px;
@@ -107,7 +107,7 @@ const AccordionItemQ = ({ item }: AccordionItemQProps) => {
           {bigCategory}
         </Button>
         <Button type="button" color="secondary1" custom="category">
-          {FindCIcon(smallCategory)}
+          {GetCategoryIcon(smallCategory)}
           {smallCategory}
         </Button>
       </ButtonsWrapper>

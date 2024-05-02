@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import styled from '@emotion/styled';
 import { instance } from '@api/instance';
@@ -14,7 +13,7 @@ import Avatar from '@components/Avatar/Avatar';
 import Button from '@components/Button/Button';
 import { chatsStore } from '@store/chatsStore';
 import { getCategoryTitle, getCategorySelect } from '@store/sidebarStore';
-import { getCookie, removeCookie } from '@utils/cookies';
+import { removeCookie } from '@utils/cookies';
 
 const SidebarContainer = styled.div<{ $isOpen: boolean }>`
   background-color: ${(props) => props.theme.white};
@@ -136,11 +135,12 @@ interface SidebarProps {
 const Sidebar = ({ nickname }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isSelect, setIsSelect] = useState(false);
-  const navigate = useNavigate();
   const setIsChat = chatsStore((state) => state.setIsChat);
-  const test = () => {
+
+  const createNewChat = () => {
     setIsChat(false);
   };
+
   const selectStatus = getCategorySelect();
   useEffect(() => {
     setIsSelect(selectStatus);
@@ -180,7 +180,7 @@ const Sidebar = ({ nickname }: SidebarProps) => {
           <StyledParagraph $isOpen={isOpen}>헬로(Law)</StyledParagraph>
         </Header>
         <SidebarContentsContainer $isOpen={isOpen}>
-          <Button type="button" color="primary" size="full" onClick={test}>
+          <Button type="button" color="primary" size="full" onClick={createNewChat}>
             <LuPlusSquare color="white" />
             {isOpen && '질문하기'}
           </Button>

@@ -15,11 +15,9 @@ const CategoryIcon: Record<string, string> = {
   기타: 'etc',
 };
 
-const FindCIcon = (name: string) => {
+const GetCategoryIcon = (name: string) => {
   const iconName = CategoryIcon[name];
-  console.log('iconName:', iconName);
-  console.log('name:', name);
   return <Icon icon={iconName} fill="white" />;
 };
 
-export default FindCIcon;
+export default GetCategoryIcon;

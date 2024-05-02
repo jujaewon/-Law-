@@ -9,7 +9,7 @@ import SideBar from '@components/SideBar/SideBar';
 import useModal from '@hooks/useModal';
 import { chatsStore } from '@store/chatsStore';
 import { breakpoints } from '@styles/breakpoints';
-import { getCookie, setCookie } from '@utils/cookies';
+import { getCookie } from '@utils/cookies';
 
 const MainContainer = styled.div`
   background-color: ${(props) => props.theme.white};

@@ -38,12 +38,6 @@ const LawHeader = styled.div`
   margin-bottom: 15px;
 `;
 
-const LawImage = styled.img`
-  width: 47.5px;
-  height: 40px;
-  margin-left: 16px;
-`;
-
 const LawMainText = styled.div`
   text-align: start;
   color: #0ea5e9;
