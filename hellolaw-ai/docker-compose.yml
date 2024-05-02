@@ -3,11 +3,11 @@ version: "3.8"
 services:
   app:
     build:
-      context: ./
+      context: ..
       dockerfile: Dockerfile
     container_name: fastapi-server
     ports:
-      - "8000:8000"
+      - "8085:8085"
     restart: on-failure
     volumes:
       - ./fastapi_data:/model
