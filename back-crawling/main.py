@@ -6,7 +6,6 @@ app = FastAPI(root_path="/crawling/")
 
 @app.get("law/{name}")
 async def getLawInfo(name: str):
-    print("name ", name)
     try:
         contents = crawl.getLawContents(name)
         return {"contents": contents,
