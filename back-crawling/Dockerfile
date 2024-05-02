@@ -3,6 +3,7 @@ FROM python:latest
 WORKDIR /app/
 
 COPY ./*.py /app/
+COPY ./.env /app/
 COPY ./requirements.txt /app/
 
 RUN pip install -r requirements.txt
