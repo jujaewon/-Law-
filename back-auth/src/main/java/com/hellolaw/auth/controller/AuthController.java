@@ -2,6 +2,7 @@ package com.hellolaw.auth.controller;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +31,9 @@ public class AuthController {
 	private final AuthService authService;
 	private final UserService userService;
 	private final AuthProviderFinder authProviderFinder;
+
+	@Value("")
+	private String OAuthRedirectURL;
 
 	@GetMapping("/login/oauth2/code/kakao")
 	ResponseEntity<ApiResponse<Void>> kakaoLogin(
@@ -60,7 +64,7 @@ public class AuthController {
 		response.addCookie(cookie);
 
 		// todo 메인페이지로 변경
-		response.sendRedirect("http://localhost:3000");
+		response.sendRedirect(OAuthRedirectURL);
 		return ResponseEntity.ok(ApiResponse.success());
 	}
 
