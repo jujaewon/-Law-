@@ -32,7 +32,7 @@ public class AuthController {
 	private final UserService userService;
 	private final AuthProviderFinder authProviderFinder;
 
-	@Value("auth.controller.redirect-url:")
+	@Value("${auth.controller.redirect-url}")
 	private String OAuthRedirectURL;
 
 	@GetMapping("/login/oauth2/code/kakao")
