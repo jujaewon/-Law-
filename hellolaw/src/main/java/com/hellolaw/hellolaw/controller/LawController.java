@@ -11,7 +11,7 @@ import com.hellolaw.hellolaw.service.LawServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/law")
+@RequestMapping("/law")
 @RequiredArgsConstructor
 public class LawController {
 
