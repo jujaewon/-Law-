@@ -89,7 +89,7 @@ const AccordionItemS = ({ item }: AccordionItemQProps) => {
 
   return (
     <ContentContainer onClick={handleSelect}>
-      <Icon icon={item.icon} />
+      <Icon icon={item.icon} fill="primary" />
       <TextWrapper>{item.text}</TextWrapper>
     </ContentContainer>
   );

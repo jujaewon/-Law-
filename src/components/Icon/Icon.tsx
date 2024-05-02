@@ -11,12 +11,13 @@ export type IconProps = {
 };
 
 const Icon = ({ icon, fill, size }: IconProps) => {
-  if ((fill = 'primary')) fill = '#0ea5e9';
+  if (fill == 'primary') fill = '#0ea5e9';
+
   const SVGIcon = (icons as any)[icon] || icons['default'];
   if (!SVGIcon) {
     return null;
   }
-  return <SVGIcon fill={fill} width={size} />;
+  return <SVGIcon fill={fill} width={size} height={size} />;
 };
 
 export default Icon;
