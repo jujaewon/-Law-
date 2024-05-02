@@ -26,7 +26,6 @@ const ContentContainer = styled.div`
   }
 `;
 const TextWrapper = styled.div`
-  font-family: 'Pretendard-Medium', sans-serif;
   font-size: 14px;
   font-weight: 500;
 `;
@@ -90,7 +89,7 @@ const AccordionItemS = ({ item }: AccordionItemQProps) => {
 
   return (
     <ContentContainer onClick={handleSelect}>
-      <Icon icon={item.icon} />
+      <Icon icon={item.icon} fill="primary" />
       <TextWrapper>{item.text}</TextWrapper>
     </ContentContainer>
   );

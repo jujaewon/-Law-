@@ -58,12 +58,12 @@
 
     "noImplicitReturns": true /* Enable error reporting for codepaths that do not explicitly return in a function. */,
     "noFallthroughCasesInSwitch": true /* Enable error reporting for fallthrough cases in switch statements. */,
-
+    "resolveJsonModule": true,
     /* Completeness */
     "skipDefaultLibCheck": true /* Skip type checking .d.ts files that are included with TypeScript. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": ["src", "src/@types"],
-  "exclude": ["node_modules", "**/*.test.ts"],
+  "exclude": ["node_modules", "**/*.test.ts","**/browser.ts","**/handler.ts"],
   "types": ["@emotion/react/types/css-prop"]
 }

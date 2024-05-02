@@ -1,13 +1,17 @@
 import { Global, css } from '@emotion/react';
-
 const baseStyle = css`
   * {
     margin: 0;
     padding: 0;
   }
+  @font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('@styles/fonts/Pretendard-Regular.ttf') format('truetype');
+  }
+
   html {
     height: 100%;
-    /* font-family: 'Pretendard-Regular', sans-serif; */
+    font-family: 'Pretendard-Regular', sans-serif;
     font-size: 62.5%; //1rem = 10px;
     margin: 0;
     padding: 0;

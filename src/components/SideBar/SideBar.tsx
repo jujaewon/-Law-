@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
+import { instance } from '@api/instance';
 import { FaRegStar } from 'react-icons/fa';
 import { GoSearch } from 'react-icons/go';
 import { LuPlusSquare } from 'react-icons/lu';
@@ -10,8 +11,9 @@ import { VscSignOut } from 'react-icons/vsc';
 import AccordionBox from '@components/AccordionBox/AccordionBox';
 import Avatar from '@components/Avatar/Avatar';
 import Button from '@components/Button/Button';
-import useModal from '@hooks/useModal';
+import { chatsStore } from '@store/chatsStore';
 import { getCategoryTitle, getCategorySelect } from '@store/sidebarStore';
+import { removeCookie } from '@utils/cookies';
 
 const SidebarContainer = styled.div<{ $isOpen: boolean }>`
   background-color: ${(props) => props.theme.white};
@@ -106,6 +108,17 @@ const UserNameWrapper = styled.div`
   position: relative;
   flex: 1;
 `;
+
+const LogoutButton = styled.button`
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  :hover {
+    background-color: ${(props) => props.theme.gray1};
+    color: ${(props) => props.theme.white};
+  }
+`;
 const QUESTION_DATA = {
   title: '최근 질문목록',
   icon: <GoSearch />,
@@ -116,23 +129,18 @@ const CATEGORY_DATA = {
   icon: <FaRegStar />,
   type: 'category',
 };
-
-const Sidebar = () => {
+interface SidebarProps {
+  nickname: string;
+}
+const Sidebar = ({ nickname }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isSelect, setIsSelect] = useState(false);
-  const { openModal } = useModal();
+  const setIsChat = chatsStore((state) => state.setIsChat);
 
-  const test = () => {
-    openModal({
-      type: 'logo',
-      props: {
-        type: 'login',
-        title: ' confirm 모달',
-        message: '컨펌하시겠습니까?',
-        btnText: 'yes',
-      },
-    });
+  const createNewChat = () => {
+    setIsChat(false);
   };
+
   const selectStatus = getCategorySelect();
   useEffect(() => {
     setIsSelect(selectStatus);
@@ -147,6 +155,21 @@ const Sidebar = () => {
   const handleOpen = () => {
     setIsOpen(true);
   };
+  const logout = () => {
+    instance
+      .post('/api/logout/kakao')
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          removeCookie('nickname');
+          window.location.href = '/';
+        }
+      })
+      .catch((err) => {
+        return console.log('에러', err);
+      });
+  };
+
   return (
     <SidebarContainer $isOpen={isOpen}>
       <div>
@@ -157,7 +180,7 @@ const Sidebar = () => {
           <StyledParagraph $isOpen={isOpen}>헬로(Law)</StyledParagraph>
         </Header>
         <SidebarContentsContainer $isOpen={isOpen}>
-          <Button type="button" color="primary" size="full" onClick={test}>
+          <Button type="button" color="primary" size="full" onClick={createNewChat}>
             <LuPlusSquare color="white" />
             {isOpen && '질문하기'}
           </Button>
@@ -174,8 +197,10 @@ const Sidebar = () => {
         <Avatar />
         {isOpen && (
           <>
-            <UserNameWrapper>이가영</UserNameWrapper>
-            <VscSignOut color="red" />
+            <UserNameWrapper>{nickname}</UserNameWrapper>
+            <LogoutButton onClick={logout}>
+              <VscSignOut color="red" />
+            </LogoutButton>
           </>
         )}
       </UserContainer>
