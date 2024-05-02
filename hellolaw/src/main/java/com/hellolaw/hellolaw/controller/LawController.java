@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hellolaw.hellolaw.service.LawServiceImpl;
+import com.hellolaw.hellolaw.service.LawService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LawController {
 
-	private final LawServiceImpl lawService;
+	private final LawService lawService;
 
 	@GetMapping("/detail")
 	public ResponseEntity<?> getLawDetail(@RequestParam(value = "name") String lawName) {

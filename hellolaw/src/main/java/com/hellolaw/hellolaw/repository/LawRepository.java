@@ -9,6 +9,6 @@ import com.hellolaw.hellolaw.entity.Law;
 
 @Repository
 public interface LawRepository extends JpaRepository<Law, Long> {
-	
-	Optional<Law> findByName(String lawName);
+
+	Optional<Law> findByName(String name);
 }
