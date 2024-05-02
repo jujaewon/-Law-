@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from AI.LLM.infer import *
-from AI.BERT.search.search_precedent import *
+from AI.BERT.search.search_precendent import *
 
 app = FastAPI()
 
