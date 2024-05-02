@@ -33,11 +33,11 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
 			.authorizeHttpRequests(authorizeRequests -> authorizeRequests
-				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+				.requestMatchers(HttpMethod.OPTIONS, "**/**").permitAll()
 				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-				.requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
-				.requestMatchers(new AntPathRequestMatcher("/oauth2/authorize/**")).permitAll()
-				.requestMatchers(new AntPathRequestMatcher("/kakao-oauth/**")).permitAll()
+				.requestMatchers(new AntPathRequestMatcher("**/login/**")).permitAll()
+				.requestMatchers(new AntPathRequestMatcher("**/oauth2/authorize/**")).permitAll()
+				.requestMatchers(new AntPathRequestMatcher("**/kakao-oauth/**")).permitAll()
 				.anyRequest().authenticated()
 			)
 			.httpBasic(AbstractHttpConfigurer::disable
