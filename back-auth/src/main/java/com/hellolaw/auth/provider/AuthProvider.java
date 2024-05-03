@@ -11,5 +11,7 @@ public interface AuthProvider {
 
 	UserInfoResponse getUserInfo(String accessToken);
 
-	String logout(MultiValueMap<String, String> formData);
+	void logout(String id);
+
+	String getUserNickname(UserInfoResponse userInfoResponse);
 }

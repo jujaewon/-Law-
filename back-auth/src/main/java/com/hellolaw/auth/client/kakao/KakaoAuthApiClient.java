@@ -12,9 +12,11 @@ import com.hellolaw.auth.dto.KakaoTokenResponse;
 import com.hellolaw.auth.dto.KakaoUserInfoResponse;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class KakaoAuthApiClient {
 
 	@Value("${kakao.admin-key}")
@@ -41,15 +43,19 @@ public class KakaoAuthApiClient {
 			.getAccess_token();
 	}
 
-	public String logoutKakao(MultiValueMap<String, String> formData) {
-		return String.valueOf(WebClient.create()
+	public void logoutKakao(String id) {
+		log.info("id는 {}입니다.", id);
+		WebClient.create()
 			.post()
 			.uri("https://kapi.kakao.com/v1/user/logout")
-			.header("Authorization", String.format("KakaoAK {}", SERVICE_APP_ADMIN_KEY))
-			.body(BodyInserters.fromFormData(formData))
+			.header("Content-Type", "application/x-www-form-urlencoded")
+			.header("Authorization", "KakaoAK " + SERVICE_APP_ADMIN_KEY)
+			.bodyValue("target_id_type=user_id&target_id=" + id)
 			.retrieve()
-			.bodyToMono(Long.class)
-			.block());
+			.bodyToMono(String.class)
+			.subscribe(
+				result -> log.info("카카오 로그아웃 완료")
+			);
 	}
 
 	public KakaoUserInfoResponse getUserInfo(String token) {

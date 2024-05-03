@@ -30,7 +30,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 		FilterChain filterChain) throws ServletException, IOException {
 		String accessToken = getAccessToken(req);
 
-		if (accessToken != null && !accessToken.equals("empty")) {
+		if (accessToken != null) {
 			if (jwtProvider.isValidateToken(accessToken)) {
 				Authentication authentication = jwtProvider.getAuthentication(accessToken);
 				SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -42,8 +42,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 				cookie.setPath("/");
 				res.addCookie(cookie);
 			} else {
+				// todo refreshToken 까지 만료시 재 로그인 하도록
 				SecurityContextHolder.clearContext();
-				res.setHeader("Authorization", null);
 			}
 		}
 		filterChain.doFilter(req, res);
@@ -66,11 +66,12 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
 	private String reIssueAccessToken(String accessToken) {
 		// 토큰 재발급
-		Long principal = jwtProvider.getClaims(accessToken).get("id", Long.class);
-		String newAccessToken = jwtProvider.createAccessToken(principal);
+		String newAccessToken = jwtProvider.createAccessToken(jwtProvider.getId(accessToken),
+			jwtProvider.getSocialId(accessToken),
+			jwtProvider.getProvider(accessToken));
+
 		// securityContext에 저장
-		Authentication authentication = jwtProvider.getAuthentication(newAccessToken);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+		SecurityContextHolder.getContext().setAuthentication(jwtProvider.getAuthentication(newAccessToken));
 		return newAccessToken;
 	}
 }

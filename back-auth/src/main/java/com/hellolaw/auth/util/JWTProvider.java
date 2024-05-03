@@ -35,7 +35,7 @@ public class JWTProvider {
 	@Value("${jwt.refresh-token.expiration}")
 	private Long refreshTokenExpirationTime;
 
-	public String createToken(String subject, Long id, Long expirationTIme) {
+	public String createToken(String subject, Long id, String socialId, String provider, Long expirationTIme) {
 		long now = System.currentTimeMillis();
 
 		return Jwts.builder()
@@ -43,26 +43,52 @@ public class JWTProvider {
 			.setHeaderParam("alg", "HS512")
 			.setSubject(subject)
 			.claim("id", id)
+			.claim("socialId", socialId)
+			.claim("provider", provider)
 			.setExpiration(new Date(now + expirationTIme))
 			.signWith(SignatureAlgorithm.HS512, secretKey)
 			.compact();
 	}
 
-	public String createAccessToken(Long id) {
-		return createToken("access", id, accessTokenExpirationTime);
+	public String createAccessToken(Long id, String socialId, String provider) {
+		return createToken("access", id, socialId, provider, accessTokenExpirationTime);
 	}
 
-	public String createRefreshToken(Long id) {
-		return createToken("refresh", id, refreshTokenExpirationTime);
+	public String createRefreshToken(Long id, String socialId, String provider) {
+		return createToken("refresh", id, socialId, provider, refreshTokenExpirationTime);
 	}
 
-	public long getId(String token) {
+	public Long getId(String token) {
 		try {
 			return Jwts.parser()
 				.setSigningKey(secretKey)
 				.parseClaimsJws(token)
 				.getBody()
 				.get("id", Long.class);
+		} catch (ExpiredJwtException e) {
+			throw new InvalidException(ErrorBase.E400_INVALID_TOKEN);
+		}
+	}
+
+	public String getSocialId(String token) {
+		try {
+			return Jwts.parser()
+				.setSigningKey(secretKey)
+				.parseClaimsJws(token)
+				.getBody()
+				.get("socialId", String.class);
+		} catch (ExpiredJwtException e) {
+			throw new InvalidException(ErrorBase.E400_INVALID_TOKEN);
+		}
+	}
+
+	public String getProvider(String token) {
+		try {
+			return Jwts.parser()
+				.setSigningKey(secretKey)
+				.parseClaimsJws(token)
+				.getBody()
+				.get("provider", String.class);
 		} catch (ExpiredJwtException e) {
 			throw new InvalidException(ErrorBase.E400_INVALID_TOKEN);
 		}
@@ -106,7 +132,10 @@ public class JWTProvider {
 
 	public Authentication getAuthentication(String token) {
 		Long id = getId(token);
+		String socialId = getSocialId(token);
+		String provider = getProvider(token);
+		CustomPrincipal principal = new CustomPrincipal(id, socialId, provider);
 		Collection<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-		return new UsernamePasswordAuthenticationToken(id, null, authorities);
+		return new UsernamePasswordAuthenticationToken(principal, null, authorities);
 	}
 }
