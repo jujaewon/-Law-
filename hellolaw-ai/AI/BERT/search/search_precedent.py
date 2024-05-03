@@ -1,43 +1,37 @@
 import os
 import pickle
-import time
-
 import numpy as np
+import pandas as pd
+
 from pydantic import BaseModel
 from sklearn.metrics.pairwise import cosine_similarity
+from AI.utils.load_vector_data import load_vector_data
 
 
 class Precedent(BaseModel):
     index: int
+    case_no: str
+    judmn_adju_de: str
+    court_nm: str
+    case_nm: str
+    case_field: int
+    detail_field: int
+    trail_field: int
+    relate_laword: list
+    disposal_content: str
     basic_fact: str
-    judgment: str
-    disposition: str
-    laws : list
+    court_dcss: str
+    conclusion: str
 
-def extract_laws(text, separator='&', limit=3):
+
+def extract_laws(text, separator=',', limit=3):
     # 문자열을 지정된 구분자로 분리
     laws = text.split(separator)
 
     # 처음 'limit'개의 법률을 반환하거나, 법률의 수가 'limit'보다 적다면 모두 반환
     return laws[:min(len(laws), limit)]
 
-def load_vector_data(path):
-    if os.path.isfile(path):
-        with open(path, "rb") as fr:
-            vector_data = pickle.load(fr)
-    else:
-        print("판례 데이터가 존재하지 않습니다.")
-        vector_data = None
-    return vector_data
-
-def search_precedent(input_sequence: str, model, text_data, compare_vector):
-    # text_data = precendent_csv file ex) law_drop.csv
-    # compare_vector = law_drop to vector file
-
-    start_time = time.time()
-
-    # model_name = "jhgan/ko-sroberta-multitask"
-    # model = SentenceTransformer(model_name)
+def search_precedent(input_sequence: str,model, text_data, compare_vector):
 
     input_vector = np.expand_dims(model.encode(input_sequence), axis=0)
 
@@ -47,12 +41,23 @@ def search_precedent(input_sequence: str, model, text_data, compare_vector):
 
     precendent = Precedent(
         index = top_question[0],
-        basic_fact = text_data[top_question[0]][11],
-        judgment = text_data[top_question[0]][12],
-        disposition = text_data[top_question[0]][10],
-        laws = extract_laws(text_data[top_question[0]][7])
+        case_no = text_data[top_question[0]][0],
+        judmn_adju_de = text_data[top_question[0]][1],
+        court_nm = text_data[top_question[0]][2],
+        case_nm = text_data[top_question[0]][3],
+        case_field = text_data[top_question[0]][4],
+        detail_field = text_data[top_question[0]][5],
+        trail_field = text_data[top_question[0]][6],
+        relate_laword = extract_laws(text_data[top_question[0]][7]),
+        disposal_content = text_data[top_question[0]][8],
+        basic_fact = text_data[top_question[0]][9],
+        court_dcss = text_data[top_question[0]][10],
+        conclusion = text_data[top_question[0]][11]
     )
 
-    print(f"search time: {time.time() - start_time}")
-
     return precendent
+
+if __name__ == "__main__":
+     print(search_precedent("계약 기간이 만료되어 다른 집으로 이사를 가려고 했는데, 집주인이 전세금을 돌려주지 않아요. 3억을 못받았어요 어떻게 해야하나요?",
+                            np.array(pd.read_csv("./output_drop.csv")),
+                            load_vector_data("./law_data_drop_vector.bin")))

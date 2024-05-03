@@ -2,7 +2,8 @@ import numpy as np
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
-from utils import load_vector_data
+
+from AI.utils.load_vector_data import load_vector_data
 
 
 def extract_laws(text, separator='&', limit=3):

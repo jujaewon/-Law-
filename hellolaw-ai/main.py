@@ -1,10 +1,13 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
-import pandas as pd
-
 from AI.BERT.search.search_precedent import *
 from AI.LLM.infer import *
+from pydantic import BaseModel
+from AI.utils.load_vector_data import load_vector_data
+
+import time
+import os
+import pandas as pd
 
 app = FastAPI()
 
@@ -19,18 +22,24 @@ class Question(BaseModel):
     text : str
 class Precedent(BaseModel):
     index: int
+    case_no: str
+    judmn_adju_de: str
+    court_nm: str
+    case_nm: str
+    case_field: int
+    detail_field: int
+    trail_field: int
+    relate_laword: list
+    disposal_content: str
     basic_fact: str
-    judgment: str
-    disposition: str
-    laws : list
-
+    court_dcss: str
+    conclusion: str
 
 @app.on_event("startup")
 def loadLLM():
     global tokenizer, llm
     start_time = time.time()
     print("Loading LLM Model...")
-
 
     llm = getLLM("YoonSeul/LawBot-5.8B")
     tokenizer = getTokenizer("YoonSeul/LawBot-5.8B")
@@ -40,14 +49,14 @@ def loadLLM():
 
 @app.on_event("startup")
 def loadBERT():
-    global model, text_data, compare_vector
+    global bertModel, text_data, compare_vector
 
     start_time = time.time()
     print("Loading BERT Model...")
     os.environ["SENTENCE_TRANSFORMERS_HOME"] = './model/BERT'
 
     model_name = "jhgan/ko-sroberta-multitask"
-    model = SentenceTransformer(model_name)
+    bertModel = SentenceTransformer(model_name)
     text_data = pd.read_csv("output_drop.csv").values.tolist()
     compare_vector = load_vector_data("law_drop_to_vector.bin")
 
@@ -66,4 +75,6 @@ async def answer(question: Question):
 
 @app.post("/search/")
 async def searchPrecedent(question: Question):
-    return search_precedent(question.text, model, text_data, compare_vector)
+    return search_precedent(question.text, bertModel, text_data, compare_vector)
+
+
