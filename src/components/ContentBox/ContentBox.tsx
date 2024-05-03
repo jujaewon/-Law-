@@ -152,7 +152,11 @@ interface OptionsType {
   category: string;
   humanType: string;
 }
-const ContentBox = () => {
+interface PropsType {
+  setOptionsData: React.Dispatch<React.SetStateAction<OptionsType>>;
+}
+
+const ContentBox = ({ setOptionsData }: PropsType) => {
   const [showOptions1, setShowOptions1] = useState(false);
   const [showOptions2, setShowOptions2] = useState(false);
   const [showGuide, setShowGuide] = useState(true);
@@ -176,12 +180,19 @@ const ContentBox = () => {
       ...prev,
       category: value,
     }));
-
+    setOptionsData((prev) => ({
+      ...prev,
+      category: value,
+    }));
     setShowOptions1(false);
   };
 
   const handleTextClick = (text: string) => {
     setOptions((prev) => ({
+      ...prev,
+      humanType: text,
+    }));
+    setOptionsData((prev) => ({
       ...prev,
       humanType: text,
     }));

@@ -65,10 +65,15 @@ const InputMessageWrapper = styled.textarea`
   resize: none;
   overflow: hidden;
 `;
+interface OptionsType {
+  category: string;
+  humanType: string;
+}
 
 const BottomBar = () => {
   const [message, setMessage] = useState<string>('');
   const textarea = useRef<HTMLTextAreaElement>(null);
+  const [optionsData, setOptionsData] = useState<OptionsType>({ category: '', humanType: '' });
 
   const handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = event.target.value;
@@ -84,12 +89,12 @@ const BottomBar = () => {
   };
 
   const sendMessage = () => {
-    console.log('채팅전송', message);
+    console.log('채팅전송', message, optionsData);
   };
 
   return (
     <Wrapper>
-      <ContentBox />
+      <ContentBox setOptionsData={setOptionsData} />
       <ChatMessageContainer>
         <Avatar size={40} />
         <InputMessageWrapper
