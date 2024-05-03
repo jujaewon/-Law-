@@ -11,7 +11,7 @@ const baseStyle = css`
 
   html {
     height: 100%;
-    font-family: 'Pretendard-Regular', sans-serif;
+    font-family: 'Pretendard Variable', sans-serif;
     font-size: 62.5%; //1rem = 10px;
     margin: 0;
     padding: 0;
