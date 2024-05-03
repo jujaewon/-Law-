@@ -6,18 +6,18 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 secretKey = os.environ["OPENAI_SECRET_KEY"]
 
-lawKey = {"stalking": "스토킹",
-          "sex crimes": "성범죄",
-          "traffic accidents/drinking driving": "교통사고/음주운전",
-          "assault/injury": "폭행/상해",
-          "drugs": "마약",
-          "fraud": "사기",
-          "divorce": "이혼",
-          "inheritance/households": "상속/가사",
-          "loans/unpaid/bond collection": "대여금/미수금/채권추심",
-          "administrative litigation": "행정소송",
-          "consumer disputes": "소비자분쟁",
-          "other": "기타"}
+lawKey = {"stalking": "STAKING",
+          "sex crimes": "SEX_CRIME",
+          "traffic accidents/drinking driving": "TRAFFIC_ACCIDENT_AND_DRINKING_DRIVING",
+          "assault/injury": "ASSAULT_AND_INJURY",
+          "drugs": "DRUGS",
+          "fraud": "FRAUD",
+          "divorce": "DIVORCE",
+          "inheritance/households": "INHERITANCE_AND_HOUSEHOLD",
+          "loans/unpaid/bond collection": "LOAN_AND_UNPAID_AND_BOND_COLLECTION",
+          "administrative litigation": "ADMINISTRATIVE_LITIGATION",
+          "consumer disputes": "CONSUMER_DISPUTES",
+          "other": "OTHER"}
 
 suffix = """
 ---------
@@ -49,4 +49,4 @@ def getCategory(name, content):
         temperature=1.0
     )
     answer = response.choices[0].message.content
-    return lawKey.get(answer, "기타")
+    return lawKey.get(answer, "OTHER")
