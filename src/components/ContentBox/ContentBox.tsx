@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { RiArrowDownSLine } from 'react-icons/ri';
 
 import styled from '@emotion/styled';
 
@@ -21,19 +22,53 @@ const ContentBoxContainer = styled.div`
 `;
 const CatecoryWrapper = styled.div`
   min-width: 80px;
+  width: auto;
+  padding: 0 10px;
   height: 30px;
   position: relative;
   display: flex;
+  gap: 10px;
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  font-size: 15px;
-  background-color: blue;
+  font-size: 17px;
 `;
 const ModalWrapper = styled.div`
   position: absolute;
-  top: -150px;
+  bottom: 40px;
+  left: 0px;
   width: 300px;
+`;
+const OptionDetailModal = styled.div`
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  padding: 7px 22px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  height: auto;
+  position: relative;
+`;
+const SearchOptionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: auto;
+  padding: 0 40px;
+  width: 100%;
+  position: relative;
+`;
+const OptionText = styled.div`
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 20px;
+  position: relative;
 `;
 interface FirstContentProps {
   onCategoryClick: (category: string) => void;
@@ -74,64 +109,90 @@ interface SecondContentProps {
 }
 
 const SecondContent = ({ selectedText, onTextClick }: SecondContentProps) => (
-  <div className="inline-flex size-auto items-start justify-start gap-5 rounded-lg border border-zinc-200 bg-white p-[25px] shadow">
-    <DynamicColorText $isSelected={selectedText === 'victim'} onClick={() => onTextClick('victim')}>
+  <div className="inline-flex flex-wrap gap-5 rounded-lg border border-zinc-200 bg-white p-[10px] shadow">
+    <DynamicColorText $isSelected={selectedText === 'victim'} onClick={() => onTextClick('피해자')}>
       피해자
       <br />
     </DynamicColorText>
-    <DynamicColorText $isSelected={selectedText === 'offender'} onClick={() => onTextClick('offender')}>
+    <DynamicColorText $isSelected={selectedText === 'offender'} onClick={() => onTextClick('가해자')}>
       가해자
     </DynamicColorText>
   </div>
 );
-
+interface OptionsType {
+  category: string;
+  humanType: string;
+}
 const ContentBox = () => {
   const [showOptions1, setShowOptions1] = useState(false);
   const [showOptions2, setShowOptions2] = useState(false);
-  const [selectedText, setSelectedText] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [showGuide, setShowGuide] = useState(true);
 
-  // handleCategoryClick 함수 정의
-  const handleCategoryClick = (category: string) => {
-    setSelectedCategory(category); // 선택된 카테고리를 업데이트합니다.
-    setShowOptions1(false); // 선택 후 드롭다운을 닫습니다.
+  const [options, setOptions] = useState<OptionsType>({
+    category: '-',
+    humanType: '-',
+  });
+
+  const { category, humanType } = options;
+
+  const handleOptionsShow = (type: string) => {
+    if (showOptions1 || showOptions2) return;
+
+    if (type === 'category') setShowOptions1(!showOptions1);
+    if (type === 'humanType') setShowOptions2(!showOptions2);
+  };
+
+  const handleCategoryClick = (value: string) => {
+    setOptions((prev) => ({
+      ...prev,
+      category: value,
+    }));
+
+    setShowOptions1(false);
   };
 
   const handleTextClick = (text: string) => {
-    setSelectedText(text);
+    setOptions((prev) => ({
+      ...prev,
+      humanType: text,
+    }));
     setShowOptions2(false);
   };
 
-  const getDynamicMinusText = () => {
-    switch (selectedText) {
-      case 'victim':
-        return '피해자';
-      case 'offender':
-        return '가해자';
-      default:
-        return '-';
-    }
-  };
+  useEffect(() => {
+    if (category !== '-' || humanType !== '-') setShowGuide(false);
+  }, [category, humanType]);
 
   return (
-    <ContentBoxContainer>
-      <CatecoryWrapper onClick={() => setShowOptions1(!showOptions1)}>
-        {selectedCategory || '-'}
-        {showOptions1 && (
-          <ModalWrapper>
-            <FirstContent onCategoryClick={handleCategoryClick} selectedCategory={selectedCategory} />
-          </ModalWrapper>
-        )}
-      </CatecoryWrapper>
-
-      <CatecoryWrapper onClick={() => setShowOptions2(!showOptions2)}>{getDynamicMinusText()}</CatecoryWrapper>
-
-      {showOptions2 && (
-        <ModalWrapper>
-          <SecondContent selectedText={selectedText} onTextClick={handleTextClick} />
-        </ModalWrapper>
+    <SearchOptionContainer>
+      {showGuide && (
+        <OptionDetailModal>
+          <OptionText>추가 옵션을 선택해주신다면 더 정확도 높은 답변이 나와요!</OptionText>
+        </OptionDetailModal>
       )}
-    </ContentBoxContainer>
+
+      <ContentBoxContainer>
+        <CatecoryWrapper onClick={() => handleOptionsShow('category')}>
+          {category}
+          <RiArrowDownSLine />
+          {showOptions1 && (
+            <ModalWrapper>
+              <FirstContent onCategoryClick={handleCategoryClick} selectedCategory={category} />
+            </ModalWrapper>
+          )}
+        </CatecoryWrapper>
+
+        <CatecoryWrapper onClick={() => handleOptionsShow('humanType')}>
+          {humanType}
+          <RiArrowDownSLine />
+          {showOptions2 && (
+            <ModalWrapper>
+              <SecondContent onTextClick={handleTextClick} selectedText={humanType} />
+            </ModalWrapper>
+          )}
+        </CatecoryWrapper>
+      </ContentBoxContainer>
+    </SearchOptionContainer>
   );
 };
 
