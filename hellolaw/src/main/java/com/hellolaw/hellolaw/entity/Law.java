@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,12 +21,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Table(name = "law")
 public class Law extends BaseEntity {
 
 	@Column(name = "name", unique = true, nullable = false)
 	private String name;
 
-	@Column(name = "contents")
+	@Column(name = "contents", columnDefinition = "TEXT")
 	private String contents;
 
 	@Enumerated(EnumType.STRING)
