@@ -36,6 +36,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 				.requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
+				.requestMatchers(new AntPathRequestMatcher("/health")).permitAll()
 				.requestMatchers(new AntPathRequestMatcher("/oauth2/authorize/**")).permitAll()
 				.requestMatchers(new AntPathRequestMatcher("/kakao-oauth/**")).permitAll()
 				.anyRequest().authenticated()
