@@ -6,6 +6,7 @@ import org.mapstruct.ReportingPolicy;
 
 import com.hellolaw.hellolaw.dto.LawDetailResponse;
 import com.hellolaw.hellolaw.entity.Law;
+import com.hellolaw.hellolaw.internal.dto.LawInformationDto;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface LawMapper {
@@ -13,4 +14,7 @@ public interface LawMapper {
 	@Mapping(target = "lawName", source = "name")
 	@Mapping(target = "lawDetail", source = "contents")
 	public LawDetailResponse toLawDetailResponse(Law law);
+
+	@Mapping(target = "name", source = "lawName")
+	public Law toLaw(LawInformationDto lawInformationDto);
 }
