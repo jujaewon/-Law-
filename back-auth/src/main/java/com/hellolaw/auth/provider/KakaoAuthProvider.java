@@ -5,6 +5,7 @@ import org.springframework.util.MultiValueMap;
 
 import com.hellolaw.auth.client.kakao.KakaoAuthApiClient;
 import com.hellolaw.auth.dto.KakaoUserInfoResponse;
+import com.hellolaw.auth.dto.UserInfoResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,5 +32,11 @@ public class KakaoAuthProvider implements AuthProvider {
 	@Override
 	public void logout(String id) {
 		kakaoAuthApiClient.logoutKakao(id);
+	}
+
+	@Override
+	public String getUserNickname(UserInfoResponse userInfoResponse) {
+		KakaoUserInfoResponse kakaoUserInfoResponse = (KakaoUserInfoResponse)userInfoResponse;
+		return kakaoUserInfoResponse.getKakao_account().getProfile().getNickname();
 	}
 }

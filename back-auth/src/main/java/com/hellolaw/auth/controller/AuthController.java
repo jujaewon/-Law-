@@ -54,6 +54,7 @@ public class AuthController {
 		AuthProvider authProvider) throws IOException {
 		String accessToken = authService.getAccessToken(code, authProvider);
 		UserInfoResponse userInfo = authService.getUserInfo(accessToken, authProvider);
+		log.info(userInfo.toString());
 		TokenResponse tokenResponse = userService.login(userInfo, authProvider);
 
 		Cookie cookie = new Cookie("access-token", tokenResponse.getAccess_token());
@@ -61,6 +62,12 @@ public class AuthController {
 		cookie.setMaxAge(60 * 60 * 24 * 30);
 		cookie.setPath("/");
 		response.addCookie(cookie);
+
+		Cookie nicknameCookie = new Cookie("nickname", authProvider.getUserNickname(userInfo));
+		nicknameCookie.setHttpOnly(false);
+		nicknameCookie.setMaxAge(60 * 60 * 24 * 30);
+		nicknameCookie.setPath("/");
+		response.addCookie(nicknameCookie);
 
 		// todo 메인페이지로 변경
 		response.sendRedirect(OAuthRedirectURL);
@@ -76,9 +83,9 @@ public class AuthController {
 		cookie.setMaxAge(0); // 쿠키를 즉시 만료시킴
 		cookie.setPath("/"); // 전역 경로
 		response.addCookie(cookie);
+
 		response.sendRedirect(OAuthRedirectURL); // 사용자를 로그인 페이지 또는 홈페이지로 리다이렉트
 
-		// todo social provider 토큰안 claim에 삽입하기
 		CustomPrincipal principal = (CustomPrincipal)authentication.getPrincipal();
 		userService.logout(principal.getId(), principal.getSocialId(),
 			authProviderFinder.findAuthProvider(principal.getProvider()));

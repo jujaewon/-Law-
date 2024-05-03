@@ -12,4 +12,6 @@ public interface AuthProvider {
 	UserInfoResponse getUserInfo(String accessToken);
 
 	void logout(String id);
+
+	String getUserNickname(UserInfoResponse userInfoResponse);
 }
