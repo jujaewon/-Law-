@@ -41,6 +41,8 @@ def search_precedent(input_sequence: str,model, text_data, compare_vector):
     cos_sim = cosine_similarity(input_vector, compare_vector)
     data_cosine = np.sort(cos_sim).squeeze()[::-1][:3]
     top_question = np.argsort(cos_sim).squeeze()[::-1][:3]
+    print(top_question)
+    print(text_data[top_question[0]][7])
 
     precendent = Precedent(
         index = top_question[0],
