@@ -9,49 +9,48 @@ import { breakpoints } from '@styles/breakpoints';
 const Wrapper = styled.div`
   height: 120px;
   width: 100%;
-  position: relative;
   display: flex;
-  align-items: center;
-`;
-
-// Test 컴포넌트에 대한 수정된 부분
-const Test = styled.div`
-  width: 60px; // 주석은 CSS에서 유효하지 않으므로 제거해야 합니다.
-  position: absolute;
-  top: -50px;
-  left: calc(15%);
-  transform: translateX(0);
-  font-size: 24px;
-  color: ${(props) => props.theme.primary};
-
-  // breakpoints를 적용하는 방법을 수정합니다.
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 14px;
+  padding: 0px 140px 25px;
   ${breakpoints.md} {
-    font-size: 20px;
-    width: 45px;
+    padding: 0px 60px 20px;
   }
-
   ${breakpoints.sm} {
-    font-size: 14px;
+    padding: 0px 40px 20px;
   }
 `;
 
-const Container = styled.div`
-  width: 1200px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+const OptionsContainer = styled.div`
   height: auto;
-  min-height: 70px;
+  width: 100%;
+  /* ${breakpoints.sm} {
+    display: none;
+  } */
+`;
+
+const OptionGroup = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 7px;
+`;
 
-  ${breakpoints.md} {
-    width: 800px;
-  }
-
-  ${breakpoints.sm} {
-    width: 600px;
-  }
+const Option = styled.div`
+  display: inline;
+  display: inline-flex;
+  height: 25px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background-color: white;
+  padding: 22px 15px;
+  font-weight: bold;
+  font-size: 15px;
 `;
 
 const ReloadButton = styled.div`
@@ -69,7 +68,166 @@ const ReloadButton = styled.div`
   cursor: pointer;
 `;
 
-const BottomBar: React.FC = () => {
+const SearchOptionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: auto;
+  padding: 0 40px;
+  width: 100%;
+  position: relative;
+`;
+
+const OptionDetailModal = styled.div`
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  padding: 7px 22px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  height: auto;
+  position: relative;
+`;
+
+const OptionText = styled.div`
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 20px;
+  position: relative;
+`;
+
+const FrameRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+`;
+
+const FrameColumn = styled.div`
+  padding: 0 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 24px;
+  position: relative;
+`;
+// Define the outermost container
+const TypeContainer = styled.div`
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 6px 6px 6px 20px;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 60px;
+  position: relative;
+  box-shadow: 0px 8px 24px -4px rgba(0, 0, 0, 0.2);
+`;
+
+// Define the first frame
+const Frame38 = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 673px;
+  position: absolute;
+  left: 20px;
+  top: 13px;
+`;
+
+// Define the second frame
+const Frame42 = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+`;
+
+// Define groups
+const Group = styled.div`
+  flex-shrink: 0;
+  width: 23px;
+  height: 34px;
+  position: static;
+`;
+
+// Define divs with emojis
+const EmojiDiv = styled.div`
+  color: #000000;
+  text-align: left;
+  font-family: 'MierA-Book', sans-serif;
+  font-size: 15.4px;
+  line-height: 22px;
+  font-weight: 400;
+  position: absolute;
+  left: 4px;
+  top: 12px;
+  filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+const SendButtonFrame = styled.div`
+  background: var(--iconblue, #0080ff);
+  border-radius: 60px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  left: 782px;
+  top: 6px;
+  box-shadow: 0px 4px 8px 0px rgba(86, 97, 246, 0.25);
+`;
+
+const Icon = styled.img`
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 0;
+  top: 0;
+`;
+const EmojiDiv2 = styled(EmojiDiv)`
+  font-size: 22.4px;
+  line-height: 32px;
+  left: 0;
+  top: 0;
+  filter: none;
+`;
+
+// Define the text component
+const QueryText = styled.div`
+  color: rgba(0, 0, 0, 0.4);
+  text-align: left;
+  font-family: 'PretendardVariable-Regular', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+const BottomBar = () => {
   const [message, setMessage] = useState<string>('어떤 문제가 있으신가요?');
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -105,78 +263,28 @@ const BottomBar: React.FC = () => {
 
   return (
     <Wrapper>
-      <Test>
-      <div className="inline-flex h-[6px] flex-col items-start justify-center gap-2.5 py-[15px]">
-          <div className="flex h-[67px] w-[693px] flex-col items-start justify-start gap-[7px]">
-            <div className="inline-flex h-9 items-center justify-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-[22px] py-[15px]">
-              <div
-                className="font-['Pretendard Variable'] font-bold leading-tight"
-              >
-                추가 옵션을 선택해주신다면 더 정확도 높은 답변이 나와요!
-              </div>
-            </div>
-            <ContentBox />
-          </div>
-        </div>
-      </Test>
-
-      <div
-        className="relative rounded-[30px] bg-white shadow"
-        style={{
-          width: '1200px',
-          position: 'absolute',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          height: 'auto', // 높이를 상태 변수로 관리
-          minHeight: '70px', // 최소 높이를 설정
-        }}
-      >
-        
-        <div
-          className="absolute left-[20px] top-[23px] flex w-[700px] items-center justify-start gap-2"
-          style={{ alignItems: 'center' }}
-        >
-          <div
-            className="relative mr-4 h-[25px] w-[23px]"
-            onClick={activateEdit}
-            style={{
-              transform: 'none', // 항상 'none'으로 설정하여 회전하지 않음.
-            }}
-          >
-            🧠
-          </div>
-
-          {isEditing ? (
-            <textarea
-              id="autoresizetextarea"
-              value={message}
-              onChange={handleChange}
-              onBlur={deactivateEdit}
-              autoFocus
-              style={{
-                fontSize: '16px',
-                overflow: 'hidden',
-                width: '100%',
-              }}
-              className="font-['Pretendard Variable'] font-normal leading-tight text-black text-opacity-40"
-            />
-          ) : (
-            <div
-              style={{ fontSize: '20px' }}
-              className="font-['Pretendard Variable'] font-normal leading-tight text-black text-opacity-40"
-              onClick={activateEdit}
-            >
-              {message}
-            </div>
-          )}
-          <div
-            className="absolute left-[782px] inline-flex size-12 items-end justify-end gap-2.5 rounded-[60px] bg-sky-500 p-2.5 shadow"
-            onClick={() => window.location.reload()}
-          >
-            <div className="relative size-6"></div>
-          </div>
-        </div>
-      </div>
+      <SearchOptionContainer>
+        <OptionDetailModal>
+          <OptionText>추가 옵션을 선택해주신다면 더 정확도 높은 답변이 나와요!</OptionText>
+        </OptionDetailModal>
+        <ContentBox />
+      </SearchOptionContainer>
+      <TypeContainer>
+        <Frame38>
+          <Frame42>
+            <Group>
+              <Group>
+                <EmojiDiv>🧠</EmojiDiv>
+                <EmojiDiv2>🧠</EmojiDiv2>
+              </Group>
+            </Group>
+            <QueryText>어떤 문제가 있으신가요?</QueryText>
+          </Frame42>
+        </Frame38>
+        <SendButtonFrame>
+          <Icon src="vuesax-linear-send-21.svg" />
+        </SendButtonFrame>
+      </TypeContainer>
     </Wrapper>
   );
 };
