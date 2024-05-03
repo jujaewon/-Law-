@@ -9,7 +9,9 @@ const AuthCheck = () => {
   const navigate = useNavigate();
   const handleKaKaoLogin = () => {
     console.log('카카오 로그인 진행중');
-    if (!import.meta.env.VITE_DEV) window.location.href = 'http://test.hellolaw.kr/auth/oauth2/authorize/kakao';
+    const env = import.meta.env.VITE_DEV;
+    console.log(env);
+    if (!env) window.location.href = 'http://test.hellolaw.kr/auth/oauth2/authorize/kakao';
     else {
       console.log('개발모드');
       axios.get('/api/login/kakao').then((res) => {
