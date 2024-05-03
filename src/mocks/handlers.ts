@@ -8,7 +8,7 @@ export const handlers = [
       statusText: 'Save Cookie',
     });
   }),
-  http.post(baseUrl + '/api/logout/kakao', () => {
+  http.get(baseUrl + '/auth/logout', () => {
     return new HttpResponse(null, {
       status: 200,
       statusText: 'Logut Success',
@@ -20,5 +20,8 @@ export const handlers = [
       status: 200,
       statusText: 'LogutSuccess',
     });
+  }),
+  http.post('/api/question', (req) => {
+    console.log(req);
   }),
 ];
