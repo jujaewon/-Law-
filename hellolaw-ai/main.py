@@ -69,7 +69,7 @@ async def root():
 
 @app.post("/answer/")
 async def answer(question: Question):
-    return {"message": gen(question.text, llm, tokenizer, "cpu")}
+    return gen(question.text, llm, tokenizer, "cpu")
 
 
 @app.post("/search/")

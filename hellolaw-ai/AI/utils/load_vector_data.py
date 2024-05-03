@@ -2,6 +2,7 @@ import os
 import pickle
 
 def load_vector_data(path):
+
     if os.path.isfile(path):
         with open(path, "rb") as fr:
             vector_data = pickle.load(fr)
