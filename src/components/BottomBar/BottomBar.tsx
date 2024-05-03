@@ -3,39 +3,82 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import ContentBox from '@components/ContentBox/ContentBox';
-import theme from '@styles/theme';
+
+import { breakpoints } from '@styles/breakpoints';
 
 const Wrapper = styled.div`
-  height: 100px;
+  height: 120px;
   width: 100%;
   position: relative;
   display: flex;
   align-items: center;
 `;
 
+// Test 컴포넌트에 대한 수정된 부분
 const Test = styled.div`
-  width: 60px;
+  width: 60px; // 주석은 CSS에서 유효하지 않으므로 제거해야 합니다.
   position: absolute;
-  top: -120px;
-  left: calc(50% - 422.5px);
+  top: -50px;
+  left: calc(15%);
   transform: translateX(0);
+  font-size: 24px;
+  color: ${(props) => props.theme.primary};
+
+  // breakpoints를 적용하는 방법을 수정합니다.
+  ${breakpoints.md} {
+    font-size: 20px;
+    width: 45px;
+  }
+
+  ${breakpoints.sm} {
+    font-size: 14px;
+  }
+`;
+
+const Container = styled.div`
+  width: 1200px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: auto;
+  min-height: 70px;
+  display: flex;
+  justify-content: space-between;
+
+  ${breakpoints.md} {
+    width: 800px;
+  }
+
+  ${breakpoints.sm} {
+    width: 600px;
+  }
+`;
+
+const ReloadButton = styled.div`
+  position: absolute;
+  right: 20px;
+  top: 23px;
+  display: inline-flex;
+  align-items: end;
+  justify-content: end;
+  gap: 2.5px; // 단위(px) 추가
+  padding: 2.5px; // 단위(px) 추가
+  background-color: skyblue;
+  border-radius: 60px;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3); // CSS 속성명 수정
+  cursor: pointer;
 `;
 
 const BottomBar: React.FC = () => {
   const [message, setMessage] = useState<string>('어떤 문제가 있으신가요?');
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [divHeight, setDivHeight] = useState<string>('70px'); // 동적으로 조정될 div의 높이 상태
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = event.target.value;
     setMessage(newMessage);
 
-    event.target.style.height = `${event.target.scrollHeight}px`;
-
-    // div 높이 동적 조정 로직
-    const numberOfLines = newMessage.split('\n').length;
-    const newDivHeight = Math.max(70, 20 * numberOfLines); // 예시 로직: 줄 수에 따라 높이 조정
-    setDivHeight(`${newDivHeight}px`);
+    // 입력 필드 높이를 사용자의 입력에 따라 동적으로 조절
+    event.target.style.height = 'auto'; // 먼저 자동으로 높이를 설정해 입력 내용이 줄어들 때를 대비
   };
 
   const activateEdit = () => {
@@ -63,12 +106,11 @@ const BottomBar: React.FC = () => {
   return (
     <Wrapper>
       <Test>
-        <div className="inline-flex h-[97px] w-[741px] flex-col items-start justify-center gap-2.5 py-[15px]">
+      <div className="inline-flex h-[6px] flex-col items-start justify-center gap-2.5 py-[15px]">
           <div className="flex h-[67px] w-[693px] flex-col items-start justify-start gap-[7px]">
             <div className="inline-flex h-9 items-center justify-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-[22px] py-[15px]">
               <div
-                style={{ fontSize: '20px', color: theme.primary }}
-                className="font-['Pretendard Variable'] w-[560px] font-bold leading-tight"
+                className="font-['Pretendard Variable'] font-bold leading-tight"
               >
                 추가 옵션을 선택해주신다면 더 정확도 높은 답변이 나와요!
               </div>
@@ -81,14 +123,15 @@ const BottomBar: React.FC = () => {
       <div
         className="relative rounded-[30px] bg-white shadow"
         style={{
-          width: '845px',
+          width: '1200px',
           position: 'absolute',
           left: '50%',
           transform: 'translateX(-50%)',
-          height: divHeight, // 높이를 상태 변수로 관리
+          height: 'auto', // 높이를 상태 변수로 관리
           minHeight: '70px', // 최소 높이를 설정
         }}
       >
+        
         <div
           className="absolute left-[20px] top-[23px] flex w-[700px] items-center justify-start gap-2"
           style={{ alignItems: 'center' }}
