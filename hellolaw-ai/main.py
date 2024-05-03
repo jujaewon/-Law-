@@ -55,7 +55,7 @@ def loadModel():
     model_name = "jhgan/ko-sroberta-multitask"
     bertModel = SentenceTransformer(model_name)
     text_data = pd.read_csv("output_drop.csv").values.tolist()
-    compare_vector = load_vector_data("law_drop_to_vector.bin")
+    compare_vector = load_vector_data()
 
     print("BERT Model Loaded!")
     print(f"bert loading time: {time.time() - start_time}")
