@@ -1,11 +1,11 @@
 package com.hellolaw.hellolaw.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,36 +17,37 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Table(name = "precedent")
 public class Precedent extends BaseEntity {
 
-	@Column(name = "caseNo")
+	@Column(name = "case_no", length = 30)
 	private String caseNo;
 
-	@Column(name = "judmnAdjuDe")
+	@Column(name = "judmn_adju_de")
 	private LocalDateTime judgementDate;
 
-	@Column(name = "courtNm")
+	@Column(name = "court_nm")
 	private String courtName;
 
-	@Column(name = "caseNm")
+	@Column(name = "case_nm")
 	private String caseName;
 
-	@Column(name = "disposalContent")
+	@Column(name = "disposal_content", columnDefinition = "TEXT")
 	private String disposal;
 
-	@Column(name = "caseField")
+	@Column(name = "case_field")
 	private Long caseField;
 
-	@Column(name = "detailField")
+	@Column(name = "detail_field")
 	private Long detailField;
 
-	@Column(name = "trailField")
+	@Column(name = "trail_field")
 	private Long trailField;
 
-	@Column(name = "cnclsns")
+	@Column(name = "conclusion", columnDefinition = "TEXT")
 	private String conclusion;
 
-	@OneToMany(mappedBy = "precedent")
-	private List<RelatedAnswer> relatedAnswers;
+	@OneToOne(mappedBy = "precedent")
+	private RelatedAnswer relatedAnswers;
 
 }
