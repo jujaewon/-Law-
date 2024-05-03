@@ -36,8 +36,8 @@ class Precedent(BaseModel):
     conclusion: str
 
 @app.on_event("startup")
-def loadLLM():
-    global tokenizer, llm
+def loadModel():
+    global tokenizer, llm,bertModel, text_data, compare_vector
     start_time = time.time()
     print("Loading LLM Model...")
 
@@ -47,9 +47,6 @@ def loadLLM():
     print("LLM Model Loaded!")
     print(f"llm loading time: {time.time() - start_time}")
 
-@app.on_event("startup")
-def loadBERT():
-    global bertModel, text_data, compare_vector
 
     start_time = time.time()
     print("Loading BERT Model...")
@@ -62,6 +59,8 @@ def loadBERT():
 
     print("BERT Model Loaded!")
     print(f"bert loading time: {time.time() - start_time}")
+
+
 
 @app.get("/")
 async def root():

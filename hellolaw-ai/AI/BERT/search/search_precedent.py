@@ -1,5 +1,7 @@
 import os
 import pickle
+import time
+
 import numpy as np
 import pandas as pd
 
@@ -32,6 +34,7 @@ def extract_laws(text, separator=',', limit=3):
     return laws[:min(len(laws), limit)]
 
 def search_precedent(input_sequence: str,model, text_data, compare_vector):
+    start= time.time()
 
     input_vector = np.expand_dims(model.encode(input_sequence), axis=0)
 
@@ -55,6 +58,7 @@ def search_precedent(input_sequence: str,model, text_data, compare_vector):
         conclusion = text_data[top_question[0]][11]
     )
 
+    print("유사판례 가져오기 time: ", time.time()-start, "s 소요")
     return precendent
 
 if __name__ == "__main__":

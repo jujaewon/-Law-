@@ -1,8 +1,5 @@
-import math
-import os
 import time
 
-import torch
 from peft import PeftModel, PeftConfig
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
@@ -12,6 +9,7 @@ def getAnswer(text):
 
 
 def gen(x, model, tokenizer, device):
+    start = time.time()
     prompt = (
         f"당신은 지금부터 20년간 현업에 종사해온 변호사의 역할을 맡게 됩니다. 아래는 당신에게 법률 상담으로 받으러온 고객의 질문이 주어집니다. 질문 대한 응답을 작성하세요."
         f" 특히, 관련 법안에 근거한 대응 방법에 대해서 체계적이고 자세하게 작성하세요."
@@ -36,21 +34,17 @@ def gen(x, model, tokenizer, device):
         early_stopping=True,
         num_beams=2,
     )
+    print("답변 Time: ", time.time() - start, "s")
 
     return tokenizer.decode(gened[0])[len_prompt:]
 
 
-def print_model_size(model):
-    torch.save(model.state_dict(), "temp.p")
-    size = math.ceil(os.path.getsize("temp.p") / 1024)
-    print(f"Model size: {size} KB")
-    os.remove("temp.p")
-    return size
+
 
 
 def LLM_infer(input):
     device = (
-        torch.device("cpu")
+        "cpu"
     )
     model_id = "YoonSeul/LawBot-5.8B"
 
@@ -58,7 +52,6 @@ def LLM_infer(input):
 
     tokenizer = getTokenizer(model_id)
 
-    torch.cuda.empty_cache()
 
     output = gen(input, model=peftModel, tokenizer=tokenizer, device=device)
 
