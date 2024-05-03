@@ -10,15 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class TestController {
-
-  private final UserRepository userRepository;
-  @GetMapping("/test")
-  public String test() {
-//    log.info("test");
-    User test = userRepository.findByNickname("test").orElseThrow();
-    log.info(test.getNickname());
-    return "test";
+public class HealthCheckController {
+  @GetMapping("/health")
+  public String check() {
+    return "health";
   }
 
 }
