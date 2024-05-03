@@ -8,5 +8,5 @@ public interface UserService {
 
 	TokenResponse login(UserInfoResponse userInfoResponse, AuthProvider authProvider);
 
-	void logout(Long principal, AuthProvider authProvider);
+	void logout(Long id, String socialId, AuthProvider authProvider);
 }

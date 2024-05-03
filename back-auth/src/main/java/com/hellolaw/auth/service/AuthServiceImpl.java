@@ -58,8 +58,8 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public boolean validateRefreshTokenInRedis(String accessToken) {
-		Long principal = jwtProvider.getClaims(accessToken).get("id", Long.class);
-		String refreshTokenInRedis = redisService.getValues("RT" + ":" + principal);
+		Long id = jwtProvider.getId(accessToken);
+		String refreshTokenInRedis = redisService.getValues("RT" + ":" + id);
 		log.info(refreshTokenInRedis);
 		if (refreshTokenInRedis == null) {
 			return false;

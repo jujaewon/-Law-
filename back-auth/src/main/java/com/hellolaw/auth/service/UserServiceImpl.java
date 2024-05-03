@@ -1,8 +1,6 @@
 package com.hellolaw.auth.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import com.hellolaw.auth.dto.TokenResponse;
 import com.hellolaw.auth.dto.UserInfoResponse;
@@ -61,8 +59,10 @@ public class UserServiceImpl implements UserService {
 		Long id = userRepository.findById(socialProvider.getUser().getId()).orElseThrow().getId();
 
 		// jwt 발급
-		String accessToken = jwtProvider.createAccessToken(id);
-		String refreshToken = jwtProvider.createRefreshToken(id);
+		String accessToken = jwtProvider.createAccessToken(id, socialProvider.getSocialId(),
+			socialProvider.getProvider());
+		String refreshToken = jwtProvider.createRefreshToken(id, socialProvider.getSocialId(),
+			socialProvider.getProvider());
 
 		// redis에 refresh token 저장
 		authService.saveRefreshToken(accessToken, refreshToken);
@@ -71,11 +71,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void logout(Long principal, AuthProvider authProvider) {
-		redisService.deleteValues("RT:".concat(String.valueOf(principal)));
-		MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-		formData.add("target_id_type", "user_id");
-		formData.add("target_id", String.valueOf(principal));
-		authProvider.logout(formData);
+	public void logout(Long id, String socialId, AuthProvider authProvider) {
+		redisService.deleteValues("RT:".concat(String.valueOf(id)));
+		authProvider.logout(socialId);
 	}
 }
