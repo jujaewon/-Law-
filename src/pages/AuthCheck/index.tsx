@@ -10,7 +10,7 @@ const AuthCheck = () => {
   const handleKaKaoLogin = () => {
     console.log('카카오 로그인 진행중');
     const env = import.meta.env.VITE_DEV;
-    console.log(env);
+    console.log('환경', env);
     if (!env) window.location.href = 'http://test.hellolaw.kr/auth/oauth2/authorize/kakao';
     else {
       console.log('개발모드');
