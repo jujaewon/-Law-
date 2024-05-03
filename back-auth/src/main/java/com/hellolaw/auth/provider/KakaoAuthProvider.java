@@ -29,7 +29,7 @@ public class KakaoAuthProvider implements AuthProvider {
 	}
 
 	@Override
-	public String logout(MultiValueMap<String, String> formData) {
-		return kakaoAuthApiClient.logoutKakao(formData);
+	public void logout(String id) {
+		kakaoAuthApiClient.logoutKakao(id);
 	}
 }
