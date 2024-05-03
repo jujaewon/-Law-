@@ -35,39 +35,39 @@ const Test = styled.div`
   }
 `;
 
-const Container = styled.div`
-  width: 1200px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  height: auto;
-  min-height: 70px;
-  display: flex;
-  justify-content: space-between;
+// const Container = styled.div`
+//   width: 1200px;
+//   position: absolute;
+//   left: 50%;
+//   transform: translateX(-50%);
+//   height: auto;
+//   min-height: 70px;
+//   display: flex;
+//   justify-content: space-between;
 
-  ${breakpoints.md} {
-    width: 800px;
-  }
+//   ${breakpoints.md} {
+//     width: 800px;
+//   }
 
-  ${breakpoints.sm} {
-    width: 600px;
-  }
-`;
+//   ${breakpoints.sm} {
+//     width: 600px;
+//   }
+// `;
 
-const ReloadButton = styled.div`
-  position: absolute;
-  right: 20px;
-  top: 23px;
-  display: inline-flex;
-  align-items: end;
-  justify-content: end;
-  gap: 2.5px; // 단위(px) 추가
-  padding: 2.5px; // 단위(px) 추가
-  background-color: skyblue;
-  border-radius: 60px;
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3); // CSS 속성명 수정
-  cursor: pointer;
-`;
+// const ReloadButton = styled.div`
+//   position: absolute;
+//   right: 20px;
+//   top: 23px;
+//   display: inline-flex;
+//   align-items: end;
+//   justify-content: end;
+//   gap: 2.5px; // 단위(px) 추가
+//   padding: 2.5px; // 단위(px) 추가
+//   background-color: skyblue;
+//   border-radius: 60px;
+//   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3); // CSS 속성명 수정
+//   cursor: pointer;
+// `;
 
 const BottomBar: React.FC = () => {
   const [message, setMessage] = useState<string>('어떤 문제가 있으신가요?');
