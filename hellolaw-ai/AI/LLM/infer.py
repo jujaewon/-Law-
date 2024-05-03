@@ -77,6 +77,7 @@ def getLLM(model_id):
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
         low_cpu_mem_usage=True,
+        cache_dir = './model/LLM/'
         # quantization_config=bnb_config,
     )
     peftModel = getPeftModel(model_id, model)
@@ -95,7 +96,7 @@ def getPeftModel(model_id, model):
 
 def getTokenizer(model_id):
     config = PeftConfig.from_pretrained(model_id)
-    tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
+    tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path,cache_dir ='./model/LLM/')
     tokenizer.pad_token = tokenizer.eos_token
     return tokenizer
 

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
+import pandas as pd
 
 from AI.BERT.search.search_precedent import *
 from AI.LLM.infer import *
@@ -43,6 +44,7 @@ def loadBERT():
 
     start_time = time.time()
     print("Loading BERT Model...")
+    os.environ["SENTENCE_TRANSFORMERS_HOME"] = './model/BERT'
 
     model_name = "jhgan/ko-sroberta-multitask"
     model = SentenceTransformer(model_name)
