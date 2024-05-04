@@ -4,7 +4,7 @@ import pickle
 
 def load_vector_data():
     # 파일 이름 정의
-    filename = "law_data_drop_vector.bin"
+    filename = "precedent_vector.bin"
     # 파일의 절대 경로 구성
     file_path = os.path.join(os.path.dirname(__file__), filename)
 
