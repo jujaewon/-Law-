@@ -46,7 +46,7 @@ def LLM_infer(input):
     device = (
         "cpu"
     )
-    model_id = "YoonSeul/LawBot-5.8B"
+    model_id = "skajd1/Llama3PQ"
 
     peftModel = getLLM()
 
