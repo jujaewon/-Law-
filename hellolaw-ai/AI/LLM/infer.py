@@ -72,12 +72,12 @@ def getLLM(model_id):
         cache_dir='../../model/LLM/'
         # quantization_config=bnb_config,
     )
-    peftModel = getPeftModel(model_id, model)
-    peftModel.eval()
-    peftModel.config.use_cache = (
-        True  # silence the warnings. Please re-enable for inference!
-    )
-    return peftModel
+    # peftModel = getPeftModel(model_id, model)
+    # peftModel.eval()
+    # peftModel.config.use_cache = (
+    #     True  # silence the warnings. Please re-enable for inference!
+    # )
+    return model
 
 
 def getPeftModel(model_id, model):
