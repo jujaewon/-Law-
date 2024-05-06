@@ -135,7 +135,7 @@ interface SidebarProps {
 const Sidebar = ({ nickname }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isSelect, setIsSelect] = useState(false);
-  const setIsChat = chatsStore((state) => state.setIsChat);
+  const { setIsChat } = chatsStore();
 
   const createNewChat = () => {
     setIsChat(false);

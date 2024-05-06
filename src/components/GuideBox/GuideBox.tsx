@@ -56,6 +56,12 @@ const LawDetailText = styled.div`
 const LawGuideContainer = styled.div`
   width: 100%;
   flex: 1;
+  margin-top: 30px;
+`;
+
+const Container = styled.div`
+  width: 100%;
+  flex: 1;
   overflow: hidden;
   padding: 30px 120px 0px;
 
@@ -67,9 +73,10 @@ const LawGuideContainer = styled.div`
     padding: 30px 20px 0px;
   }
 `;
+
 const GuideBox = () => {
   return (
-    <>
+    <Container>
       <StyledText>누구나 쉽게 받는 법률 조언</StyledText>
       <StyledText color="sky-500">“헬로(Law)!“</StyledText>
       <LawGuideContainer>
@@ -96,7 +103,7 @@ const GuideBox = () => {
           </LawDetailText>
         </LawContainer>
       </LawGuideContainer>
-    </>
+    </Container>
   );
 };
 

@@ -44,11 +44,12 @@ const AnswerContainer = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   flex: 1 1 0%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px 20px;
+  padding: 0px 20px 20px;
 `;
 
 const Main = () => {

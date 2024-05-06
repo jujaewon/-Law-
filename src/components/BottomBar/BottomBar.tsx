@@ -7,6 +7,7 @@ import { FiSend } from 'react-icons/fi';
 
 import { breakpoints } from '@styles/breakpoints';
 import Avatar from '@components/Avatar/Avatar';
+import { chatsStore } from '@store/chatsStore';
 
 const Wrapper = styled.div`
   min-height: 120px;
@@ -74,6 +75,7 @@ const BottomBar = () => {
   const [message, setMessage] = useState<string>('');
   const textarea = useRef<HTMLTextAreaElement>(null);
   const [optionsData, setOptionsData] = useState<OptionsType>({ category: '', humanType: '' });
+  const { setIsChat, addChatData } = chatsStore();
 
   const handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = event.target.value;
@@ -90,6 +92,8 @@ const BottomBar = () => {
 
   const sendMessage = () => {
     console.log('채팅전송', message, optionsData);
+    setIsChat(true);
+    addChatData({ chat: message, type: 'user' });
   };
 
   return (

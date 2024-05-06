@@ -1,15 +1,28 @@
 import styled from '@emotion/styled';
+import { chatsStore } from '@store/chatsStore';
+import { breakpoints } from '@styles/breakpoints';
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.white};
-  height: auto;
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  padding: 30px 120px 0px;
+
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 30px 120px 0px;
   position: relative;
+
   overflow-y: auto;
   overflow-x: hidden;
+
+  ${breakpoints.md} {
+    font-size: 30px;
+  }
+  ${breakpoints.sm} {
+    font-size: 14px;
+  }
+
   ::-webkit-scrollbar {
     width: 8px;
   }
@@ -25,7 +38,14 @@ const Container = styled.div`
   position: relative;
 `;
 const ChatDefault = () => {
-  return <Container>f</Container>;
+  const data = chatsStore((state) => state.data);
+  return (
+    <Container>
+      {data.map((chat, index) => (
+        <div key={index}>{chat.chat}</div>
+      ))}
+    </Container>
+  );
 };
 
 export default ChatDefault;
