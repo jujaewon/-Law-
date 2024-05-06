@@ -92,6 +92,7 @@ const BottomBar = () => {
 
   const sendMessage = () => {
     console.log('채팅전송', message, optionsData);
+    setMessage('');
     setIsChat(true);
     addChatData({ chat: message, type: 'user' });
   };
