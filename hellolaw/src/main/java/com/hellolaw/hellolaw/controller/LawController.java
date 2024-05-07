@@ -21,4 +21,10 @@ public class LawController {
 	public ResponseEntity<?> getLawDetail(@RequestParam(value = "name") String lawName) {
 		return ResponseEntity.ok(lawService.getLawDetail(lawName));
 	}
+
+	@GetMapping("/ranking")
+	public ResponseEntity<?> getLawRanking() {
+		Long memberId = 100L;
+		return ResponseEntity.ok(lawService.getLawRanking(memberId));
+	}
 }
