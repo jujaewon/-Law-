@@ -37,12 +37,31 @@ const Container = styled.div`
 
   position: relative;
 `;
+const ChatWrapper = styled.div<{ $type: string }>`
+  display: flex;
+  justify-content: ${(props) => (props.$type == 'user' ? 'flex-end' : 'flex-start')};
+  margin: 10px 0;
+  font-size: 1.5rem;
+`;
+
+const ChatMessageWrapper = styled.div`
+  background-color: ${(props) => props.theme.gray2};
+  padding: 10px 20px;
+  border-radius: 10px;
+`;
+
 const ChatDefault = () => {
   const data = chatsStore((state) => state.data);
   return (
     <Container>
       {data.map((chat, index) => (
-        <div key={index}>{chat.chat}</div>
+        <ChatWrapper $type={chat.type} key={index}>
+          {chat.type === 'user' ? (
+            <ChatMessageWrapper>{chat.chat}</ChatMessageWrapper>
+          ) : (
+            <div>{chat.chat.suggestion}</div>
+          )}
+        </ChatWrapper>
       ))}
     </Container>
   );
