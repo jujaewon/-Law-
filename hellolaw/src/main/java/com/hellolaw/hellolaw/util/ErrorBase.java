@@ -51,6 +51,7 @@ public enum ErrorBase {
 	E404_NOT_EXISTS(NOT_FOUND, false, "NF000", "존재하지 않습니다"),
 	E404_NOT_EXISTS_MEMBER(NOT_FOUND, false, "NF001", "탈퇴하거나 존재하지 않는 회원입니다"),
 	E404_NOT_EXISTS_FAQ(NOT_FOUND, false, "NF005", "삭제되거나 존재하지 않는 FAQ입니다"),
+	E404_NOT_EXISTS_SSE_EMITTER(NOT_FOUND, false, "NF006", "사용자의 SSE Emitter가 존재하지 않습니다"),
 
 	/**
 	 * 405 Method Not Allowed
