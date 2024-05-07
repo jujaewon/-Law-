@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 import { chatsStore } from '@store/chatsStore';
 import { breakpoints } from '@styles/breakpoints';
 
+import ChatMessage from './ChatMessage';
+
 const Container = styled.div`
   background-color: ${(props) => props.theme.white};
   width: 100%;
@@ -46,12 +48,13 @@ const ChatWrapper = styled.div<{ $type: string }>`
 
 const ChatMessageWrapper = styled.div`
   background-color: ${(props) => props.theme.gray2};
-  padding: 10px 20px;
+  padding: 16px 16px;
   border-radius: 10px;
 `;
 
 const ChatDefault = () => {
   const data = chatsStore((state) => state.data);
+
   return (
     <Container>
       {data.map((chat, index) => (
@@ -59,7 +62,7 @@ const ChatDefault = () => {
           {chat.type === 'user' ? (
             <ChatMessageWrapper>{chat.chat}</ChatMessageWrapper>
           ) : (
-            <div>{chat.chat.suggestion}</div>
+            <ChatMessage chatdata={chat.chat} />
           )}
         </ChatWrapper>
       ))}
