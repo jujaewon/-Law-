@@ -41,8 +41,8 @@ def loadModel():
     start_time = time.time()
     print("Loading LLM Model...")
 
-    llm = getLLM("YoonSeul/LawBot-5.8B")
-    tokenizer = getTokenizer("YoonSeul/LawBot-5.8B")
+    llm = getLLM("skajd1/Llama3PQ")
+    tokenizer = getTokenizer("skajd1/Llama3PQ")
 
     print("LLM Model Loaded!")
     print(f"llm loading time: {time.time() - start_time}")
