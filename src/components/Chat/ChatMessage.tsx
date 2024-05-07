@@ -1,7 +1,5 @@
 import React from 'react';
 
-import theme from '@styles/theme';
-
 import TextEdit from '@components/Text/TextEdit';
 
 import styled from '@emotion/styled';
@@ -14,12 +12,17 @@ const FieldContainer = styled.div`
   padding-top: 8px;
 `;
 
+const StyledTextDiv = styled.div`
+  margin-left: 10px;
+  padding-right: 50px;
+`;
+
 const Label = styled.div`
   font-weight: bold;
 `;
 
 const Value = styled.div`
-  margin-left: 20px; // 기본 값입니다. 이것은 나중에 변경될 수 있습니다.
+  margin-left: 20px;
 `;
 
 const Value1 = styled(Value)`
@@ -62,7 +65,7 @@ const InformationField3: React.FC<{ label: string; value: string }> = ({ label, 
 };
 
 const ChatContainer = styled.div`
-  width: 786px;
+  width: 800px;
   height: 630px;
   padding: 32px 16px;
   background: ${({ theme }) => theme.secondary2};
@@ -77,14 +80,14 @@ const ChatContainer = styled.div`
 const MessageContainer = styled.div`
   alignSelf: stretch;
   color: black;
-  fontSize: 14px;
-  fontFamily: 'Noto Sans';
-  fontWeight: 400;
+  font-size: 14px;
+  font-family: 'Noto Sans';
+  font-weight: 600;
   wordWrap: break-word;
   display: flex; 
   justify-content: space-between; 
   flex-direction: column;
-  alignItems: end;
+  align-items: stretch;
 `;
 
 const Button = styled.button`
@@ -92,16 +95,16 @@ const Button = styled.button`
   height: 26px; 
   padding: 5px;
   background: ${({ theme }) => theme.primary}; 
-  borderRadius: 40px; 
+  border-radius: 40px;
   overflow: hidden; 
   display: inline-flex;
   justify-content: center; 
-  alignItems: center;
+  align-items: center;
   border: none;
   color: white;
-  fontSize: 12px;
-  fontFamily: 'Noto Sans';
-  fontWeight: 500;
+  font-size: 12px;
+  font-family: 'Noto Sans';
+  font-weight: 500;
   cursor: pointer;
 `;
 
@@ -113,20 +116,40 @@ const Container = styled.div`
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: stretch;
   gap: 16px;
+`;
+
+const ContainerAlign = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+`;
+
+const BottomLine = styled.div`
+  border-bottom: 1px solid #D9E1E8;
+  width: '100%';
+`;
+
+const CenterAlign = styled.div`
+  flex: '1 1 0';
+  align-self: 'stretch';
+  padding-bottom: 3px;
+  justify-content: 'center';
+  align-items: 'center';
+  display: 'inline-flex';
 `;
 
 const AddressSection = styled.div`
   align-self: stretch;
   height: 135px;
-  padding: 16px;
+  padding: 3px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 8px;
+  gap: 6px;
 `;
 
 const AddressBox = styled.div`
@@ -142,6 +165,20 @@ const AddressBox = styled.div`
 `;
 
 const LawContainer = styled.div`
+  width: 240px;
+  height: 184px;
+  padding: 16px;
+  margin-right: 26px;
+  background: white;
+  border-radius: 12px;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 16px;
+`;
+
+const LawContainerLast = styled.div`
   width: 235px;
   height: 184px;
   padding: 16px;
@@ -153,6 +190,19 @@ const LawContainer = styled.div`
   align-items: flex-start;
   gap: 16px;
 `;
+
+const LawContainerAlign = styled.div`
+  align-self: 'stretch';
+  height: 160px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  flex-direction: 'column';
+  justify-content: 'flex-start';
+  align-items: 'flex-start';
+  gap: 8px;
+  display: 'flex';
+`;
+
 
 const MoreButton = styled.div`
   align-self: stretch;
@@ -169,90 +219,154 @@ const MoreButton = styled.div`
   font-weight: 500;
 `;
 
+const LawDetail = styled.div`
+  align-self: 'stretch';
+  height: 94px;
+  flex-direction: 'column';
+  justify-content: 'flex-start';
+  align-items: 'flex-start';
+  gap: 8px;
+  display: 'flex';
+`;
+
+const LawTitle = styled.div`
+  width: 203px;
+  margin-bottom: 5px;
+  padding-bottom: 2px;
+  padding-right: 0;
+  justify-content: 'flex-start';
+  align-items: 'center';
+  display: 'inline-flex';
+  color: '#333333';
+  font-size: 14px;
+  font-family: 'Noto Sans';
+  font-weight: bold;
+  word-wrap: 'break-word';
+  margin-left: 3px;
+`;
+
+const LawContent = styled.div`
+  width: 203px;
+  height: 62px;
+  padding: 8px;
+  background: ${props => props.theme.gray2};
+  border-radius: 6px;
+  overflow: 'hidden';
+  justify-content: 'center';
+  align-items: 'center';
+  display: 'inline-flex';
+`;
+
+const AddressSectionDiv = styled.div`
+  align-self: stretch;
+  color: #333333;
+  font-size: 14px;
+  font-family: 'Noto Sans';
+  font-weight: 400;
+  word-wrap: break-word;
+`;
+
+const AddressBoxDiv = styled.div`
+  width: 706px;
+  color: black;
+  font-size: 14px;
+  font-family: 'Noto Sans';
+  font-weight: 400;
+  word-wrap: break-word;
+`;
+
+const LawContentDiv = styled.div`
+  flex: 1 1 0;
+  align-self: stretch;
+  padding-bottom: 27px;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+`;
+
+const TextEditContainer = styled.div`
+  width: 187px;
+  color: #B6B6B6;
+  font-size: 14px;
+  font-family: 'Noto Sans';
+  font-weight: 400;
+  word-wrap: break-word;
+`;
+
 const ChatMessage: React.FC = () => {
   return (
     <ChatContainer>
       <MessageContainer>
-        <div style={{
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'end'
-        }}>
-          안녕하세요. 저는 법무법인 대륙아주의 법률 전문 챗봇 ‘AI 대륙아주’ 입니다.
+        <ContainerAlign>
+          <StyledTextDiv>안녕하세요. 저는 법무법인 대륙아주의 법률 전문 챗봇 ‘AI 대륙아주’ 입니다.</StyledTextDiv>
           <Button>더보기</Button>
-        </div>
-        <div>질문하신 내용에 대한 최적의 답변을 제공하고자 열심히 답변을 생성하고 있습니다.</div>
-        <div>보다 정확한 답변과 유용한 정보를 제공하기 위해 일부 시간이 소요될 수 있으니 잠시만 기다려주시기 바랍니다.</div>
-        <div>사용자의 사건과 가장 유사한 판례는 아래와 같습니다.</div>
+        </ContainerAlign>
+        <StyledTextDiv>질문하신 내용에 대한 최적의 답변을 제공하고자 열심히 답변을 생성하고 있습니다.</StyledTextDiv>
+        <StyledTextDiv>보다 정확한 답변과 유용한 정보를 제공하기 위해 일부 시간이 소요될 수 있으니 잠시만 기다려주시기 바랍니다.</StyledTextDiv>
+        <StyledTextDiv>사용자의 사건과 가장 유사한 판례는 아래와 같습니다.</StyledTextDiv>
       </MessageContainer>
       <Container>
         <div>
-          <div style={{ borderBottom: '1px solid #D9E1E8', width: '100%' }}><InformationField1 label="Name" value="판례 이름" /></div>
-          <div style={{ borderBottom: '1px solid #D9E1E8', width: '100%' }}><InformationField2 label="Tel" value="판례 정보" /></div>
-          <div style={{ borderBottom: '1px solid #D9E1E8', width: '100%' }}><InformationField3 label="City" value="Ship to" /></div>
+          <BottomLine><InformationField1 label="Name" value="판례 이름" /></BottomLine>
+          <BottomLine><InformationField2 label="Tel" value="판례 정보" /></BottomLine>
+          <BottomLine><InformationField3 label="City" value="Ship to" /></BottomLine>
         </div>
         <AddressSection>
-          <div style={{ alignSelf: 'stretch', color: '#333333', fontSize: 14, fontFamily: 'Noto Sans', fontWeight: '400', wordWrap: 'break-word' }}>
+          <AddressSectionDiv>
             Address
-          </div>
+          </AddressSectionDiv>
           <AddressBox>
-            <div style={{ flex: '1 1 0', alignSelf: 'stretch', paddingBottom: 3, justifyContent: 'center', alignItems: 'center', display: 'inline-flex' }}>
-              <div style={{ width: 706, color: 'black', fontSize: 14, fontFamily: 'Noto Sans', fontWeight: '400', wordWrap: 'break-word' }}>
+            <CenterAlign>
+              <AddressBoxDiv>
                 <div>안녕하세요. 저는 법무법인 대륙아주의 법률 전문 챗봇 ‘AI 대륙아주’ 입니다.</div>
                 <div>질문하신 내용에 대한 최적의 답변을 제공하고자 열심히 답변을 생성하고 있습니다.</div>
                 <div>보다 정확한 답변과 유용한 정보를 제공하기 위해 일부 시간이 소요될 수 있으니 잠시만 기다려주시기 바랍니다.</div>
-              </div>
-            </div>
+              </AddressBoxDiv>
+            </CenterAlign>
           </AddressBox>
         </AddressSection>
       </Container>
       
       <div>
-        <LawContainer style={{ marginRight: 24 }}>
-          <div style={{alignSelf: 'stretch', height: 160, paddingTop: 16, paddingBottom: 16, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
-            <div style={{alignSelf: 'stretch', height: 94, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
-              <div style={{width: 203, paddingTop: 3, paddingBottom: 2, paddingRight: 0, justifyContent: 'flex-start', alignItems: 'center', display: 'inline-flex'}}>
-                <div style={{color: '#333333', fontSize: 14, fontFamily: 'Noto Sans', fontWeight: '600', wordWrap: 'break-word'}}>핵심법안 1</div>
-              </div>
-              <div style={{width: 203, height: 62, padding: 8, background: theme.gray2, borderRadius: 6, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', display: 'inline-flex'}}>
-                <div style={{flex: '1 1 0', alignSelf: 'stretch', paddingBottom: 27, justifyContent: 'center', alignItems: 'center', display: 'inline-flex'}}>
-                  <div style={{width: 187, color: '#B6B6B6', fontSize: 14, fontFamily: 'Noto Sans', fontWeight: '400', wordWrap: 'break-word'}}><TextEdit /></div>
-                </div>
-              </div>
-            </div>
+        <LawContainer>
+          <LawContainerAlign>
+            <LawDetail>
+              <LawTitle>핵심법안 1</LawTitle>
+              <LawContent>
+                <LawContentDiv>
+                  <TextEditContainer><TextEdit /></TextEditContainer>
+                </LawContentDiv>
+              </LawContent>
+            </LawDetail>
             <MoreButton>더보기</MoreButton>
-          </div>
-        </LawContainer>
-        <LawContainer style={{ marginRight: 24 }}>
-          <div style={{alignSelf: 'stretch', height: 160, paddingTop: 16, paddingBottom: 16, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
-            <div style={{alignSelf: 'stretch', height: 94, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
-              <div style={{width: 203, paddingTop: 3, paddingBottom: 2, paddingRight: 0, justifyContent: 'flex-start', alignItems: 'center', display: 'inline-flex'}}>
-                <div style={{color: '#333333', fontSize: 14, fontFamily: 'Noto Sans', fontWeight: '600', wordWrap: 'break-word'}}>핵심법안 2</div>
-              </div>
-              <div style={{width: 203, height: 62, padding: 8, background: theme.gray2, borderRadius: 6, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', display: 'inline-flex'}}>
-                <div style={{flex: '1 1 0', alignSelf: 'stretch', paddingBottom: 27, justifyContent: 'center', alignItems: 'center', display: 'inline-flex'}}>
-                  <div style={{width: 187, color: '#B6B6B6', fontSize: 14, fontFamily: 'Noto Sans', fontWeight: '400', wordWrap: 'break-word'}}><TextEdit /></div>
-                </div>
-              </div>
-            </div>
-            <MoreButton>더보기</MoreButton>
-          </div>
+          </LawContainerAlign>
         </LawContainer>
         <LawContainer>
-          <div style={{alignSelf: 'stretch', height: 160, paddingTop: 16, paddingBottom: 16, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
-            <div style={{alignSelf: 'stretch', height: 94, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
-              <div style={{width: 203, paddingTop: 3, paddingBottom: 2, paddingRight: 0, justifyContent: 'flex-start', alignItems: 'center', display: 'inline-flex'}}>
-                <div style={{color: '#333333', fontSize: 14, fontFamily: 'Noto Sans', fontWeight: '600', wordWrap: 'break-word'}}>핵심법안 3</div>
-              </div>
-              <div style={{width: 203, height: 62, padding: 8, background: theme.gray2, borderRadius: 6, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', display: 'inline-flex'}}>
-                <div style={{flex: '1 1 0', alignSelf: 'stretch', paddingBottom: 27, justifyContent: 'center', alignItems: 'center', display: 'inline-flex'}}>
-                  <div style={{width: 187, color: '#B6B6B6', fontSize: 14, fontFamily: 'Noto Sans', fontWeight: '400', wordWrap: 'break-word'}}><TextEdit /></div>
-                </div>
-              </div>
-            </div>
+          <LawContainerAlign>
+            <LawDetail>
+              <LawTitle>핵심법안 2</LawTitle>
+              <LawContent>
+                <LawContentDiv>
+                  <TextEditContainer><TextEdit /></TextEditContainer>
+                </LawContentDiv>
+              </LawContent>
+            </LawDetail>
             <MoreButton>더보기</MoreButton>
-          </div>
+          </LawContainerAlign>
         </LawContainer>
+        <LawContainerLast>
+          <LawContainerAlign>
+            <LawDetail>
+              <LawTitle>핵심법안 3</LawTitle>
+              <LawContent>
+                <LawContentDiv>
+                  <TextEditContainer><TextEdit /></TextEditContainer>
+                </LawContentDiv>
+              </LawContent>
+            </LawDetail>
+            <MoreButton>더보기</MoreButton>
+          </LawContainerAlign>
+        </LawContainerLast>
       </div>
     </ChatContainer>
   )
