@@ -44,8 +44,17 @@ public class Precedent extends BaseEntity {
 	@Column(name = "trail_field")
 	private Long trailField;
 
+	@Column(name = "relate_laword", columnDefinition = "TEXT")
+	private String relateLaword;
+
+	@Column(name = "basic_fact", columnDefinition = "TEXT")
+	private String basicFact;
+
 	@Column(name = "conclusion", columnDefinition = "TEXT")
 	private String conclusion;
+
+	@Column(name = "court_dcss", columnDefinition = "TEXT")
+	private String courtDcss;
 
 	@OneToOne(mappedBy = "precedent")
 	private RelatedAnswer relatedAnswers;
