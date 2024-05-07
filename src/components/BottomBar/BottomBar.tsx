@@ -8,6 +8,7 @@ import { FiSend } from 'react-icons/fi';
 import { breakpoints } from '@styles/breakpoints';
 import Avatar from '@components/Avatar/Avatar';
 import { chatsStore } from '@store/chatsStore';
+import { instance } from '@api/instance';
 
 const Wrapper = styled.div`
   min-height: 120px;
@@ -95,6 +96,18 @@ const BottomBar = () => {
     setMessage('');
     setIsChat(true);
     addChatData({ chat: message, type: 'user' });
+
+    instance
+      .post('/api/question')
+      .then((res) => {
+        if (res.data) {
+          console.log('질문 API성공', res.data);
+          addChatData({ chat: res.data, type: 'bot' });
+        }
+      })
+      .catch((err) => {
+        return console.log('에러', err);
+      });
   };
 
   return (

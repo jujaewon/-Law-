@@ -1,24 +1,23 @@
-import React from 'react';
-
-import TextEdit from '@components/Text/TextEdit';
-
 import styled from '@emotion/styled';
 
 const FieldContainer = styled.div`
   align-self: stretch;
   display: flex;
   flex-direction: row;
-  padding-bottom: 4px;
-  padding-top: 8px;
+  padding: 8px 10px 10px 0px;
+  border-bottom: 1px solid #d9e1e8;
+  width: 100%;
 `;
 
 const StyledTextDiv = styled.div`
   margin-left: 10px;
-  padding-right: 50px;
+  width: 100%;
+  padding-right: 30px;
 `;
 
 const Label = styled.div`
   font-weight: bold;
+  min-width: 80px;
 `;
 
 const Value = styled.div`
@@ -29,47 +28,11 @@ const Value1 = styled(Value)`
   margin-left: 24px;
 `;
 
-const InformationField1: React.FC<{ label: string; value: string }> = ({ label, value }) => {
-  return (
-    <FieldContainer>
-      <Label>{label}</Label>
-      <Value1>{value}</Value1>
-    </FieldContainer>
-  );
-};
-
-const Value2 = styled(Value)`
-  margin-left: 53px;
-`;
-
-const InformationField2: React.FC<{ label: string; value: string }> = ({ label, value }) => {
-  return (
-    <FieldContainer>
-      <Label>{label}</Label>
-      <Value2>{value}</Value2>
-    </FieldContainer>
-  );
-};
-
-const Value3 = styled(Value)`
-  margin-left: 42px;
-`;
-
-const InformationField3: React.FC<{ label: string; value: string }> = ({ label, value }) => {
-  return (
-    <FieldContainer>
-      <Label>{label}</Label>
-      <Value3>{value}</Value3>
-    </FieldContainer>
-  );
-};
-
 const ChatContainer = styled.div`
-  width: 800px;
-  height: 630px;
+  height: auto;
   padding: 32px 16px;
-  background: ${({ theme }) => theme.secondary2};
-  border-radius: 16px;
+  border-radius: 10px;
+  background-color: ${(props) => props.theme.secondary2};
   display: inline-flex;
   flex-direction: column;
   justify-content: space-between;
@@ -77,40 +40,36 @@ const ChatContainer = styled.div`
   gap: 16px;
 `;
 
-const MessageContainer = styled.div`
-  alignSelf: stretch;
-  color: black;
-  font-size: 14px;
-  font-family: 'Noto Sans';
+const DefaultMessageContainer = styled.div`
+  font-size: 1.5rem;
   font-weight: 600;
-  wordWrap: break-word;
-  display: flex; 
-  justify-content: space-between; 
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
   flex-direction: column;
   align-items: stretch;
 `;
 
 const Button = styled.button`
-  width: 96px; 
-  height: 26px; 
+  width: 90px;
+  height: 26px;
   padding: 5px;
-  background: ${({ theme }) => theme.primary}; 
-  border-radius: 40px;
-  overflow: hidden; 
+  background: ${({ theme }) => theme.primary};
+  border-radius: 10px;
   display: inline-flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   border: none;
   color: white;
   font-size: 12px;
-  font-family: 'Noto Sans';
   font-weight: 500;
   cursor: pointer;
 `;
 
 const Container = styled.div`
   align-self: stretch;
-  height: 270px;
+  min-height: 270px;
+  height: auto;
   padding: 16px;
   background: white;
   border-radius: 12px;
@@ -122,28 +81,18 @@ const Container = styled.div`
 `;
 
 const ContainerAlign = styled.div`
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: end;
-`;
 
-const BottomLine = styled.div`
-  border-bottom: 1px solid #D9E1E8;
-  width: '100%';
-`;
-
-const CenterAlign = styled.div`
-  flex: '1 1 0';
-  align-self: 'stretch';
-  padding-bottom: 3px;
-  justify-content: 'center';
-  align-items: 'center';
-  display: 'inline-flex';
+  align-items: first;
 `;
 
 const AddressSection = styled.div`
   align-self: stretch;
-  height: 135px;
+  width: 100%;
+  min-height: 135px;
+  height: auto;
   padding: 3px;
   display: flex;
   flex-direction: column;
@@ -153,223 +102,135 @@ const AddressSection = styled.div`
 `;
 
 const AddressBox = styled.div`
-  width: 722px;
-  height: 76px;
+  min-height: 76px;
+  height: auto;
   padding: 8px;
+  width: 100%;
   background: ${({ theme }) => theme.gray2};
   border-radius: 6px;
   display: inline-flex;
   overflow: hidden;
-  justify-content: center;
+  justify-content: first;
   align-items: center;
-`;
-
-const LawContainer = styled.div`
-  width: 240px;
-  height: 184px;
-  padding: 16px;
-  margin-right: 26px;
-  background: white;
-  border-radius: 12px;
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 16px;
-`;
-
-const LawContainerLast = styled.div`
-  width: 235px;
-  height: 184px;
-  padding: 16px;
-  background: white;
-  border-radius: 12px;
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 16px;
+  padding: 16px 25px 16px 18px;
+  font-size: 14px;
+  font-weight: 400;
 `;
 
 const LawContainerAlign = styled.div`
-  align-self: 'stretch';
-  height: 160px;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  flex-direction: 'column';
-  justify-content: 'flex-start';
-  align-items: 'flex-start';
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 30%;
+  background-color: white;
+  padding: 16px;
+  border-radius: 10px;
   gap: 8px;
-  display: 'flex';
 `;
-
 
 const MoreButton = styled.div`
   align-self: stretch;
   height: 26px;
   padding: 5px;
-  background: ${({ theme }) => theme.primary};
-  border-radius: 40px;
+  background: ${(props) => props.theme.primary};
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
   font-size: 12px;
-  font-family: 'Noto Sans';
   font-weight: 500;
-`;
 
-const LawDetail = styled.div`
-  align-self: 'stretch';
-  height: 94px;
-  flex-direction: 'column';
-  justify-content: 'flex-start';
-  align-items: 'flex-start';
-  gap: 8px;
-  display: 'flex';
+  cursor: pointer;
 `;
 
 const LawTitle = styled.div`
-  width: 203px;
-  margin-bottom: 5px;
-  padding-bottom: 2px;
-  padding-right: 0;
-  justify-content: 'flex-start';
-  align-items: 'center';
-  display: 'inline-flex';
-  color: '#333333';
-  font-size: 14px;
-  font-family: 'Noto Sans';
-  font-weight: bold;
-  word-wrap: 'break-word';
-  margin-left: 3px;
-`;
+  width: 100%;
+  text-align: center;
 
-const LawContent = styled.div`
-  width: 203px;
-  height: 62px;
-  padding: 8px;
-  background: ${props => props.theme.gray2};
-  border-radius: 6px;
-  overflow: 'hidden';
-  justify-content: 'center';
-  align-items: 'center';
-  display: 'inline-flex';
+  font-size: 14px;
+  font-weight: bold;
+
+  margin-bottom: 10px;
 `;
 
 const AddressSectionDiv = styled.div`
   align-self: stretch;
   color: #333333;
   font-size: 14px;
-  font-family: 'Noto Sans';
   font-weight: 400;
   word-wrap: break-word;
 `;
 
-const AddressBoxDiv = styled.div`
-  width: 706px;
-  color: black;
-  font-size: 14px;
-  font-family: 'Noto Sans';
-  font-weight: 400;
-  word-wrap: break-word;
+const LawsContainer = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
 `;
 
-const LawContentDiv = styled.div`
-  flex: 1 1 0;
-  align-self: stretch;
-  padding-bottom: 27px;
-  justify-content: center;
-  align-items: center;
-  display: inline-flex;
-`;
+interface ChatBotData {
+  suggestion: string;
+  precedent: {
+    precedentId: number;
+    lawType: string;
+    precedentSummary: string;
+    category: string;
+  };
+  relatedLaws: Array<string>;
+}
 
-const TextEditContainer = styled.div`
-  width: 187px;
-  color: #B6B6B6;
-  font-size: 14px;
-  font-family: 'Noto Sans';
-  font-weight: 400;
-  word-wrap: break-word;
-`;
-
-const ChatMessage: React.FC = () => {
+interface ChatMessageProps {
+  chatdata?: ChatBotData;
+}
+const ChatMessage = ({ chatdata }: ChatMessageProps) => {
   return (
     <ChatContainer>
-      <MessageContainer>
+      <DefaultMessageContainer>
         <ContainerAlign>
           <StyledTextDiv>안녕하세요. 저는 법무법인 대륙아주의 법률 전문 챗봇 ‘AI 대륙아주’ 입니다.</StyledTextDiv>
           <Button>더보기</Button>
         </ContainerAlign>
         <StyledTextDiv>질문하신 내용에 대한 최적의 답변을 제공하고자 열심히 답변을 생성하고 있습니다.</StyledTextDiv>
-        <StyledTextDiv>보다 정확한 답변과 유용한 정보를 제공하기 위해 일부 시간이 소요될 수 있으니 잠시만 기다려주시기 바랍니다.</StyledTextDiv>
+        <StyledTextDiv>
+          보다 정확한 답변과 유용한 정보를 제공하기 위해 일부 시간이 소요될 수 있으니 잠시만 기다려주시기 바랍니다.
+        </StyledTextDiv>
         <StyledTextDiv>사용자의 사건과 가장 유사한 판례는 아래와 같습니다.</StyledTextDiv>
-      </MessageContainer>
+      </DefaultMessageContainer>
       <Container>
-        <div>
-          <BottomLine><InformationField1 label="Name" value="판례 이름" /></BottomLine>
-          <BottomLine><InformationField2 label="Tel" value="판례 정보" /></BottomLine>
-          <BottomLine><InformationField3 label="City" value="Ship to" /></BottomLine>
-        </div>
+        <FieldContainer>
+          <Label>판례타입</Label>
+          <Value1>{chatdata?.precedent.lawType}</Value1>
+        </FieldContainer>
+        <FieldContainer>
+          <Label>판례카테고리</Label>
+          <Value1>{chatdata?.precedent.category}</Value1>
+        </FieldContainer>
+        <FieldContainer>
+          <Label>판례요약</Label>
+          <Value1>{chatdata?.precedent.precedentSummary}</Value1>
+        </FieldContainer>
         <AddressSection>
-          <AddressSectionDiv>
-            Address
-          </AddressSectionDiv>
-          <AddressBox>
-            <CenterAlign>
-              <AddressBoxDiv>
-                <div>안녕하세요. 저는 법무법인 대륙아주의 법률 전문 챗봇 ‘AI 대륙아주’ 입니다.</div>
-                <div>질문하신 내용에 대한 최적의 답변을 제공하고자 열심히 답변을 생성하고 있습니다.</div>
-                <div>보다 정확한 답변과 유용한 정보를 제공하기 위해 일부 시간이 소요될 수 있으니 잠시만 기다려주시기 바랍니다.</div>
-              </AddressBoxDiv>
-            </CenterAlign>
-          </AddressBox>
+          <AddressSectionDiv>제안</AddressSectionDiv>
+          <AddressBox>{chatdata?.suggestion}</AddressBox>
         </AddressSection>
       </Container>
-      
-      <div>
-        <LawContainer>
-          <LawContainerAlign>
-            <LawDetail>
-              <LawTitle>핵심법안 1</LawTitle>
-              <LawContent>
-                <LawContentDiv>
-                  <TextEditContainer><TextEdit /></TextEditContainer>
-                </LawContentDiv>
-              </LawContent>
-            </LawDetail>
-            <MoreButton>더보기</MoreButton>
-          </LawContainerAlign>
-        </LawContainer>
-        <LawContainer>
-          <LawContainerAlign>
-            <LawDetail>
-              <LawTitle>핵심법안 2</LawTitle>
-              <LawContent>
-                <LawContentDiv>
-                  <TextEditContainer><TextEdit /></TextEditContainer>
-                </LawContentDiv>
-              </LawContent>
-            </LawDetail>
-            <MoreButton>더보기</MoreButton>
-          </LawContainerAlign>
-        </LawContainer>
-        <LawContainerLast>
-          <LawContainerAlign>
-            <LawDetail>
-              <LawTitle>핵심법안 3</LawTitle>
-              <LawContent>
-                <LawContentDiv>
-                  <TextEditContainer><TextEdit /></TextEditContainer>
-                </LawContentDiv>
-              </LawContent>
-            </LawDetail>
-            <MoreButton>더보기</MoreButton>
-          </LawContainerAlign>
-        </LawContainerLast>
-      </div>
+      <LawsContainer>
+        <LawContainerAlign>
+          <LawTitle>{chatdata?.relatedLaws[0]}</LawTitle>
+          <MoreButton>더보기</MoreButton>
+        </LawContainerAlign>
+        <LawContainerAlign>
+          <LawTitle>{chatdata?.relatedLaws[0]}</LawTitle>
+          <MoreButton>더보기</MoreButton>
+        </LawContainerAlign>
+        <LawContainerAlign>
+          <LawTitle>{chatdata?.relatedLaws[0]}</LawTitle>
+          <MoreButton>더보기</MoreButton>
+        </LawContainerAlign>
+      </LawsContainer>
     </ChatContainer>
-  )
-}
+  );
+};
 
 export default ChatMessage;
