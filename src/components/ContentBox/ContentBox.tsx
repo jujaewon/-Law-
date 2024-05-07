@@ -3,16 +3,10 @@ import { RiArrowDownSLine } from 'react-icons/ri';
 
 import styled from '@emotion/styled';
 
-const DynamicColorText = styled.div<{ $isSelected: boolean }>`
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: ${(props) => (props.$isSelected ? props.theme.primary : props.theme.gray1)};
-`;
 const ContentBoxContainer = styled.div`
   width: 100%;
   min-width: 200px;
   height: auto;
-
   position: relative;
   display: flex;
   justify-items: flex-start;
@@ -20,6 +14,7 @@ const ContentBoxContainer = styled.div`
   flex-flow: wrap;
   font-size: 15px;
 `;
+
 const CatecoryWrapper = styled.div`
   min-width: 80px;
   width: auto;
@@ -33,11 +28,43 @@ const CatecoryWrapper = styled.div`
   font-weight: bold;
   font-size: 17px;
 `;
+
+const DynamicColorText = styled.div<{ $isSelected: boolean }>`
+  font-size: 17px;
+  font-weight: bold;
+  color: ${(props) => (props.$isSelected ? props.theme.primary : props.theme.gray1)};
+`;
+
 const ModalWrapper = styled.div`
   position: absolute;
+  border-radius: 8px;
   bottom: 40px;
   left: 0px;
-  width: 300px;
+  display: inlin-flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  gap: 5px;
+  width: 270px;
+  padding: 25px;
+  background-color: #ffffff;
+  border: 1px sloid ${(props) => props.theme.gray1};
+  box-shadow:
+    0px 10px 20px 0px rgba(0, 0, 0, 0.08),
+    0px 0px 2px 0px rgba(0, 0, 0, 0.12);
+`;
+const ModalCategoryButtonWrapper = styled.button`
+  font-size: 17px;
+  display: flex;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px;
+  font-weight: bold;
+
+  &:hover {
+    background-color: ${(props) => props.theme.gray2};
+  }
 `;
 const OptionDetailModal = styled.div`
   background: #ffffff;
@@ -70,36 +97,39 @@ const OptionText = styled.div`
   line-height: 20px;
   position: relative;
 `;
-interface FirstContentProps {
+interface CategoryModalProps {
   onCategoryClick: (category: string) => void;
   selectedCategory: string;
 }
 
-const FirstContent = ({ onCategoryClick, selectedCategory }: FirstContentProps) => {
+const CategoryModal = ({ onCategoryClick, selectedCategory }: CategoryModalProps) => {
   const categories = [
-    ['스토킹', '성범죄', '폭행/상해'],
-    ['사기', '상속/가사', '이혼'],
-    ['교통사고/음주운전', '마약'],
-    ['대여금/미수금/채권추심', '행정소송'],
-    ['소비자분쟁', '기타'],
+    '스토킹',
+    '성범죄',
+    '폭행/상해',
+    '사기',
+    '상속/가사',
+    '이혼',
+    '교통사고/음주운전',
+    '마약',
+    '대여금/미수금/채권추심',
+    '행정소송',
+    '소비자분쟁',
+    '기타',
   ];
 
   return (
-    <div className="inline-flex flex-wrap gap-5 rounded-lg border border-zinc-200 bg-white p-[10px] shadow">
-      {categories.map((subCategories, index) =>
-        subCategories.map((category, subIndex) => (
-          <DynamicColorText
-            key={`${index}-${subIndex}`}
-            $isSelected={category === selectedCategory}
-            onClick={() => onCategoryClick(category)}
-          >
-            <div className="flex cursor-pointer items-center justify-center rounded-md font-['Pretendard_Variable'] text-3xl font-bold leading-tight hover:bg-slate-100">
-              {category}
-            </div>
-          </DynamicColorText>
-        )),
-      )}
-    </div>
+    <ModalWrapper>
+      {categories.map((category, index) => (
+        <DynamicColorText
+          key={index}
+          $isSelected={category === selectedCategory}
+          onClick={() => onCategoryClick(category)}
+        >
+          <ModalCategoryButtonWrapper>{category}</ModalCategoryButtonWrapper>
+        </DynamicColorText>
+      ))}
+    </ModalWrapper>
   );
 };
 
@@ -109,21 +139,24 @@ interface SecondContentProps {
 }
 
 const SecondContent = ({ selectedText, onTextClick }: SecondContentProps) => (
-  <div className="inline-flex flex-wrap gap-5 rounded-lg border border-zinc-200 bg-white p-[10px] shadow">
-    <DynamicColorText $isSelected={selectedText === 'victim'} onClick={() => onTextClick('피해자')}>
-      피해자
-      <br />
+  <ModalWrapper>
+    <DynamicColorText $isSelected={selectedText === '피해자'} onClick={() => onTextClick('피해자')}>
+      <ModalCategoryButtonWrapper>피해자</ModalCategoryButtonWrapper>
     </DynamicColorText>
-    <DynamicColorText $isSelected={selectedText === 'offender'} onClick={() => onTextClick('가해자')}>
-      가해자
+    <DynamicColorText $isSelected={selectedText === '가해자'} onClick={() => onTextClick('가해자')}>
+      <ModalCategoryButtonWrapper>가해자</ModalCategoryButtonWrapper>
     </DynamicColorText>
-  </div>
+  </ModalWrapper>
 );
 interface OptionsType {
   category: string;
   humanType: string;
 }
-const ContentBox = () => {
+interface PropsType {
+  setOptionsData: React.Dispatch<React.SetStateAction<OptionsType>>;
+}
+
+const ContentBox = ({ setOptionsData }: PropsType) => {
   const [showOptions1, setShowOptions1] = useState(false);
   const [showOptions2, setShowOptions2] = useState(false);
   const [showGuide, setShowGuide] = useState(true);
@@ -147,12 +180,19 @@ const ContentBox = () => {
       ...prev,
       category: value,
     }));
-
+    setOptionsData((prev) => ({
+      ...prev,
+      category: value,
+    }));
     setShowOptions1(false);
   };
 
   const handleTextClick = (text: string) => {
     setOptions((prev) => ({
+      ...prev,
+      humanType: text,
+    }));
+    setOptionsData((prev) => ({
       ...prev,
       humanType: text,
     }));
@@ -175,21 +215,13 @@ const ContentBox = () => {
         <CatecoryWrapper onClick={() => handleOptionsShow('category')}>
           {category}
           <RiArrowDownSLine />
-          {showOptions1 && (
-            <ModalWrapper>
-              <FirstContent onCategoryClick={handleCategoryClick} selectedCategory={category} />
-            </ModalWrapper>
-          )}
+          {showOptions1 && <CategoryModal onCategoryClick={handleCategoryClick} selectedCategory={category} />}
         </CatecoryWrapper>
 
         <CatecoryWrapper onClick={() => handleOptionsShow('humanType')}>
           {humanType}
           <RiArrowDownSLine />
-          {showOptions2 && (
-            <ModalWrapper>
-              <SecondContent onTextClick={handleTextClick} selectedText={humanType} />
-            </ModalWrapper>
-          )}
+          {showOptions2 && <SecondContent onTextClick={handleTextClick} selectedText={humanType} />}
         </CatecoryWrapper>
       </ContentBoxContainer>
     </SearchOptionContainer>

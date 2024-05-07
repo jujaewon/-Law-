@@ -35,7 +35,7 @@ const LawHeader = styled.div`
   align-items: center;
   width: 100%;
   justify-content: start;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 `;
 
 const LawMainText = styled.div`
@@ -48,28 +48,35 @@ const LawMainText = styled.div`
 
 const LawDetailText = styled.div`
   color: #64748b;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 400;
-  line-height: 1.3;
   text-align: start;
 `;
 
 const LawGuideContainer = styled.div`
   width: 100%;
   flex: 1;
-  overflow-y: auto;
+  margin-top: 30px;
+`;
+
+const Container = styled.div`
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
   padding: 30px 120px 0px;
 
   ${breakpoints.md} {
     padding: 30px 40px 0px;
+    font-size: 14px;
   }
   ${breakpoints.sm} {
     padding: 30px 20px 0px;
   }
 `;
+
 const GuideBox = () => {
   return (
-    <>
+    <Container>
       <StyledText>누구나 쉽게 받는 법률 조언</StyledText>
       <StyledText color="sky-500">“헬로(Law)!“</StyledText>
       <LawGuideContainer>
@@ -95,30 +102,8 @@ const GuideBox = () => {
             자세히 알고 싶습니다.
           </LawDetailText>
         </LawContainer>
-        <LawContainer>
-          <LawHeader>
-            <Icon icon="car" fill="primary" size="40" />
-            <LawMainText>교통사고</LawMainText>
-          </LawHeader>
-          <LawDetailText>
-            안녕하세요. 최근 교통사고를 당해 상당한 피해를 입었습니다. 신호 대기 중 후방에서 상대방 차량에 의해 추돌
-            당했는데 법적인 조치에 대한 조언을 구하고자 합니다. 또한 이에 대한 상대방의 책임 여부와 보상 절차에 대해
-            자세히 알고 싶습니다.
-          </LawDetailText>
-        </LawContainer>
-        <LawContainer>
-          <LawHeader>
-            <Icon icon="car" fill="primary" size="40" />
-            <LawMainText>교통사고</LawMainText>
-          </LawHeader>
-          <LawDetailText>
-            안녕하세요. 최근 교통사고를 당해 상당한 피해를 입었습니다. 신호 대기 중 후방에서 상대방 차량에 의해 추돌
-            당했는데 법적인 조치에 대한 조언을 구하고자 합니다. 또한 이에 대한 상대방의 책임 여부와 보상 절차에 대해
-            자세히 알고 싶습니다.
-          </LawDetailText>
-        </LawContainer>
       </LawGuideContainer>
-    </>
+    </Container>
   );
 };
 

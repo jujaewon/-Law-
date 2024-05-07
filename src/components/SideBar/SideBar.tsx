@@ -135,7 +135,7 @@ interface SidebarProps {
 const Sidebar = ({ nickname }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isSelect, setIsSelect] = useState(false);
-  const setIsChat = chatsStore((state) => state.setIsChat);
+  const { setIsChat } = chatsStore();
 
   const createNewChat = () => {
     setIsChat(false);
@@ -157,11 +157,11 @@ const Sidebar = ({ nickname }: SidebarProps) => {
   };
   const logout = () => {
     instance
-      .post('/api/logout/kakao')
+      .get('/auth/logout')
       .then((res) => {
         console.log(res);
+        removeCookie('nickname');
         if (res.status === 200) {
-          removeCookie('nickname');
           window.location.href = '/';
         }
       })
