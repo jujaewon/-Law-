@@ -1,9 +1,27 @@
 import { create } from 'zustand';
 
-interface ChatData {
-  chat: string;
-  type: 'user' | 'bot';
+interface ChatBotData {
+  suggestion: string;
+  precedent: {
+    precedentId: number;
+    lawType: string;
+    precedentSummary: string;
+    category: string;
+  };
+  relatedLaws: Array<string>;
 }
+
+interface UserChatData {
+  chat: string;
+  type: 'user';
+}
+
+interface BotChatData {
+  chat: ChatBotData;
+  type: 'bot';
+}
+type ChatData = UserChatData | BotChatData;
+
 interface ChatsData {
   isChat: boolean;
   data: Array<ChatData>;
