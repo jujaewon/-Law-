@@ -79,7 +79,6 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
   };
 
   const renderAccordionItem = (item: AccordionItemType) => {
-    console.log('render', item);
     if ('lawType' in item) {
       return <AccordionItemQ key={item.id} item={item} onClick={() => {}} onDelete={handleDelete} />;
     } else if ('text' in item) {
@@ -96,7 +95,6 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
         .then((res) => {
           if (res.data) {
             items = res.data;
-            console.log('rfff', items);
             setChildrenData(items);
           }
         })
