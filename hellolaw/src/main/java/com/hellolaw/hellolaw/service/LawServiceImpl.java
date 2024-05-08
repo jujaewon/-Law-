@@ -29,6 +29,9 @@ public class LawServiceImpl implements LawService {
 	public LawDetailResponse getLawDetail(String lawName) {
 		Law law = lawRepository.findByName(lawName)
 			.orElseThrow(() -> new HelloLawBaseException(ErrorBase.E400_INVALID_LAW_NAME));
+		Long cur = law.getCount();
+		law.setCount(cur + 1);
+		lawRepository.save(law);
 		return lawMapper.toLawDetailResponse(law);
 	}
 

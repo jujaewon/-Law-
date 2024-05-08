@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -35,7 +36,8 @@ public class Law extends BaseEntity {
 	private Category category;
 
 	@Column(name = "count")
-	@ColumnDefault("1")
+	@ColumnDefault("0")
+	@Setter
 	private Long count;
 
 	@OneToMany(mappedBy = "law")
