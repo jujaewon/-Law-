@@ -96,22 +96,6 @@ const BottomBar = () => {
     setMessage('');
     setIsChat(true);
     addChatData({ chat: message, type: 'user' });
-
-    instance
-      .post('/api/question')
-      .then((res) => {
-        if (res.data) {
-          console.log('질문 API성공', res.data);
-          setIsBoatLoading(false);
-          ///20초 지연후에 응답
-          setTimeout(() => {
-            addChatData({ chat: res.data, type: 'bot' });
-          }, 20000);
-        }
-      })
-      .catch((err) => {
-        return console.log('에러', err);
-      });
   };
 
   return (

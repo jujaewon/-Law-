@@ -3,6 +3,8 @@ import { chatsStore } from '@store/chatsStore';
 import { breakpoints } from '@styles/breakpoints';
 
 import ChatMessage from './ChatMessage';
+import { useEffect } from 'react';
+import { instance } from '@api/instance';
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.white};
@@ -54,6 +56,23 @@ const ChatMessageWrapper = styled.div`
 
 const ChatDefault = () => {
   const data = chatsStore((state) => state.data);
+  const { addChatData } = chatsStore((state) => state.actions);
+
+  const [chat, setChat] = useState(null);
+
+  useEffect(() => {
+    instance
+      .post('/api/question')
+      .then((res) => {
+        if (res.data) {
+          ///20초 지연후에 응답
+          addChatData({ chat: res.data, type: 'bot' });
+        }
+      })
+      .catch((err) => {
+        return console.log('에러', err);
+      });
+  }, []);
 
   return (
     <Container>
@@ -62,7 +81,7 @@ const ChatDefault = () => {
           {chat.type === 'user' ? (
             <ChatMessageWrapper>{chat.chat}</ChatMessageWrapper>
           ) : (
-            <ChatMessage chatdata={chat.chat} />
+            <ChatMessage chatdata={null} />
           )}
         </ChatWrapper>
       ))}
