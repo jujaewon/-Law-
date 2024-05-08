@@ -15,7 +15,7 @@ const ContentBoxContainer = styled.div`
   font-size: 15px;
 `;
 
-const CatecoryWrapper = styled.div`
+const CategoryWrapper = styled.div`
   min-width: 80px;
   width: auto;
   padding: 0 10px;
@@ -54,6 +54,7 @@ const ModalWrapper = styled.div`
     0px 10px 20px 0px rgba(0, 0, 0, 0.08),
     0px 0px 2px 0px rgba(0, 0, 0, 0.12);
 `;
+
 const ModalCategoryButtonWrapper = styled.button`
   font-size: 17px;
   display: flex;
@@ -66,6 +67,7 @@ const ModalCategoryButtonWrapper = styled.button`
     background-color: ${(props) => props.theme.gray2};
   }
 `;
+
 const OptionDetailModal = styled.div`
   background: #ffffff;
   border-radius: 8px;
@@ -80,6 +82,7 @@ const OptionDetailModal = styled.div`
   height: auto;
   position: relative;
 `;
+
 const SearchOptionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -91,12 +94,19 @@ const SearchOptionContainer = styled.div`
   width: 100%;
   position: relative;
 `;
+
 const OptionText = styled.div`
   font-weight: bold;
   font-size: 15px;
   line-height: 20px;
   position: relative;
+  color: #0080FF;
 `;
+
+const Color = styled.div`
+  color: #0080FF;
+`
+
 interface CategoryModalProps {
   onCategoryClick: (category: string) => void;
   selectedCategory: string;
@@ -148,10 +158,12 @@ const SecondContent = ({ selectedText, onTextClick }: SecondContentProps) => (
     </DynamicColorText>
   </ModalWrapper>
 );
+
 interface OptionsType {
   category: string;
   humanType: string;
 }
+
 interface PropsType {
   setOptionsData: React.Dispatch<React.SetStateAction<OptionsType>>;
 }
@@ -169,11 +181,12 @@ const ContentBox = ({ setOptionsData }: PropsType) => {
   const { category, humanType } = options;
 
   const handleOptionsShow = (type: string) => {
-    if (showOptions1 || showOptions2) return;
-
-    if (type === 'category') setShowOptions1(!showOptions1);
-    if (type === 'humanType') setShowOptions2(!showOptions2);
-  };
+    if (type === 'category') {
+      setShowOptions1(!showOptions1); // showOptions1의 상태를 토글
+    } else if (type === 'humanType') {
+      setShowOptions2(!showOptions2); // showOptions2의 상태를 토글
+    }
+  };  
 
   const handleCategoryClick = (value: string) => {
     setOptions((prev) => ({
@@ -212,17 +225,19 @@ const ContentBox = ({ setOptionsData }: PropsType) => {
       )}
 
       <ContentBoxContainer>
-        <CatecoryWrapper onClick={() => handleOptionsShow('category')}>
-          {category}
-          <RiArrowDownSLine />
-          {showOptions1 && <CategoryModal onCategoryClick={handleCategoryClick} selectedCategory={category} />}
-        </CatecoryWrapper>
+        <Color>
+          <CategoryWrapper onClick={() => handleOptionsShow('category')}>
+            {category}
+            <RiArrowDownSLine />
+            {showOptions1 && <CategoryModal onCategoryClick={handleCategoryClick} selectedCategory={category} />}
+          </CategoryWrapper>
+        </Color>
 
-        <CatecoryWrapper onClick={() => handleOptionsShow('humanType')}>
+        <CategoryWrapper onClick={() => handleOptionsShow('humanType')}>
           {humanType}
           <RiArrowDownSLine />
           {showOptions2 && <SecondContent onTextClick={handleTextClick} selectedText={humanType} />}
-        </CatecoryWrapper>
+        </CategoryWrapper>
       </ContentBoxContainer>
     </SearchOptionContainer>
   );
