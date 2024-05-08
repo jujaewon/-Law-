@@ -5,11 +5,12 @@ import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 
 import { AccordionDataType, AQuestionType, CategoryType, RankDataType } from '@@types/custom';
 import { getCategoryData, setCategoryData } from '@store/sidebarStore';
-import { AccordionQData, AccordionSData } from '@test/data';
+import { AccordionSData } from '@test/data';
 
 import AccordionItemQ from './AccordionItemQ';
 import AccordionItemR from './AccordionItemR';
 import AccordionItemS from './AccordionItemS';
+import { instance } from '@api/instance';
 
 const AccordionBoxContainer = styled.div`
   display: flex;
@@ -58,7 +59,7 @@ interface AccordionBoxProps {
 type AccordionItemType = AQuestionType | CategoryType | RankDataType;
 const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
   const [isActive, setIsActive] = useState(data.title === '실시간 인기 법률');
-  const [childrenData, setChildrenData] = useState<AccordionItemType[]>([]);
+  const [childrenData, setChildrenData] = useState<AccordionItemType[]>();
   const rankData = getCategoryData();
   const setCategory = setCategoryData();
 
@@ -74,12 +75,13 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
   };
 
   const handleDelete = (id: number) => {
-    setChildrenData(childrenData.filter((item: any) => item.id !== id)); // 삭제된 아이템을 제외한 새로운 배열 생성
+    setChildrenData(childrenData?.filter((item: any) => item.id !== id));
   };
 
   const renderAccordionItem = (item: AccordionItemType) => {
-    if ('bigCategory' in item) {
-      return <AccordionItemQ key={item.id} item={item} onDelete={handleDelete} />;
+    console.log('render', item);
+    if ('lawType' in item) {
+      return <AccordionItemQ key={item.id} item={item} onClick={() => {}} onDelete={handleDelete} />;
     } else if ('text' in item) {
       return <AccordionItemS key={item.id} item={item} />;
     } else {
@@ -88,18 +90,26 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
   };
   useEffect(() => {
     let items: AccordionItemType[] = [];
-    switch (data.type) {
-      case 'question':
-        items = AccordionQData;
-        break;
-      case 'category':
-        items = AccordionSData;
-        break;
-      case 'rank':
-        items = rankData;
-        break;
+    if (data.type === 'question') {
+      instance
+        .get('/api/question/history')
+        .then((res) => {
+          if (res.data) {
+            items = res.data;
+            console.log('rfff', items);
+            setChildrenData(items);
+          }
+        })
+        .catch((err) => {
+          return console.log('에러', err);
+        });
+    } else if (data.type === 'category') {
+      items = AccordionSData;
+      setChildrenData(items);
+    } else if (data.type === 'rank') {
+      items = rankData;
+      setChildrenData(items);
     }
-    setChildrenData(items);
   }, [data.type, rankData]);
 
   const backCategory = () => {
@@ -107,6 +117,7 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
       setCategory({ isSelect: false, title: '', data: [] });
     }
   };
+
   return (
     <AccordionBoxContainer>
       <Header onClick={handleActive} $isActive={isActive} $isOpen={isOpen}>
@@ -115,7 +126,7 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
         {isOpen ? isActive ? <IoIosArrowUp /> : <IoIosArrowDown /> : null}
       </Header>
       <ContentsContainer $isOpen={isOpen} $isActive={isActive}>
-        {childrenData.map(renderAccordionItem)}
+        {childrenData && childrenData.map(renderAccordionItem)}
       </ContentsContainer>
     </AccordionBoxContainer>
   );

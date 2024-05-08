@@ -3,6 +3,8 @@ import { FaRegTrashAlt } from 'react-icons/fa';
 import { AQuestionType } from '@@types/custom';
 import Button from '@components/Button/Button';
 import GetCategoryIcon from '@utils/findIcon';
+import { useEffect } from 'react';
+import { instance } from '@api/instance';
 
 const QuestionTitleWrapper = styled.div`
   padding: 5px 0px 5px 0px;
@@ -19,7 +21,7 @@ const QuestionTitleWrapper = styled.div`
 const QuestionTitle = styled.div`
   color: ${(props) => props.theme.black};
   text-align: left;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   position: relative;
   width: 188px;
@@ -75,40 +77,36 @@ const DeleteButton = styled.button`
 `;
 interface AccordionItemQProps {
   item: AQuestionType;
+  onClick: () => void;
   onDelete: (id: number) => void;
 }
-// const AccordionItemQ = ({ item, onDelete }: AccordionItemQProps) => {
-const AccordionItemQ = ({ item }: AccordionItemQProps) => {
-  const { title, bigCategory, smallCategory } = item;
+
+const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
+  const { id, summary, lawType, category } = item;
 
   const handleDelete = async () => {
-    // console.log('삭제', id);
-    // onDelete(id);
-    // try {
-    //   const response = await axios.delete(`https://your-api-url.com/items/${id}`);
-    //   if (response.status === 200) {
-    //     onDelete(item.id); // 부모 컴포넌트에 삭제를 알림
-    //   }
-    // } catch (error) {
-    //   console.error('Failed to delete the item', error);
-    //   alert('Failed to delete the item'); // 삭제 실패 시 알림
-    // }
+    instance.delete(`/api/question/?questionId=${id}`).then((res) => {
+      if (res) {
+        console.log(res);
+        onDelete(item.id);
+      }
+    });
   };
   return (
     <ContentContainer>
       <QuestionTitleWrapper>
-        <QuestionTitle>{title}</QuestionTitle>
+        <QuestionTitle>{summary}</QuestionTitle>
         <DeleteButton onClick={handleDelete}>
           <FaRegTrashAlt size={'14'} />
         </DeleteButton>
       </QuestionTitleWrapper>
       <ButtonsWrapper>
         <Button type="button" color="secondary3" custom="category">
-          {bigCategory}
+          {lawType}
         </Button>
         <Button type="button" color="secondary1" custom="category">
-          {GetCategoryIcon(smallCategory)}
-          {smallCategory}
+          {GetCategoryIcon(category)}
+          {category}
         </Button>
       </ButtonsWrapper>
     </ContentContainer>

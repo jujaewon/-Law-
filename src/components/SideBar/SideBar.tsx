@@ -175,7 +175,7 @@ const Sidebar = ({ nickname }: SidebarProps) => {
       <div>
         <Header>
           <OpenButton $isOpen={isOpen} onClick={() => setIsOpen(!isOpen)}>
-            🧠
+            <Avatar />
           </OpenButton>
           <StyledParagraph $isOpen={isOpen}>헬로(Law)</StyledParagraph>
         </Header>
