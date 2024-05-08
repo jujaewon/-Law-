@@ -44,12 +44,14 @@ const ChatWrapper = styled.div<{ $type: string }>`
   justify-content: ${(props) => (props.$type == 'user' ? 'flex-end' : 'flex-start')};
   margin: 10px 0;
   font-size: 1.5rem;
+  font-weight: bold;
 `;
 
 const ChatMessageWrapper = styled.div`
   background-color: ${(props) => props.theme.gray2};
   padding: 16px 16px;
   border-radius: 10px;
+  width: 600px;
 `;
 
 const ChatDefault = () => {
