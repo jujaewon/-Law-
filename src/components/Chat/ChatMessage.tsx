@@ -13,6 +13,7 @@ const StyledTextDiv = styled.div`
   margin-left: 10px;
   width: 100%;
   padding-right: 30px;
+  white-space: pre-line;
 `;
 
 const Label = styled.div`
@@ -181,22 +182,20 @@ interface ChatBotData {
 }
 
 interface ChatMessageProps {
-  chatdata?: ChatBotData;
+  chatdata: ChatBotData | null;
 }
 const ChatMessage = ({ chatdata }: ChatMessageProps) => {
+  const defaultText =
+    '안녕하세요. 저는 법률 전문 챗봇 ‘헬로(Law)’ 입니다.\r\n 질문하신 내용에 대한 최적의 답변을 제공하고자 열심히 답변을 생성하고 있습니다.\r\n  보다 정확한 답변과 유용한 정보를 제공하기 위해 일부 시간이 소요될 수 있으니 잠시만 기다려주시기 바랍니다.\r\n 사용자의 사건과 가장 유사한 판례는 아래와 같습니다.';
   return (
     <ChatContainer>
       <DefaultMessageContainer>
         <ContainerAlign>
-          <StyledTextDiv>안녕하세요. 저는 법무법인 대륙아주의 법률 전문 챗봇 ‘AI 대륙아주’ 입니다.</StyledTextDiv>
+          <StyledTextDiv>{defaultText}</StyledTextDiv>
           <Button>더보기</Button>
         </ContainerAlign>
-        <StyledTextDiv>질문하신 내용에 대한 최적의 답변을 제공하고자 열심히 답변을 생성하고 있습니다.</StyledTextDiv>
-        <StyledTextDiv>
-          보다 정확한 답변과 유용한 정보를 제공하기 위해 일부 시간이 소요될 수 있으니 잠시만 기다려주시기 바랍니다.
-        </StyledTextDiv>
-        <StyledTextDiv>사용자의 사건과 가장 유사한 판례는 아래와 같습니다.</StyledTextDiv>
       </DefaultMessageContainer>
+      {chatdata === null && <div>로딩중...</div>}
       <Container>
         <FieldContainer>
           <Label>판례타입</Label>
