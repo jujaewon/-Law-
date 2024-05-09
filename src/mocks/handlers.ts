@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw';
 const baseUrl = 'https://test.hellolaw.kr:8000';
 
 export const handlers = [
-  http.get(baseUrl + '/api/login/kakao', () => {
+  http.get('/api/login/kakao', () => {
     return new HttpResponse(null, {
       status: 200,
       statusText: 'Save Cookie',
