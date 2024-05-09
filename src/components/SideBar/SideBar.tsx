@@ -160,6 +160,7 @@ const Sidebar = ({ nickname }: SidebarProps) => {
       .get('/auth/logout')
       .then((res) => {
         console.log(res);
+        removeCookie('access-token');
         removeCookie('nickname');
         if (res.status === 200) {
           window.location.href = '/';
