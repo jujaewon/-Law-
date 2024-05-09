@@ -32,6 +32,7 @@ public class AnswerResultResponse {
 			.precedentId(answer.getRelatedAnswers().get(0).getPrecedent().getId())
 			.precedentType(answer.getRelatedAnswers().get(0).getPrecedent().getCaseName())
 			.precedentCategory(answer.getRelatedAnswers().get(0).getLaw().getCategory().name())
+			.summaryPrecedent(answer.getSummaryAnswer().getContents())
 			.suggest(answer.getContents())
 			.laws(lawNames)
 			.build();
