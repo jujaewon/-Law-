@@ -62,7 +62,7 @@ public class QuestionServiceImpl implements QuestionService {
 		}
 
 		String suggestion = getSuggestion(question);
-		PrecedentDto precedent = bertService.getSimilarPrecedent(questionRequest.getQuestion()).join();
+		PrecedentDto precedent = bertService.getSimilarPrecedent(questionRequest.getQuestion());
 
 		//판례 요약하고 카테고리 뽑아오기
 		PredecentSummaryResponse predecentSummary = openAiService.getBasicFactInformation(
