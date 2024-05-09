@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
@@ -37,9 +36,12 @@ public class Law extends BaseEntity {
 
 	@Column(name = "count")
 	@ColumnDefault("0")
-	@Setter
 	private Long count;
 
 	@OneToMany(mappedBy = "law")
 	private List<RelatedAnswer> relatedAnswers;
+
+	public void updateCount(Long newCount) {
+		this.count = newCount;
+	}
 }
