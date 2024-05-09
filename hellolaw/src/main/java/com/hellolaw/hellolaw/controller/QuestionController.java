@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hellolaw.hellolaw.common.ApiResponse;
+import com.hellolaw.hellolaw.dto.QuestionAnswerResponse;
 import com.hellolaw.hellolaw.dto.QuestionRequest;
 import com.hellolaw.hellolaw.internal.service.BERTService;
 import com.hellolaw.hellolaw.internal.service.BERTServiceMockImpl;
@@ -38,7 +39,7 @@ public class QuestionController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> generateAnswer(@RequestBody QuestionRequest questionRequest) {
+	public ResponseEntity<QuestionAnswerResponse> generateAnswer(@RequestBody QuestionRequest questionRequest) {
 		return ResponseEntity.ok(questionService.generateAnswer(questionRequest));
 	}
 
