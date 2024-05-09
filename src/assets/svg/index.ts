@@ -1,6 +1,6 @@
 export { ReactComponent as default } from './default.svg';
 export { ReactComponent as kakao } from './kakaologo.svg';
-
+export { ReactComponent as loading } from './loading.svg';
 //카테고리 아이콘
 
 //스토킹

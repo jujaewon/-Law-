@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
+import TypingText from './TypingText';
+import Loading from '@components/Loading/Loading';
 
-import useModal from '@hooks/useModal';
 
 const FieldContainer = styled.div`
   align-self: stretch;
@@ -9,12 +10,6 @@ const FieldContainer = styled.div`
   padding: 8px 10px 10px 0px;
   border-bottom: 1px solid #d9e1e8;
   width: 100%;
-`;
-
-const StyledTextDiv = styled.div`
-  margin-left: 10px;
-  width: 100%;
-  padding-right: 30px;
 `;
 
 const Label = styled.div`
@@ -32,7 +27,7 @@ const Value1 = styled(Value)`
 
 const ChatContainer = styled.div`
   height: auto;
-  padding: 32px 16px;
+  padding: 32px 46px 32px 26px;
   border-radius: 10px;
   background-color: ${(props) => props.theme.secondary2};
   display: inline-flex;
@@ -183,68 +178,58 @@ interface ChatBotData {
 }
 
 interface ChatMessageProps {
-  chatdata?: ChatBotData;
+  chatdata: ChatBotData | null;
 }
 const ChatMessage = ({ chatdata }: ChatMessageProps) => {
-
-  const { openModal } = useModal();
-  const test = () => {
-    console.log('상세 내용 보기');
-    openModal({
-      type: 'info',
-      props: {
-        title: chatdata?.relatedLaws[0],
-        message:
-          '대한민국은 민주공화국이다, 제2항은 대한민국의 주권은 국민에게 있고, 모든 권력은 국민으로부터 나온다라고 규정한다...',
-      },
-    });
-  };
+  const defaultText =
+    '안녕하세요. 저는 법률 전문 챗봇 ‘헬로(Law)’ 입니다.\r\n 질문하신 내용에 대한 최적의 답변을 제공하고자 열심히 답변을 생성하고 있습니다.\r\n  보다 정확한 답변과 유용한 정보를 제공하기 위해 일부 시간이 소요될 수 있으니 잠시만 기다려주시기 바랍니다.\r\n 사용자의 사건과 가장 유사한 판례는 아래와 같습니다.';
 
   return (
     <ChatContainer>
       <DefaultMessageContainer>
         <ContainerAlign>
-          <StyledTextDiv>안녕하세요. 저는 법무법인 대륙아주의 법률 전문 챗봇 ‘AI 대륙아주’ 입니다.</StyledTextDiv>
-          <Button onClick={test}>더보기</Button>
+          <TypingText text={defaultText} />
+          {chatdata && <Button>더보기</Button>}
         </ContainerAlign>
-        <StyledTextDiv>질문하신 내용에 대한 최적의 답변을 제공하고자 열심히 답변을 생성하고 있습니다.</StyledTextDiv>
-        <StyledTextDiv>
-          보다 정확한 답변과 유용한 정보를 제공하기 위해 일부 시간이 소요될 수 있으니 잠시만 기다려주시기 바랍니다.
-        </StyledTextDiv>
-        <StyledTextDiv>사용자의 사건과 가장 유사한 판례는 아래와 같습니다.</StyledTextDiv>
       </DefaultMessageContainer>
-      <Container>
-        <FieldContainer>
-          <Label>판례타입</Label>
-          <Value1>{chatdata?.precedent.lawType}</Value1>
-        </FieldContainer>
-        <FieldContainer>
-          <Label>판례카테고리</Label>
-          <Value1>{chatdata?.precedent.category}</Value1>
-        </FieldContainer>
-        <FieldContainer>
-          <Label>판례요약</Label>
-          <Value1>{chatdata?.precedent.precedentSummary}</Value1>
-        </FieldContainer>
-        <AddressSection>
-          <AddressSectionDiv>제안</AddressSectionDiv>
-          <AddressBox>{chatdata?.suggestion}</AddressBox>
-        </AddressSection>
-      </Container>
-      <LawsContainer>
-        <LawContainerAlign>
-          <LawTitle>{chatdata?.relatedLaws[0]}</LawTitle>
-          <MoreButton onClick={test}>더보기</MoreButton>
-        </LawContainerAlign>
-        <LawContainerAlign>
-          <LawTitle>{chatdata?.relatedLaws[0]}</LawTitle>
-          <MoreButton onClick={test}>더보기</MoreButton>
-        </LawContainerAlign>
-        <LawContainerAlign>
-          <LawTitle>{chatdata?.relatedLaws[0]}</LawTitle>
-          <MoreButton onClick={test}>더보기</MoreButton>
-        </LawContainerAlign>
-      </LawsContainer>
+      {chatdata === null ? (
+        <Loading></Loading>
+      ) : (
+        <>
+          <Container>
+            <FieldContainer>
+              <Label>판례타입</Label>
+              <Value1>{chatdata?.precedent.lawType}</Value1>
+            </FieldContainer>
+            <FieldContainer>
+              <Label>판례카테고리</Label>
+              <Value1>{chatdata?.precedent.category}</Value1>
+            </FieldContainer>
+            <FieldContainer>
+              <Label>판례요약</Label>
+              <Value1>{chatdata?.precedent.precedentSummary}</Value1>
+            </FieldContainer>
+            <AddressSection>
+              <AddressSectionDiv>제안</AddressSectionDiv>
+              <AddressBox>{chatdata?.suggestion}</AddressBox>
+            </AddressSection>
+          </Container>
+          <LawsContainer>
+            <LawContainerAlign>
+              <LawTitle>{chatdata?.relatedLaws[0]}</LawTitle>
+              <MoreButton>더보기</MoreButton>
+            </LawContainerAlign>
+            <LawContainerAlign>
+              <LawTitle>{chatdata?.relatedLaws[0]}</LawTitle>
+              <MoreButton>더보기</MoreButton>
+            </LawContainerAlign>
+            <LawContainerAlign>
+              <LawTitle>{chatdata?.relatedLaws[0]}</LawTitle>
+              <MoreButton>더보기</MoreButton>
+            </LawContainerAlign>
+          </LawsContainer>
+        </>
+      )}
     </ChatContainer>
   );
 };

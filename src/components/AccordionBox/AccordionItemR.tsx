@@ -47,7 +47,6 @@ const AccordionItemS = ({ item }: AccordionItemQProps) => {
   const { openModal } = useModal();
 
   const test = () => {
-    console.log('ff');
     openModal({
       type: 'info',
       props: {
