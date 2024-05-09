@@ -1,6 +1,5 @@
 package com.hellolaw.hellolaw.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,11 +10,14 @@ import com.hellolaw.hellolaw.dto.QuestionRequest;
 import com.hellolaw.hellolaw.entity.Law;
 import com.hellolaw.hellolaw.internal.dto.LawInformationDto;
 import com.hellolaw.hellolaw.internal.dto.PrecedentDto;
+import com.hellolaw.hellolaw.internal.dto.PredecentSummaryResponse;
 import com.hellolaw.hellolaw.internal.service.BERTService;
 import com.hellolaw.hellolaw.internal.service.BERTServiceMockImpl;
 import com.hellolaw.hellolaw.internal.service.LawInformationService;
+import com.hellolaw.hellolaw.internal.service.OpenAiService;
 import com.hellolaw.hellolaw.mapper.LawMapper;
 import com.hellolaw.hellolaw.repository.LawRepository;
+import com.hellolaw.hellolaw.util.CategoryConstant;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,20 +27,38 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
 
-	private final BERTService bertService = new BERTServiceMockImpl();
+	private final BERTService bertService = new BERTServiceMockImpl(); // TODO : MOCK 삭제
 	private final LawInformationService lawInformationService;
+	private final OpenAiService openAiService;
 	private final LawRepository lawRepository;
 	private final LawMapper lawMapper;
 
 	@Override
 	public QuestionAnswerResponse generateAnswer(QuestionRequest questionRequest) {
+		// TODO : 대처방안
+		String suggestion = "이렇게 해보세용";
+
+		// 유사판례
 		PrecedentDto precedent = bertService.getSimilarPrecedent(questionRequest.getQuestion());
+
+		//판례 요약하고 카테고리 뽑아오기
+		PredecentSummaryResponse predecentSummary = openAiService.getBasicFactInformation(precedent.getDisposal(),
+			precedent.getBasicFact());
+
+		// 관련 법안 0~3개에 대해 저장
 		List<String> list = precedent.getRelatedLaws();
-		List<Law> relatedLaws = new ArrayList<>();
-		list.stream().forEach(lawName -> {
-			relatedLaws.add(saveRelatedLaw(lawName));
+		list.forEach(lawName -> {
+			saveRelatedLaw(lawName);
 		});
-		return null;
+
+		return QuestionAnswerResponse.builder()
+			.suggestion(suggestion)
+			.precedentId(precedent.getId())
+			.precedentSummary(predecentSummary.getSummary())
+			.lawType(precedent.getCaseName())
+			.category(CategoryConstant.getCategoryInKorean(predecentSummary.getCategory()))
+			.relatedLaws(precedent.getRelatedLaws())
+			.build();
 	}
 
 	private Law saveRelatedLaw(String lawName) {
