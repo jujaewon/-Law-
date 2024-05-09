@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hellolaw.hellolaw.entity.Category;
 import com.hellolaw.hellolaw.service.LawService;
+import com.hellolaw.hellolaw.util.CategoryConverter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,8 +25,10 @@ public class LawController {
 	}
 
 	@GetMapping("/ranking")
-	public ResponseEntity<?> getLawRanking() {
+	public ResponseEntity<?> getLawRanking(@RequestParam(value = "category") String param) {
+		// memberId 임시 설정
 		Long memberId = 100L;
-		return ResponseEntity.ok(lawService.getLawRanking(memberId));
+		Category category = CategoryConverter.getCategoryInEnum(param);
+		return ResponseEntity.ok(lawService.getLawRanking(memberId, category));
 	}
 }

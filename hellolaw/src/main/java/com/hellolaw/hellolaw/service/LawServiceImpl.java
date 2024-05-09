@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.hellolaw.hellolaw.dto.LawDetailResponse;
 import com.hellolaw.hellolaw.dto.SseResponse;
+import com.hellolaw.hellolaw.entity.Category;
 import com.hellolaw.hellolaw.entity.Law;
 import com.hellolaw.hellolaw.exception.HelloLawBaseException;
 import com.hellolaw.hellolaw.mapper.LawMapper;
@@ -36,14 +37,16 @@ public class LawServiceImpl implements LawService {
 	}
 
 	@Override
-	public List<SseResponse> getLawRanking(Long memberId) {
-		List<Law> lawRanking = lawRepository.findTop10ByOrderByCountDesc();
+	public List<SseResponse> getLawRanking(Long memberId, Category category) {
+		// String ctgry = category.toString();
+		// System.out.println("카테고리: " + ctgry);
+		List<Law> lawRanking = lawRepository.findTop10ByCategoryOrderByCountDesc(category);
 		List<SseResponse> sseResponseList = new ArrayList<>();
 		for (Law law : lawRanking) {
 			SseResponse response = lawMapper.toSseResponse(law);
 			sseResponseList.add(response);
 		}
-		sseService.sendEvent(memberId, sseResponseList);
+		//sseService.sendEvent(memberId, sseResponseList);
 		return sseResponseList;
 	}
 }
