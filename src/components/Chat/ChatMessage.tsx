@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import TypingText from './TypingText';
 import Loading from '@components/Loading/Loading';
+import useModal from '@hooks/useModal'
 
 const FieldContainer = styled.div`
   align-self: stretch;
@@ -182,13 +183,26 @@ interface ChatMessageProps {
 const ChatMessage = ({ chatdata }: ChatMessageProps) => {
   const defaultText =
     '안녕하세요. 저는 법률 전문 챗봇 ‘헬로(Law)’ 입니다.\r\n 질문하신 내용에 대한 최적의 답변을 제공하고자 열심히 답변을 생성하고 있습니다.\r\n  보다 정확한 답변과 유용한 정보를 제공하기 위해 일부 시간이 소요될 수 있으니 잠시만 기다려주시기 바랍니다.\r\n 사용자의 사건과 가장 유사한 판례는 아래와 같습니다.';
-
+    const { openModal } = useModal();
+    
+    const test = () => {
+      console.log('상세 내용 보기');
+      openModal({
+        type: 'info',
+        props: {
+          title: chatdata?.relatedLaws[0],
+          message:
+            '대한민국은 민주공화국이다, 제2항은 대한민국의 주권은 국민에게 있고, 모든 권력은 국민으로부터 나온다라고 규정한다...',
+        },
+      });
+    };
+  
   return (
     <ChatContainer>
       <DefaultMessageContainer>
         <ContainerAlign>
           <TypingText text={defaultText} />
-          {chatdata && <Button>더보기</Button>}
+          {chatdata && <Button onClick={test}>더보기</Button>}
         </ContainerAlign>
       </DefaultMessageContainer>
       {chatdata === null ? (
@@ -216,15 +230,15 @@ const ChatMessage = ({ chatdata }: ChatMessageProps) => {
           <LawsContainer>
             <LawContainerAlign>
               <LawTitle>{chatdata?.relatedLaws[0]}</LawTitle>
-              <MoreButton>더보기</MoreButton>
+              <MoreButton onClick={test}>더보기</MoreButton>
             </LawContainerAlign>
             <LawContainerAlign>
               <LawTitle>{chatdata?.relatedLaws[0]}</LawTitle>
-              <MoreButton>더보기</MoreButton>
+              <MoreButton onClick={test}>더보기</MoreButton>
             </LawContainerAlign>
             <LawContainerAlign>
               <LawTitle>{chatdata?.relatedLaws[0]}</LawTitle>
-              <MoreButton>더보기</MoreButton>
+              <MoreButton onClick={test}>더보기</MoreButton>
             </LawContainerAlign>
           </LawsContainer>
         </>
