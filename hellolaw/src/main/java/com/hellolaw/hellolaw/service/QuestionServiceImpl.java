@@ -19,6 +19,7 @@ import com.hellolaw.hellolaw.mapper.LawMapper;
 import com.hellolaw.hellolaw.repository.LawRepository;
 import com.hellolaw.hellolaw.util.CategoryConstant;
 
+import com.hellolaw.hellolaw.dto.QuestionResultDetailResponse;
 import com.hellolaw.hellolaw.entity.Question;
 import com.hellolaw.hellolaw.repository.QuestionRepository;
 
@@ -36,6 +37,11 @@ public class QuestionServiceImpl implements QuestionService {
 		Question question = questionRepository.findQuestionByUserIdAndQuestionId(userId, questionId).orElseThrow();
 		questionRepository.delete(question);
 		return null;
+	}
+
+	@Override
+	public QuestionResultDetailResponse getQuestionResultDetail(Long userId, Long questionId) {
+
 	}
 
 	private final BERTService bertService = new BERTServiceMockImpl(); // TODO : MOCK 삭제
