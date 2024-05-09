@@ -6,4 +6,6 @@ import com.hellolaw.hellolaw.dto.QuestionRequest;
 public interface QuestionService {
 
 	QuestionAnswerResponse generateAnswer(QuestionRequest questionRequest);
+
+	Void deleteQuestion(Long userId, Long questionId);
 }
