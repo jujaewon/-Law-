@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
-import axios from 'axios';
+// import axios from 'axios';
 
-import { setCookie } from '@utils/cookies';
+// import { setCookie } from '@utils/cookies';
 
 const AuthCheck = () => {
-  const navigate = useNavigate();
+  //   const navigate = useNavigate();
   const handleKaKaoLogin = () => {
     console.log('카카오 로그인 진행중');
     const env = import.meta.env.VITE_DEV;
@@ -26,7 +26,6 @@ const AuthCheck = () => {
     // }
     window.location.href = 'http://test.hellolaw.kr/auth/oauth2/authorize/kakao';
   };
-
   useEffect(() => {
     handleKaKaoLogin();
   }, []);
