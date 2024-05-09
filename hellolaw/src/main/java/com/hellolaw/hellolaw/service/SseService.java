@@ -9,4 +9,6 @@ public interface SseService {
 
 	public void sendEvent(Long memberId, Object data);
 
+	public boolean hasSseEmitter(Long memberId);
+
 }

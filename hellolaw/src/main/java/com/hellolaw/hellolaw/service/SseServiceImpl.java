@@ -18,6 +18,8 @@ public class SseServiceImpl implements SseService {
 	private final ConcurrentHashMap<Long, SseEmitter> concurrentHashMap = new ConcurrentHashMap<>();
 	// 5분 timeout
 	private static final Long TIME_OUT = 300000L;
+	// 30초
+	private static final long RECONNECTION_TIMEOUT = 30000L;
 
 	@Override
 	public SseEmitter subscribe(Long memberId) {
@@ -33,7 +35,6 @@ public class SseServiceImpl implements SseService {
 		sseEmitter.onTimeout(() -> {
 			log.info("timeout callback");
 			concurrentHashMap.remove(memberId);
-			sseEmitter.complete();
 		});
 
 		sseEmitter.onCompletion(() -> {
@@ -50,26 +51,28 @@ public class SseServiceImpl implements SseService {
 		return sseEmitter;
 	}
 
-	// public void sendEvent(Long memberId, SseResponse sseResponseDto) {
 	@Override
 	public void sendEvent(Long memberId, Object data) {
-		SseEmitter sseEmitter = concurrentHashMap.get(memberId);
-		if (sseEmitter == null) {
+		if (!hasSseEmitter(memberId)) {
 			throw new HelloLawBaseException(ErrorBase.E404_NOT_EXISTS_SSE_EMITTER);
 		}
-
-		try {
-			//sseEmitter.send(data);
-			sseEmitter.send(SseEmitter.event()
-				.name("event")
-				//.data(data, MediaType.APPLICATION_JSON));
-				.data(data));
-			log.info("emitter : ", sseEmitter);
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error("sendEvent error");
-		}
-
+		concurrentHashMap.forEach((id, sseEmitter) -> {
+			try {
+				log.info("emitter : {}", sseEmitter);
+				sseEmitter.send(SseEmitter.event()
+					.name("event")
+					.data(data)
+					.reconnectTime(RECONNECTION_TIMEOUT));
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("sendEvent error");
+			}
+		});
 		log.info("sendEvent success");
+	}
+
+	@Override
+	public boolean hasSseEmitter(Long memberId) {
+		return concurrentHashMap.containsKey(memberId);
 	}
 }
