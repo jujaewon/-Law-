@@ -35,9 +35,13 @@ public class Law extends BaseEntity {
 	private Category category;
 
 	@Column(name = "count")
-	@ColumnDefault("1")
+	@ColumnDefault("0")
 	private Long count;
 
 	@OneToMany(mappedBy = "law")
 	private List<RelatedAnswer> relatedAnswers;
+
+	public void updateCount(Long newCount) {
+		this.count = newCount;
+	}
 }
