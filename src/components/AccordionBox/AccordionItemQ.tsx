@@ -3,7 +3,6 @@ import { FaRegTrashAlt } from 'react-icons/fa';
 import { AQuestionType } from '@@types/custom';
 import Button from '@components/Button/Button';
 import GetCategoryIcon from '@utils/findIcon';
-import { useEffect } from 'react';
 import { instance } from '@api/instance';
 
 const QuestionTitleWrapper = styled.div`
@@ -85,6 +84,7 @@ const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
   const { id, summary, lawType, category } = item;
 
   const handleDelete = async () => {
+    onClick();
     instance.delete(`/api/question/?questionId=${id}`).then((res) => {
       if (res) {
         console.log(res);

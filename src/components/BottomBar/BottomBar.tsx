@@ -8,7 +8,6 @@ import { FiSend } from 'react-icons/fi';
 import { breakpoints } from '@styles/breakpoints';
 import Avatar from '@components/Avatar/Avatar';
 import { useTodoActions } from '@store/chatsStore';
-import { instance } from '@api/instance';
 
 const Wrapper = styled.div`
   min-height: 120px;
@@ -76,7 +75,7 @@ const BottomBar = () => {
   const [message, setMessage] = useState<string>('');
   const textarea = useRef<HTMLTextAreaElement>(null);
   const [optionsData, setOptionsData] = useState<OptionsType>({ category: '', humanType: '' });
-  const { setIsChat, addChatData, setIsBoatLoading } = useTodoActions();
+  const { setIsChat, addChatData } = useTodoActions();
 
   const handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = event.target.value;

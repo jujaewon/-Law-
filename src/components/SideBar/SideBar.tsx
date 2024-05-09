@@ -11,7 +11,7 @@ import { VscSignOut } from 'react-icons/vsc';
 import AccordionBox from '@components/AccordionBox/AccordionBox';
 import Avatar from '@components/Avatar/Avatar';
 import Button from '@components/Button/Button';
-import { chatsStore } from '@store/chatsStore';
+import { useTodoActions } from '@store/chatsStore';
 import { getCategoryTitle, getCategorySelect } from '@store/sidebarStore';
 import { removeCookie } from '@utils/cookies';
 
@@ -135,7 +135,7 @@ interface SidebarProps {
 const Sidebar = ({ nickname }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isSelect, setIsSelect] = useState(false);
-  const { setIsChat } = chatsStore();
+  const { setIsChat } = useTodoActions();
 
   const createNewChat = () => {
     setIsChat(false);

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { useQuery } from '@tanstack/react-query';
 import TypingText from './TypingText';
+import Loading from '@components/Loading/Loading';
 
 const FieldContainer = styled.div`
   align-self: stretch;
@@ -9,13 +9,6 @@ const FieldContainer = styled.div`
   padding: 8px 10px 10px 0px;
   border-bottom: 1px solid #d9e1e8;
   width: 100%;
-`;
-
-const StyledTextDiv = styled.div`
-  margin-left: 10px;
-  width: 100%;
-  padding-right: 30px;
-  white-space: pre-line;
 `;
 
 const Label = styled.div`
@@ -33,7 +26,7 @@ const Value1 = styled(Value)`
 
 const ChatContainer = styled.div`
   height: auto;
-  padding: 32px 16px;
+  padding: 32px 46px 32px 26px;
   border-radius: 10px;
   background-color: ${(props) => props.theme.secondary2};
   display: inline-flex;
@@ -199,7 +192,7 @@ const ChatMessage = ({ chatdata }: ChatMessageProps) => {
         </ContainerAlign>
       </DefaultMessageContainer>
       {chatdata === null ? (
-        <div>로딩중...</div>
+        <Loading></Loading>
       ) : (
         <>
           <Container>

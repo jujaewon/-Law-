@@ -7,9 +7,7 @@ interface TypingTextProps {
 }
 
 const StyledTextDiv = styled.div`
-  margin-left: 10px;
   width: 100%;
-  padding-right: 30px;
   white-space: pre-line;
 `;
 const TypingText = ({ text, speed = 100 }: TypingTextProps) => {
