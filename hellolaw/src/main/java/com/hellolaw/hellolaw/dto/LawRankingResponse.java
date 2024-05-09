@@ -3,7 +3,7 @@ package com.hellolaw.hellolaw.dto;
 import lombok.Data;
 
 @Data
-public class SseResponse {
+public class LawRankingResponse {
 	private Long lawId;
 	private String lawName;
 }
