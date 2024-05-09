@@ -7,8 +7,7 @@ import { FiSend } from 'react-icons/fi';
 
 import { breakpoints } from '@styles/breakpoints';
 import Avatar from '@components/Avatar/Avatar';
-import { chatsStore } from '@store/chatsStore';
-import { instance } from '@api/instance';
+import { useTodoActions } from '@store/chatsStore';
 
 const Wrapper = styled.div`
   min-height: 120px;
@@ -76,7 +75,7 @@ const BottomBar = () => {
   const [message, setMessage] = useState<string>('');
   const textarea = useRef<HTMLTextAreaElement>(null);
   const [optionsData, setOptionsData] = useState<OptionsType>({ category: '', humanType: '' });
-  const { setIsChat, addChatData } = chatsStore();
+  const { setIsChat, addChatData } = useTodoActions();
 
   const handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = event.target.value;
@@ -96,18 +95,6 @@ const BottomBar = () => {
     setMessage('');
     setIsChat(true);
     addChatData({ chat: message, type: 'user' });
-
-    instance
-      .post('/api/question')
-      .then((res) => {
-        if (res.data) {
-          console.log('질문 API성공', res.data);
-          addChatData({ chat: res.data, type: 'bot' });
-        }
-      })
-      .catch((err) => {
-        return console.log('에러', err);
-      });
   };
 
   return (

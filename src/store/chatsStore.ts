@@ -24,16 +24,26 @@ type ChatData = UserChatData | BotChatData;
 
 interface ChatsData {
   isChat: boolean;
+  isBoatLoading: boolean;
   data: Array<ChatData>;
 }
 interface ChatsDataInfo extends ChatsData {
-  addChatData: (chat: ChatData) => void;
-  setIsChat: (value: boolean) => void;
+  actions: {
+    addChatData: (chat: ChatData) => void;
+    setIsChat: (value: boolean) => void;
+    setIsBoatLoading: (value: boolean) => void;
+  };
 }
 
 export const chatsStore = create<ChatsDataInfo>((set) => ({
   isChat: false,
+  isBoatLoading: false,
   data: [],
-  addChatData: (chat) => set((state) => ({ data: [...state.data, chat] })),
-  setIsChat: (value) => set({ isChat: value }),
+  actions: {
+    addChatData: (chat) => set((state) => ({ data: [...state.data, chat] })),
+    setIsChat: (value) => set({ isChat: value }),
+    setIsBoatLoading: (value) => set({ isBoatLoading: value }),
+  },
 }));
+
+export const useTodoActions = () => chatsStore((state) => state.actions);

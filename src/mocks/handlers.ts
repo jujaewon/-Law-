@@ -14,13 +14,6 @@ export const handlers = [
       statusText: 'Logut Success',
     });
   }),
-  http.get('/api/posts', () => {
-    console.log('ttt');
-    return new HttpResponse(null, {
-      status: 200,
-      statusText: 'LogutSuccess',
-    });
-  }),
   http.post(baseUrl + '/api/question', () => {
     const data = {
       suggestion: '이렇게 하세요',
@@ -36,6 +29,35 @@ export const handlers = [
     return HttpResponse.json(data, {
       status: 200,
       statusText: 'QuestionSuccess',
+    });
+  }),
+  http.get(baseUrl + '/api/question/history', () => {
+    const questions = [
+      {
+        id: 1,
+        summary: '음주운전 2회로 집행유예 기간 중, 무면허 음주운전으로 적발되었습니다.',
+        lawType: '형사',
+        category: '스토킹',
+      },
+      {
+        id: 2,
+        summary: '최근 교통사고를 당해 상당한 피해를 입었습니다',
+        lawType: '형사',
+        category: '교통사고/음주운전',
+      },
+    ];
+    return HttpResponse.json(questions, {
+      status: 200,
+      statusText: 'QuestionSuccess',
+    });
+  }),
+  http.delete(baseUrl + '/api/question', ({ request }) => {
+    const url = new URL(request.url);
+    const questionId = url.searchParams.get('questionId');
+
+    return HttpResponse.json(null, {
+      status: 200,
+      statusText: `${questionId} DeleteSuccess`,
     });
   }),
 ];

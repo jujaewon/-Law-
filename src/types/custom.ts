@@ -9,9 +9,9 @@ export interface RankDataType {
 }
 export interface AQuestionType {
   id: number;
-  title: string;
-  bigCategory: string;
-  smallCategory: string;
+  summary: string;
+  lawType: string;
+  category: string;
 }
 export interface CategoryType {
   id: number;
