@@ -27,8 +27,15 @@ class Precedent(BaseModel):
 
 
 def extract_laws(text, separator=',', limit=3):
+    # 입력이 빈 문자열인 경우 빈 리스트 반환
+    if text.strip() == '':
+        return []
+
     # 문자열을 지정된 구분자로 분리
     laws = text.split(separator)
+
+    # 빈 문자열 요소 제거
+    laws = [law.strip() for law in laws if law.strip()]
 
     # 처음 'limit'개의 법률을 반환하거나, 법률의 수가 'limit'보다 적다면 모두 반환
     return laws[:min(len(laws), limit)]
@@ -41,6 +48,7 @@ def search_precedent(input_sequence: str,model, text_data, compare_vector):
     cos_sim = cosine_similarity(input_vector, compare_vector)
     data_cosine = np.sort(cos_sim).squeeze()[::-1][:3]
     top_question = np.argsort(cos_sim).squeeze()[::-1][:3]
+
     print(top_question)
     print(text_data[top_question[0]][7])
 
