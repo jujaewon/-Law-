@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.hellolaw.hellolaw.dto.QuestionAnswerResponse;
 import com.hellolaw.hellolaw.dto.QuestionRequest;
 import com.hellolaw.hellolaw.entity.Law;
+import com.hellolaw.hellolaw.entity.Question;
 import com.hellolaw.hellolaw.internal.dto.LawInformationDto;
 import com.hellolaw.hellolaw.internal.dto.PrecedentDto;
 import com.hellolaw.hellolaw.internal.dto.PredecentSummaryResponse;
@@ -17,11 +18,8 @@ import com.hellolaw.hellolaw.internal.service.LawInformationService;
 import com.hellolaw.hellolaw.internal.service.OpenAiService;
 import com.hellolaw.hellolaw.mapper.LawMapper;
 import com.hellolaw.hellolaw.repository.LawRepository;
-import com.hellolaw.hellolaw.util.CategoryConstant;
-
-import com.hellolaw.hellolaw.dto.QuestionResultDetailResponse;
-import com.hellolaw.hellolaw.entity.Question;
 import com.hellolaw.hellolaw.repository.QuestionRepository;
+import com.hellolaw.hellolaw.util.CategoryConstant;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -37,11 +35,6 @@ public class QuestionServiceImpl implements QuestionService {
 		Question question = questionRepository.findQuestionByUserIdAndQuestionId(userId, questionId).orElseThrow();
 		questionRepository.delete(question);
 		return null;
-	}
-
-	@Override
-	public QuestionResultDetailResponse getQuestionResultDetail(Long userId, Long questionId) {
-
 	}
 
 	private final BERTService bertService = new BERTServiceMockImpl(); // TODO : MOCK 삭제

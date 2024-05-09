@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hellolaw.hellolaw.common.ApiResponse;
-import com.hellolaw.hellolaw.dto.QuestionResultDetailResponse;
 import com.hellolaw.hellolaw.dto.QuestionAnswerResponse;
 import com.hellolaw.hellolaw.dto.QuestionRequest;
 import com.hellolaw.hellolaw.internal.service.BERTService;
@@ -48,12 +47,5 @@ public class QuestionController {
 	public ResponseEntity<ApiResponse<Void>> deleteQuestion(
 		@RequestParam(value = "questionId") Long questionId) {
 		return ResponseEntity.ok(ApiResponse.success(questionService.deleteQuestion(1L, questionId)));
-	}
-
-	@GetMapping("/detail")
-	public ResponseEntity<ApiResponse<QuestionResultDetailResponse>> getQuestionResultDetail(
-		@RequestParam(value = "questionId") Long questionId
-	) {
-		return ResponseEntity.ok(ApiResponse.success(questionService.getQuestionResultDetail(1L, questionId)));
 	}
 }
