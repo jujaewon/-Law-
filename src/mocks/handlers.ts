@@ -51,9 +51,8 @@ export const handlers = [
       statusText: 'QuestionSuccess',
     });
   }),
-  http.delete(baseUrl + '/api/question', ({ request }) => {
-    const url = new URL(request.url);
-    const questionId = url.searchParams.get('questionId');
+  http.delete(baseUrl + '/api/question/v1/:questionId', ({ params }) => {
+    const { questionId } = params;
 
     return HttpResponse.json(null, {
       status: 200,

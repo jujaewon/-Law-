@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { chatsStore } from '@store/chatsStore';
 import { breakpoints } from '@styles/breakpoints';
 
+import { useMutation, useQuery } from '@tanstack/react-query';
 import ChatMessage from './ChatMessage';
 import { useEffect, useState } from 'react';
 import { instance } from '@api/instance';
@@ -60,6 +61,7 @@ const ChatDefault = () => {
 
   const [chatBotText, setChatBotText] = useState(null);
 
+  // const { data, isLoading, isError } = useQuery(['getCommnet', post.id], () => fetchComments(post.id));
   useEffect(() => {
     instance
       .post('/api/question')

@@ -85,9 +85,9 @@ const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
 
   const handleDelete = async () => {
     onClick();
-    instance.delete(`/api/question/?questionId=${id}`).then((res) => {
-      if (res) {
-        console.log(res);
+    instance.delete(`api/question/v1/${id}`).then((res) => {
+      if (res && res.status === 200) {
+        console.log('삭제 성공');
         onDelete(item.id);
       }
     });
