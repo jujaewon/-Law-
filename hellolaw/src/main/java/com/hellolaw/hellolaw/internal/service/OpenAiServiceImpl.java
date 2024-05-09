@@ -2,7 +2,8 @@ package com.hellolaw.hellolaw.internal.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hellolaw.hellolaw.exception.HelloLawBaseException;
@@ -18,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OpenAiServiceImpl implements OpenAiService {
 
-	private final RestTemplate restTemplate;
+	private final WebClient webClient;
 
 	@Value("${openai.api.model}")
 	private String model;
@@ -27,9 +28,15 @@ public class OpenAiServiceImpl implements OpenAiService {
 	private String openAiUrl;
 
 	public PredecentSummaryResponse getBasicFactInformation(String disposal, String basicFact) {
+		// TODO : 분리
 		String prompt = PromptConstant.Precedent.prefix + disposal + "\n" + basicFact + PromptConstant.Precedent.suffix;
 		OpenAiRequestDto request = new OpenAiRequestDto(model, prompt);
-		OpenAiResponseDto response = restTemplate.postForObject(openAiUrl, request, OpenAiResponseDto.class);
+		OpenAiResponseDto response = webClient.post()
+			.uri(openAiUrl)
+			.body(BodyInserters.fromValue(request))
+			.retrieve()
+			.bodyToMono(OpenAiResponseDto.class)
+			.block();
 		if (response == null || response.getChoices() == null || response.getChoices().isEmpty()) {
 			throw new HelloLawBaseException(ErrorBase.E500_INTERNAL_SERVER);
 		}

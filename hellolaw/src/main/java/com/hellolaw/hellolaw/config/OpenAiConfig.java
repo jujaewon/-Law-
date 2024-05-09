@@ -3,7 +3,8 @@ package com.hellolaw.hellolaw.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.ClientRequest;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class OpenAiConfig {
@@ -15,12 +16,14 @@ public class OpenAiConfig {
 	private final String tokenPrefix = "Bearer ";
 
 	@Bean
-	public RestTemplate restTemplate() {
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getInterceptors().add((request, body, execution) -> {
-			request.getHeaders().add(AuthorizationHeader, tokenPrefix + secretKey);
-			return execution.execute(request, body);
-		});
-		return restTemplate;
+	public WebClient webClient() {
+		return WebClient.builder()
+			.filter((request, next) -> {
+				ClientRequest filteredRequest = ClientRequest.from(request)
+					.header("Authorization", "Bearer " + secretKey)
+					.build();
+				return next.exchange(filteredRequest);
+			})
+			.build();
 	}
 }
