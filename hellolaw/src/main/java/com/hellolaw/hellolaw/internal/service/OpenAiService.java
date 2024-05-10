@@ -1,8 +1,8 @@
 package com.hellolaw.hellolaw.internal.service;
 
-import com.hellolaw.hellolaw.internal.dto.PredecentSummaryResponse;
+import com.hellolaw.hellolaw.internal.dto.PrecedentSummaryResponse;
 
 public interface OpenAiService {
 
-	public PredecentSummaryResponse getBasicFactInformation(String disposal, String basicFact);
+	public PrecedentSummaryResponse getBasicFactInformation(String disposal, String basicFact);
 }
