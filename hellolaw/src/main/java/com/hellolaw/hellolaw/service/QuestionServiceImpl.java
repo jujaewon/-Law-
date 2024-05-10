@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 public class QuestionServiceImpl implements QuestionService {
 
 	private final QuestionRepository questionRepository;
-	private final BERTService bertService; // TODO : MOCK 삭제
+	private final BERTService bertService;
 	private final LawInformationService lawInformationService;
 	private final OpenAiService openAiService;
 	private final LawRepository lawRepository;
@@ -52,24 +52,19 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 	@Override
 	public QuestionAnswerResponse generateAnswer(QuestionRequest questionRequest) {
-		String question = questionRequest.getQuestion();
-		if (questionRequest.getVictim() != null) {
-			question = "i am " + questionRequest.getVictim() + "\n" + question;
-		}
-		if (questionRequest.getCategory() != null) {
-			question = "this is about " + questionRequest.getCategory() + "\n" + question;
-		}
-
+		String question = makePrompt(questionRequest);
 		String suggestion = getSuggestion(question);
 		PrecedentDto precedent = bertService.getSimilarPrecedent(questionRequest.getQuestion());
 
+		PrecedentSummaryResponse precedentSummary = openAiService.getBasicFactInformation(precedent.getDisposal(),
+			precedent.getBasicFact());
 		//판례 요약하고 카테고리 뽑아오기
-		PredecentSummaryResponse predecentSummary = openAiService.getBasicFactInformation(
+		PrecedentSummaryResponse predecentSummary = openAiService.getBasicFactInformation(
 			precedent.getDisposal_content(),
 			precedent.getBasic_fact());
 
 		// 관련 법안 0~3개에 대해 저장
-		List<String> list = precedent.getRelatedLaws();
+		List<String> list = precedent.getRelate_laword();
 		list.forEach(lawName -> CompletableFuture.runAsync(() -> saveRelatedLaw(lawName)));
 
 		return QuestionAnswerResponse.builder()
@@ -78,14 +73,14 @@ public class QuestionServiceImpl implements QuestionService {
 			.precedentId(precedent.getIndex())
 			.precedentSummary(predecentSummary.getSummary())
 			.lawType(precedent.getCase_nm())
-			.category(CategoryConstant.getCategoryInKorean(predecentSummary.getCategory()))
+			.lawType(precedent.getCase_nm())
 			.relatedLaws(precedent.getRelate_laword())
 			.build();
 	}
 
 	public void saveRelatedLaw(String lawName) {
 		if (lawRepository.findByName(lawName).isEmpty()) {
-			LawInformationDto lawInformationDto = lawInformationService.getLawInformation(lawName).join();
+			LawInformationDto lawInformationDto = lawInformationService.getLawInformation(lawName);
 			Law law = lawMapper.toLaw(lawInformationDto);
 			lawRepository.save(law);
 		}
@@ -102,5 +97,16 @@ public class QuestionServiceImpl implements QuestionService {
 		Question question = questionRepository.findQuestionByUserIdAndQuestionId(userId, questionId).orElseThrow();
 		questionRepository.delete(question);
 		return null;
+	}
+
+	private String makePrompt(QuestionRequest questionRequest) {
+		String question = questionRequest.getQuestion();
+		if (questionRequest.getVictim() != null) {
+			question = "i am " + (questionRequest.getVictim() ? "피해자" : "가해자 ") + "\n" + question;
+		}
+		if (questionRequest.getCategory() != null) {
+			question = "this is about " + questionRequest.getCategory() + "\n" + question;
+		}
+		return question;
 	}
 }
