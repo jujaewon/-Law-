@@ -22,7 +22,7 @@ async def getLawInfo(name: str):
         raise CustomException(status_code=200,
                               message={"lawName": name.strip(),
                                        "contents": "더 이상 시행되지 않는 법입니다.",
-                                       "category": "NONE"})
+                                       "category": "OTHER"})
 
 @app.exception_handler(CustomException)
 async def custom_exception_handler(request, exc: CustomException):
