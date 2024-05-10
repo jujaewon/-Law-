@@ -59,10 +59,12 @@ async def root():
 
 @app.post("/answer/")
 async def answer(question: Question):
+    print(question)
     return AssistantService.getAnswer(client, question.text)
 
 @app.post("/search/")
 async def searchPrecedent(question: Question):
+    print(question)
     return search_precedent(question.text, bertModel, text_data, compare_vector)
 
 
