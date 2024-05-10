@@ -28,7 +28,7 @@ class Precedent(BaseModel):
 
 def extract_laws(text, separator=',', limit=3):
     # 입력이 빈 문자열인 경우 빈 리스트 반환
-    if not next: return []
+    if not text: return []
 
     # 문자열을 지정된 구분자로 분리
     laws = text.split(separator)
