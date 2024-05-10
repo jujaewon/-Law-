@@ -49,7 +49,7 @@ def search_precedent(input_sequence: str,model, text_data, compare_vector):
     top_question = np.argsort(cos_sim).squeeze()[::-1][:3]
 
     print(top_question)
-    print(text_data[top_question[0]][7])
+    print(data_cosine)
 
     precendent = Precedent(
         index = top_question[0],
