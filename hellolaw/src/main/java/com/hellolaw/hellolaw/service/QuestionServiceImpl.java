@@ -1,14 +1,15 @@
 package com.hellolaw.hellolaw.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import com.hellolaw.hellolaw.dto.QuestionHistoryResponse;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hellolaw.hellolaw.dto.QuestionAnswerResponse;
 import com.hellolaw.hellolaw.dto.QuestionRequest;
 import com.hellolaw.hellolaw.entity.Law;
@@ -19,6 +20,7 @@ import com.hellolaw.hellolaw.internal.dto.PredecentSummaryResponse;
 import com.hellolaw.hellolaw.internal.service.BERTService;
 import com.hellolaw.hellolaw.internal.service.LawInformationService;
 import com.hellolaw.hellolaw.internal.service.OpenAiService;
+import com.hellolaw.hellolaw.internal.service.SuggestionService;
 import com.hellolaw.hellolaw.mapper.LawMapper;
 import com.hellolaw.hellolaw.repository.LawRepository;
 import com.hellolaw.hellolaw.repository.QuestionRepository;
@@ -36,10 +38,11 @@ public class QuestionServiceImpl implements QuestionService {
 
 	private final QuestionRepository questionRepository;
 	private final BERTService bertService;
+	private final SuggestionService suggestionService;
 	private final LawInformationService lawInformationService;
 	private final OpenAiService openAiService;
 	private final LawRepository lawRepository;
-	private final LawMapper lawMapper;
+	private final LawMapper lawMapper = LawMapper.INSTANCE;
 
 	@Override
 	public List<QuestionHistoryResponse> getTwoQuestionHistoryList(Long userId) {
@@ -51,10 +54,12 @@ public class QuestionServiceImpl implements QuestionService {
 				.collect(Collectors.toList());
 	}
 	@Override
-	public QuestionAnswerResponse generateAnswer(QuestionRequest questionRequest) {
+	public QuestionAnswerResponse generateAnswer(QuestionRequest questionRequest) throws JsonProcessingException {
 		String question = makePrompt(questionRequest);
-		String suggestion = getSuggestion(question);
-		PrecedentDto precedent = bertService.getSimilarPrecedent(questionRequest.getQuestion());
+
+		String suggestionDto = suggestionService.getSuggestion(question).getText();
+		// String suggestion = suggestionService.getSuggestionString(question); // 대처방안
+		PrecedentDto precedent = bertService.getSimilarPrecedent(questionRequest.getQuestion()); // 유사판례
 
 		PrecedentSummaryResponse precedentSummary = openAiService.getBasicFactInformation(precedent.getDisposal(),
 			precedent.getBasicFact());
@@ -63,11 +68,11 @@ public class QuestionServiceImpl implements QuestionService {
 			precedent.getDisposal_content(),
 			precedent.getBasic_fact());
 
-		// 관련 법안 0~3개에 대해 저장
 		List<String> list = precedent.getRelate_laword();
 		list.forEach(lawName -> CompletableFuture.runAsync(() -> saveRelatedLaw(lawName)));
 
 		return QuestionAnswerResponse.builder()
+			.suggestion(suggestionDto)
 			.suggestion(suggestion)
 			.category(CategoryConstant.getCategoryInKorean(precedentSummary.getCategory()))
 			.precedentId(precedent.getIndex())
@@ -78,17 +83,17 @@ public class QuestionServiceImpl implements QuestionService {
 			.build();
 	}
 
-	public void saveRelatedLaw(String lawName) {
-		if (lawRepository.findByName(lawName).isEmpty()) {
+	private void saveRelatedLaw(String lawName) {
+		Optional<Law> law = lawRepository.findByName(lawName);
+		if (law.isEmpty()) {
 			LawInformationDto lawInformationDto = lawInformationService.getLawInformation(lawName);
-			Law law = lawMapper.toLaw(lawInformationDto);
-			lawRepository.save(law);
+			Law newLaw = lawMapper.toLaw(lawInformationDto);
+			lawRepository.save(newLaw);
+		} else {
+			Law newLaw = law.get();
+			newLaw.setCount(newLaw.getCount() + 1);
+			lawRepository.save(newLaw);
 		}
-	}
-
-	@Async
-	protected String getSuggestion(String question) { // TODO : method 구현
-		return "이렇게 해보세용";
 	}
 
 	@Override
@@ -102,7 +107,7 @@ public class QuestionServiceImpl implements QuestionService {
 	private String makePrompt(QuestionRequest questionRequest) {
 		String question = questionRequest.getQuestion();
 		if (questionRequest.getVictim() != null) {
-			question = "i am " + (questionRequest.getVictim() ? "피해자" : "가해자 ") + "\n" + question;
+			question = "i am " + (questionRequest.getVictim() ? "피해자" : "가해자") + "\n" + question;
 		}
 		if (questionRequest.getCategory() != null) {
 			question = "this is about " + questionRequest.getCategory() + "\n" + question;

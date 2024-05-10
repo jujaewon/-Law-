@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hellolaw.hellolaw.common.ApiResponse;
 import com.hellolaw.hellolaw.dto.QuestionAnswerResponse;
 import com.hellolaw.hellolaw.dto.QuestionRequest;
 import com.hellolaw.hellolaw.internal.service.BERTService;
-import com.hellolaw.hellolaw.internal.service.BERTServiceImpl;
 import com.hellolaw.hellolaw.service.QuestionService;
-import com.hellolaw.hellolaw.service.QuestionServiceImpl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -25,7 +25,9 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/question")
+@RequiredArgsConstructor
 public class QuestionController {
+
 	private final BERTService bertService;
 	private final QuestionService questionService;
 
@@ -43,15 +45,13 @@ public class QuestionController {
 
 	@GetMapping("/v1")
 	public void questionHelloV1() {
-		log.info(
-			bertService.getSimilarPrecedent("계약 기간이 만료되어 다른 집으로 이사를 가려고 했는데, 집주인이 전세금을 돌려주지 않아요. 3억을 못받았어요 어떻게 해야하나요?")
-				.toString());
-
+		log.info(bertService.getSimilarPrecedent("test").toString());
 		return;
 	}
 
 	@PostMapping
-	public ResponseEntity<QuestionAnswerResponse> generateAnswer(@RequestBody QuestionRequest questionRequest) {
+	public ResponseEntity<QuestionAnswerResponse> generateAnswer(@RequestBody QuestionRequest questionRequest) throws
+		JsonProcessingException {
 		return ResponseEntity.ok(questionService.generateAnswer(questionRequest));
 	}
 
