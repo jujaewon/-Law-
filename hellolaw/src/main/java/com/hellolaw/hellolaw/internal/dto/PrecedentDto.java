@@ -9,17 +9,17 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PrecedentDto {
-	private Integer id;
-	private String caseNo;
-	private LocalDate judgementDate;
-	private String courtName;
-	private String caseName;
-	private Integer caseField;
-	private Integer detailField;
-	private Integer trailField;
-	private List<String> relatedLaws;
-	private String disposal;
-	private String basicFact;
-	private String courtDcss;
+	private Integer index;
+	private String case_no;
+	private LocalDate judmn_adju_de;
+	private String court_nm;
+	private String case_nm;
+	private Integer case_field;
+	private Integer detail_field;
+	private Integer trail_field;
+	private List<String> relate_laword;
+	private String disposal_content;
+	private String basic_fact;
+	private String court_dcss;
 	private String conclusion;
 }
