@@ -11,7 +11,7 @@ class CustomException(Exception):
         self.status_code = status_code
         self.message = message
 
-@app.get("law/")
+@app.get("law")
 async def getLawInfo(name: str):
     try:
         lawName, contents = crawl.getLawContents(name.strip())
