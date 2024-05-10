@@ -1,52 +1,37 @@
 from fastapi import FastAPI
 from sentence_transformers import SentenceTransformer
 from AI.BERT.search.search_precedent import *
-from AI.LLM.infer import *
+
 from pydantic import BaseModel
+
+from AI.GPTAssistant import AssistantService
 from AI.utils.load_vector_data import load_vector_data
+from dotenv import load_dotenv
+load_dotenv(".env")
 
 import time
 import os
 import pandas as pd
+from openai import OpenAI
+
 
 app = FastAPI()
 
 
-llm = None
-tokenizer = None
+# llm = None
+# tokenizer = None
 bertModel = None
 text_data = None
 compare_vector = None
+client = None
 
 class Question(BaseModel):
     text : str
-class Precedent(BaseModel):
-    index: int
-    case_no: str
-    judmn_adju_de: str
-    court_nm: str
-    case_nm: str
-    case_field: int
-    detail_field: int
-    trail_field: int
-    relate_laword: list
-    disposal_content: str
-    basic_fact: str
-    court_dcss: str
-    conclusion: str
+
 
 @app.on_event("startup")
-def loadModel():
-    global tokenizer, llm,bertModel, text_data, compare_vector
-    start_time = time.time()
-    print("Loading LLM Model...")
-
-    llm = getLLM("skajd1/Llama3PQ")
-    tokenizer = getTokenizer("skajd1/Llama3PQ")
-
-    print("LLM Model Loaded!")
-    print(f"llm loading time: {time.time() - start_time}")
-
+def serverInit():
+    global bertModel, text_data, compare_vector, client
 
     start_time = time.time()
     print("Loading BERT Model...")
@@ -60,17 +45,21 @@ def loadModel():
     print("BERT Model Loaded!")
     print(f"bert loading time: {time.time() - start_time}")
 
+    client = OpenAI(
+        api_key=os.environ["OPENAI_API_KEY"]
+    )
 
 
-@app.get("/")
+
+@app.get("/health")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "health"}
+
 
 
 @app.post("/answer/")
 async def answer(question: Question):
-    return gen(question.text, llm, tokenizer, "cpu")
-
+    return AssistantService.getAnswer(client, question.text)
 
 @app.post("/search/")
 async def searchPrecedent(question: Question):
