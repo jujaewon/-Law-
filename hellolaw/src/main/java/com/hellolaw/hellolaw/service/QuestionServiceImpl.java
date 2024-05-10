@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import com.hellolaw.hellolaw.dto.QuestionHistoryResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.hellolaw.hellolaw.dto.QuestionAnswerResponse;
@@ -18,7 +17,6 @@ import com.hellolaw.hellolaw.internal.dto.LawInformationDto;
 import com.hellolaw.hellolaw.internal.dto.PrecedentDto;
 import com.hellolaw.hellolaw.internal.dto.PredecentSummaryResponse;
 import com.hellolaw.hellolaw.internal.service.BERTService;
-import com.hellolaw.hellolaw.internal.service.BERTServiceMockImpl;
 import com.hellolaw.hellolaw.internal.service.LawInformationService;
 import com.hellolaw.hellolaw.internal.service.OpenAiService;
 import com.hellolaw.hellolaw.mapper.LawMapper;
@@ -28,6 +26,7 @@ import com.hellolaw.hellolaw.util.CategoryConstant;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -36,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 public class QuestionServiceImpl implements QuestionService {
 
 	private final QuestionRepository questionRepository;
-	private final BERTService bertService = new BERTServiceMockImpl(); // TODO : MOCK 삭제
+	private final BERTService bertService; // TODO : MOCK 삭제
 	private final LawInformationService lawInformationService;
 	private final OpenAiService openAiService;
 	private final LawRepository lawRepository;
@@ -75,6 +74,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 		return QuestionAnswerResponse.builder()
 			.suggestion(suggestion)
+			.category(CategoryConstant.getCategoryInKorean(precedentSummary.getCategory()))
 			.precedentId(precedent.getIndex())
 			.precedentSummary(predecentSummary.getSummary())
 			.lawType(precedent.getCase_nm())

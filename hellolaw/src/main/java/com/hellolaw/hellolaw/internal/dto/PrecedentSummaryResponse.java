@@ -3,7 +3,7 @@ package com.hellolaw.hellolaw.internal.dto;
 import lombok.Data;
 
 @Data
-public class PredecentSummaryResponse {
+public class PrecedentSummaryResponse {
 
 	String summary;
 	String category;
