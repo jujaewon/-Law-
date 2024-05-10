@@ -19,7 +19,7 @@ async def getLawInfo(name: str):
                 "contents": contents,
                 "category": category.getCategory(name, contents)}
     except:
-        raise CustomException(status_code=400,
+        raise CustomException(status_code=200,
                               message={"lawName": name.strip(),
                                        "contents": "더 이상 시행되지 않는 법입니다.",
                                        "category": "NONE"})
