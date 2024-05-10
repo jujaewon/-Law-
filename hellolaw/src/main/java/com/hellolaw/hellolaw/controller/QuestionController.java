@@ -14,7 +14,7 @@ import com.hellolaw.hellolaw.common.ApiResponse;
 import com.hellolaw.hellolaw.dto.QuestionAnswerResponse;
 import com.hellolaw.hellolaw.dto.QuestionRequest;
 import com.hellolaw.hellolaw.internal.service.BERTService;
-import com.hellolaw.hellolaw.internal.service.BERTServiceMockImpl;
+import com.hellolaw.hellolaw.internal.service.BERTServiceImpl;
 import com.hellolaw.hellolaw.service.QuestionService;
 import com.hellolaw.hellolaw.service.QuestionServiceImpl;
 
@@ -29,7 +29,7 @@ public class QuestionController {
 	private final BERTService bertService;
 	private final QuestionService questionService;
 
-	public QuestionController(BERTServiceMockImpl bertService, QuestionServiceImpl questionService) {
+	public QuestionController(BERTServiceImpl bertService, QuestionServiceImpl questionService) {
 		this.questionService = questionService;
 		this.bertService = bertService;
 	}
@@ -43,7 +43,10 @@ public class QuestionController {
 
 	@GetMapping("/v1")
 	public void questionHelloV1() {
-		log.info(bertService.getSimilarPrecedent("test").toString());
+		log.info(
+			bertService.getSimilarPrecedent("계약 기간이 만료되어 다른 집으로 이사를 가려고 했는데, 집주인이 전세금을 돌려주지 않아요. 3억을 못받았어요 어떻게 해야하나요?")
+				.toString());
+
 		return;
 	}
 

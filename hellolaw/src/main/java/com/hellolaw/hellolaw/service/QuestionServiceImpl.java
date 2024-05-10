@@ -67,22 +67,23 @@ public class QuestionServiceImpl implements QuestionService {
 		PrecedentDto precedent = bertService.getSimilarPrecedent(questionRequest.getQuestion());
 
 		//판례 요약하고 카테고리 뽑아오기
-		PredecentSummaryResponse predecentSummary = openAiService.getBasicFactInformation(precedent.getDisposal(),
-			precedent.getBasicFact());
+		PredecentSummaryResponse predecentSummary = openAiService.getBasicFactInformation(
+			precedent.getDisposal_content(),
+			precedent.getBasic_fact());
 
 		// 관련 법안 0~3개에 대해 저장
-		List<String> list = precedent.getRelatedLaws();
+		List<String> list = precedent.getRelate_laword();
 		list.forEach(lawName -> {
 			saveRelatedLaw(lawName);
 		});
 
 		return QuestionAnswerResponse.builder()
 			.suggestion(suggestion)
-			.precedentId(precedent.getId())
+			.precedentId(precedent.getIndex())
 			.precedentSummary(predecentSummary.getSummary())
-			.lawType(precedent.getCaseName())
+			.lawType(precedent.getCase_nm())
 			.category(CategoryConstant.getCategoryInKorean(predecentSummary.getCategory()))
-			.relatedLaws(precedent.getRelatedLaws())
+			.relatedLaws(precedent.getRelate_laword())
 			.build();
 	}
 
