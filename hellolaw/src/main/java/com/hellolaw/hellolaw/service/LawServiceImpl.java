@@ -27,16 +27,13 @@ import lombok.extern.slf4j.Slf4j;
 public class LawServiceImpl implements LawService {
 
 	private final LawRepository lawRepository;
-	private final LawMapper lawMapper;
 	private final RedisTemplate<String, Object> redisTemplate;
+	private final LawMapper lawMapper = LawMapper.INSTANCE;
 
 	@Override
 	public LawDetailResponse getLawDetail(String lawName) {
 		Law law = lawRepository.findByName(lawName)
 			.orElseThrow(() -> new HelloLawBaseException(ErrorBase.E400_INVALID_LAW_NAME));
-		Long cur = law.getCount();
-		law.updateCount(cur + 1);
-		lawRepository.save(law);
 		return lawMapper.toLawDetailResponse(law);
 	}
 
