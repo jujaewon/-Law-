@@ -1,10 +1,17 @@
+from starlette.responses import JSONResponse
+
 import crawl
 import category
 from fastapi import FastAPI
 
 app = FastAPI(root_path="/crawling/")
 
-@app.get("law/{name}")
+class CustomException(Exception):
+    def __init__(self, status_code: int, message: str):
+        self.status_code = status_code
+        self.message = message
+
+@app.get("law/")
 async def getLawInfo(name: str):
     try:
         lawName, contents = crawl.getLawContents(name.strip())
@@ -12,6 +19,11 @@ async def getLawInfo(name: str):
                 "contents": contents,
                 "category": category.getCategory(name, contents)}
     except:
-        return {"lawName": name.strip(),
-                "contents": "더 이상 시행되지 않는 법입니다.",
-                "category": "기타"}
+        raise CustomException(status_code=400,
+                              message={"lawName": name.strip(),
+                                       "contents": "더 이상 시행되지 않는 법입니다.",
+                                       "category": "NONE"})
+
+@app.exception_handler(CustomException)
+async def custom_exception_handler(request, exc: CustomException):
+    return JSONResponse(status_code=exc.status_code, content = exc.message)
