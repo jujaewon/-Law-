@@ -1,5 +1,6 @@
 package com.hellolaw.hellolaw.controller;
 
+import com.hellolaw.hellolaw.dto.QuestionHistoryResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,8 @@ import com.hellolaw.hellolaw.service.QuestionServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequestMapping("/question")
@@ -29,6 +32,13 @@ public class QuestionController {
 	public QuestionController(BERTServiceImpl bertService, QuestionServiceImpl questionService) {
 		this.questionService = questionService;
 		this.bertService = bertService;
+	}
+
+	@GetMapping("/history")
+	public ResponseEntity<ApiResponse<List<QuestionHistoryResponse>>> getTwoQuestionHistoryList() {
+		log.info("-----------------------------------------getTwoQuestionsList");
+		List<QuestionHistoryResponse> list = questionService.getTwoQuestionHistoryList(1L);
+		return ResponseEntity.ok(ApiResponse.success(list));
 	}
 
 	@GetMapping("/v1")

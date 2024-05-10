@@ -2,7 +2,12 @@ package com.hellolaw.hellolaw.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.hellolaw.hellolaw.dto.AnswerResultResponse;
+import com.hellolaw.hellolaw.dto.QuestionHistoryResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.hellolaw.hellolaw.dto.QuestionAnswerResponse;
@@ -24,6 +29,7 @@ import com.hellolaw.hellolaw.util.CategoryConstant;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -43,6 +49,15 @@ public class QuestionServiceImpl implements QuestionService {
 	private final LawRepository lawRepository;
 	private final LawMapper lawMapper;
 
+	@Override
+	public List<QuestionHistoryResponse> getTwoQuestionHistoryList(Long userId) {
+		List<Question> questions = questionRepository.findTop2ByUserIdOrderByCreatedAtDesc(userId);
+
+		// TODO : 최근 2개의 질문 가져오기
+		return questions.stream()
+				.map(QuestionHistoryResponse::createQuestionHistoryResponse)
+				.collect(Collectors.toList());
+	}
 	@Override
 	public QuestionAnswerResponse generateAnswer(QuestionRequest questionRequest) {
 		// TODO : 대처방안
