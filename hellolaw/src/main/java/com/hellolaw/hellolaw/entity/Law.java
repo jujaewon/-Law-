@@ -11,16 +11,14 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 @Table(name = "law")
 public class Law extends BaseEntity {
 
@@ -34,6 +32,7 @@ public class Law extends BaseEntity {
 	@Column(name = "category")
 	private Category category;
 
+	@Setter
 	@Column(name = "count")
 	@ColumnDefault("1")
 	private Long count;
@@ -41,7 +40,11 @@ public class Law extends BaseEntity {
 	@OneToMany(mappedBy = "law")
 	private List<RelatedAnswer> relatedAnswers;
 
-	public void updateCount(Long newCount) {
-		this.count = newCount;
+	@Builder
+	Law(String name, String contents, Category category) {
+		this.name = name;
+		this.contents = contents;
+		this.category = category;
+		this.count = 1L;
 	}
 }
