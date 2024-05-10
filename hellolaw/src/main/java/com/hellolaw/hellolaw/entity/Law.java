@@ -35,7 +35,7 @@ public class Law extends BaseEntity {
 	private Category category;
 
 	@Column(name = "count")
-	@ColumnDefault("0")
+	@ColumnDefault("1")
 	private Long count;
 
 	@OneToMany(mappedBy = "law")
