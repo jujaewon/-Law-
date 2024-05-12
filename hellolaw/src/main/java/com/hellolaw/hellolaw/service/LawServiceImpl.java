@@ -3,6 +3,7 @@ package com.hellolaw.hellolaw.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.hellolaw.hellolaw.dto.LawDetailResponse;
@@ -12,18 +13,22 @@ import com.hellolaw.hellolaw.entity.Law;
 import com.hellolaw.hellolaw.exception.HelloLawBaseException;
 import com.hellolaw.hellolaw.mapper.LawMapper;
 import com.hellolaw.hellolaw.repository.LawRepository;
+import com.hellolaw.hellolaw.util.CategoryConverter;
 import com.hellolaw.hellolaw.util.ErrorBase;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class LawServiceImpl implements LawService {
 
 	private final LawRepository lawRepository;
 	private final LawMapper lawMapper;
+	private final RedisTemplate<String, Object> redisTemplate;
 
 	@Override
 	public LawDetailResponse getLawDetail(String lawName) {
@@ -36,13 +41,25 @@ public class LawServiceImpl implements LawService {
 	}
 
 	@Override
-	public List<LawRankingResponse> getLawRanking(Long memberId, Category category) {
-		List<Law> lawRanking = lawRepository.findTop10ByCategoryOrderByCountDesc(category);
+	public List<LawRankingResponse> getLawRanking(String category) {
+		Category categoryKey = CategoryConverter.getCategoryInEnum(category);
+		Object lawsObj = redisTemplate.opsForList().leftPop(categoryKey.toString().trim());
+		List<LawRankingResponse> lawsList = (List<LawRankingResponse>)lawsObj;
 		List<LawRankingResponse> lawRankingResponseList = new ArrayList<>();
-		for (Law law : lawRanking) {
-			LawRankingResponse response = lawMapper.toSseResponse(law);
-			lawRankingResponseList.add(response);
+
+		if (lawsList.isEmpty() || lawsList == null) {
+			log.info("lawSet is null or empty");
+			List<Law> lawRanking = lawRepository.findTop10ByCategoryOrderByCountDesc(categoryKey);
+			for (Law law : lawRanking) {
+				LawRankingResponse lawRankingResponse = lawMapper.toLawRankingResponse(law);
+				lawRankingResponseList.add(lawRankingResponse);
+			}
+		} else {
+			for (LawRankingResponse resonse : lawsList) {
+				lawRankingResponseList.add(resonse);
+			}
 		}
+
 		return lawRankingResponseList;
 	}
 }

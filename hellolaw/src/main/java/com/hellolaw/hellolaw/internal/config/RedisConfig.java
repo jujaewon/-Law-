@@ -47,8 +47,7 @@ public class RedisConfig {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 		redisTemplate.setConnectionFactory(redisConnectionFactory());
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.setValueSerializer(new StringRedisSerializer());
-
+		redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
 		return redisTemplate;
 	}
 
@@ -99,5 +98,9 @@ public class RedisConfig {
 			new JavaTimeModule());
 		return builder;
 	}
-
+	//
+	//	@Bean
+	//	public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+	//		return RedisCacheManager.create(connectionFactory);
+	//	}
 }
