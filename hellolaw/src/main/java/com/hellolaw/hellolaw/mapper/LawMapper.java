@@ -21,5 +21,5 @@ public interface LawMapper {
 
 	@Mapping(target = "lawId", source = "id")
 	@Mapping(target = "lawName", source = "name")
-	public LawRankingResponse toSseResponse(Law law);
+	public LawRankingResponse toLawRankingResponse(Law law);
 }

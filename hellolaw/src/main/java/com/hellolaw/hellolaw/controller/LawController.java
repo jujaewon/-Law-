@@ -1,5 +1,6 @@
 package com.hellolaw.hellolaw.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hellolaw.hellolaw.common.ApiResponse;
-import com.hellolaw.hellolaw.dto.LawRankingResponse;
 import com.hellolaw.hellolaw.entity.Category;
 import com.hellolaw.hellolaw.service.LawService;
 import com.hellolaw.hellolaw.util.CategoryConverter;
@@ -29,11 +29,8 @@ public class LawController {
 	}
 
 	@GetMapping("/ranking")
-	public ResponseEntity<ApiResponse<List<LawRankingResponse>>> getLawRanking(
-		@RequestParam(value = "category") String param) {
-		// memberId 임시 설정
-		Long memberId = 100L;
-		Category category = CategoryConverter.getCategoryInEnum(param);
-		return ResponseEntity.ok(ApiResponse.success(lawService.getLawRanking(memberId, category)));
+	public ResponseEntity<ApiResponse<List<?>>> getLawRanking(
+		@RequestParam(value = "category") String category) {
+		return ResponseEntity.ok(ApiResponse.success(lawService.getLawRanking(category)));
 	}
 }
