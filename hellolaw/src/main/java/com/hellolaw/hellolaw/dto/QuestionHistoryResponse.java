@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class QuestionHistoryResponse {
     private Long questionId;
-    private String questionContents;
+    private String summary;
     private String lawType;
     private String category;
 
@@ -20,18 +20,16 @@ public class QuestionHistoryResponse {
     public static QuestionHistoryResponse createQuestionHistoryResponse(Question question) {
 
         Answer answer = question.getAnswer();
-        log.info("answer : " + question.getId());
+        //answer이 없을때
+        if (answer == null || answer.getRelatedAnswers().isEmpty()) {
+            return null;
+        }
         return QuestionHistoryResponse.builder()
                 .questionId(question.getId())
-                .questionContents(question.getContents())
+                .summary(question.getContents())
                 .lawType(answer.getRelatedAnswers().get(0).getPrecedent().getCaseName())
-                .category(answer.getRelatedAnswers().get(0).getLaw().getCategory().name())
+                .category(CategoryConstant.getCategoryInKorean(answer.getRelatedAnswers().get(0).getLaw().getCategory().name()))
                 .build();
-//                return QuestionHistoryResponse.builder()
-//                .questionId(1L)
-//                .questionContents("Fff")
-//                .lawType("Fff")
-//                .category("fff")
-//                .build();
+
     }
 }

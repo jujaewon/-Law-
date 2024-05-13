@@ -44,6 +44,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.hellolaw.hellolaw.dto.QuestionHistoryResponse.createQuestionHistoryResponse;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -70,7 +72,8 @@ public class QuestionServiceImpl implements QuestionService {
 
 		// TODO : 최근 2개의 질문 가져오기
 		return questions.stream()
-			.map(QuestionHistoryResponse::createQuestionHistoryResponse)
+			.map(question -> Optional.ofNullable(createQuestionHistoryResponse(question)))
+			.flatMap(Optional::stream) // 이렇게 하면 Optional.empty() 결과를 건너뜁니다
 			.collect(Collectors.toList());
 	}
 
