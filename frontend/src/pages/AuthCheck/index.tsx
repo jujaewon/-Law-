@@ -1,3 +1,4 @@
+import getUrl from '@utils/getUrl';
 import { useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 
@@ -11,20 +12,9 @@ const AuthCheck = () => {
     console.log('카카오 로그인 진행중');
     const env = import.meta.env.VITE_DEV;
     console.log('환경', env);
-    // if (!env) window.location.href = 'http://test.hellolaw.kr/auth/oauth2/authorize/kakao';
-    // else {
-    //   console.log('개발모드');
-    //   axios.get('/api/login/kakao').then((res) => {
-    //     if (res.status === 200) {
-    //       setCookie('nickname', 'testGuest', {
-    //         path: '/',
-    //         sameSite: 'strict',
-    //       });
-    //       navigate('/');
-    //     }
-    //   });
-    // }
-    window.location.href = 'http://test.hellolaw.kr/auth/oauth2/authorize/kakao';
+    if (env === 'dev') window.location.href = getUrl('auth') + '/auth/oauth2/authorize/kakao';
+    if (env === 'test') window.location.href = getUrl(env) + '/auth/oauth2/authorize/kakao';
+    if (env === 'real') window.location.href = getUrl(env) + '/auth/oauth2/authorize/kakao';
   };
   useEffect(() => {
     handleKaKaoLogin();
