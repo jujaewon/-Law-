@@ -76,6 +76,7 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
 
   const handleDelete = (id: number) => {
     setChildrenData(childrenData?.filter((item: any) => item.id !== id));
+    getQuestions();
   };
 
   const renderAccordionItem = (item: AccordionItemType) => {

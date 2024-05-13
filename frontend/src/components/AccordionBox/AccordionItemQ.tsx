@@ -81,14 +81,14 @@ interface AccordionItemQProps {
 }
 
 const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
-  const { id, summary, lawType, category } = item;
+  const { questionId, summary, lawType, category } = item;
 
   const handleDelete = async () => {
     onClick();
-    instance.delete(`api/question/v1/${id}`).then((res) => {
+    instance.delete(`api/question/v1/${questionId}`).then((res) => {
       if (res && res.status === 200) {
         console.log('삭제 성공');
-        onDelete(item.id);
+        onDelete(item.questionId);
       }
     });
   };
