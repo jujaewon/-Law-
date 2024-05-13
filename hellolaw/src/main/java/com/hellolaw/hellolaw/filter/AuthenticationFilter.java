@@ -2,7 +2,6 @@ package com.hellolaw.hellolaw.filter;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,10 +14,13 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@RequiredArgsConstructor
 public class AuthenticationFilter implements Filter {
-	@Value("hellolaw.auth.url")
-	private String authUrl;
+	private final String authUrl;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -40,7 +42,9 @@ public class AuthenticationFilter implements Filter {
 		}
 
 		try {
-			userId = WebClient.create()
+			WebClient webClient = WebClient.create();
+			log.info(authUrl);
+			userId = webClient
 				.get()
 				.uri(authUrl)
 				.header("Cookie", "access-token=" + cookieValue)
@@ -67,14 +71,15 @@ public class AuthenticationFilter implements Filter {
 	}
 
 	private static String getCookieValue(HttpServletRequest request, String name) {
-		Cookie[] cookies = request.getCookies(); // 모든 쿠키를 가져옴
+		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if (name.equals(cookie.getName())) {
-					return cookie.getValue(); // 쿠키 이름이 일치하면 값을 반환
+					return cookie.getValue();
 				}
 			}
 		}
-		return null; // 쿠키가 존재하지 않거나 찾고자 하는 이름의 쿠키가 없을 경우
+		return null;
 	}
+
 }
