@@ -14,7 +14,7 @@ const AuthCheck = () => {
     console.log('환경', env);
     if (env === 'dev') window.location.href = getUrl('auth') + '/auth/oauth2/authorize/kakao';
     if (env === 'test') window.location.href = getUrl(env) + '/auth/oauth2/authorize/kakao';
-    if (env === 'real') window.location.href = getUrl(env) + '/auth/oauth2/authorize/kakao';
+    if (env === 'real') window.location.href = getUrl('real-auth') + '/auth/oauth2/authorize/kakao';
   };
   useEffect(() => {
     handleKaKaoLogin();
