@@ -1,5 +1,4 @@
 import { delay, http, HttpResponse } from 'msw';
-import { R } from 'msw/lib/core/HttpResponse-B07UKAkU';
 const baseUrl = 'https://test.hellolaw.kr:8000';
 
 export const handlers = [
@@ -63,7 +62,7 @@ export const handlers = [
   http.get(baseUrl + '/api/law/ranking', ({ request }) => {
     const url = new URL(request.url);
     const category = url.searchParams.get('category');
-
+    console.log('category', category);
     const datas = [
       {
         rank: 1,
