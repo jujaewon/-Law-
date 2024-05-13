@@ -1,15 +1,15 @@
 package com.hellolaw.hellolaw.service;
 
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hellolaw.hellolaw.dto.QuestionAnswerResponse;
 import com.hellolaw.hellolaw.dto.QuestionHistoryResponse;
 import com.hellolaw.hellolaw.dto.QuestionRequest;
 
-import java.util.List;
-
 public interface QuestionService {
 
-	QuestionAnswerResponse generateAnswer(QuestionRequest questionRequest) throws JsonProcessingException;
+	QuestionAnswerResponse generateAnswer(Long userId, QuestionRequest questionRequest) throws JsonProcessingException;
 
 	List<QuestionHistoryResponse> getTwoQuestionHistoryList(Long userId);
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hellolaw.hellolaw.annotation.UserId;
 import com.hellolaw.hellolaw.common.ApiResponse;
 import com.hellolaw.hellolaw.dto.QuestionAnswerResponse;
 import com.hellolaw.hellolaw.dto.QuestionHistoryResponse;
@@ -45,9 +46,10 @@ public class QuestionController {
 	}
 
 	@PostMapping
-	public ResponseEntity<QuestionAnswerResponse> generateAnswer(@RequestBody QuestionRequest questionRequest) throws
+	public ResponseEntity<QuestionAnswerResponse> generateAnswer(@UserId Long userId,
+		@RequestBody QuestionRequest questionRequest) throws
 		JsonProcessingException {
-		return ResponseEntity.ok(questionService.generateAnswer(questionRequest));
+		return ResponseEntity.ok(questionService.generateAnswer(1L, questionRequest)); // TODO : userId로 수정
 	}
 
 	@DeleteMapping("/v1")
