@@ -159,7 +159,7 @@ const Sidebar = ({ nickname }: SidebarProps) => {
   const logout = () => {
     const env = import.meta.env.VITE_DEV;
     let url = '';
-    if (env === 'real') url = getUrl('real-auth');
+    if (env === 'real') url = getUrl(env);
     else url = getUrl('auth');
     axios
       .get(url + '/auth/logout')
