@@ -76,6 +76,7 @@ const ChatDefault = () => {
       },
       type: 'bot',
     });
+    console.log('Fff');
     instance
       .post('/api/question')
       .then((res) => {

@@ -67,14 +67,14 @@ const InputMessageWrapper = styled.textarea`
   overflow: hidden;
 `;
 interface OptionsType {
-  category: string;
-  humanType: string;
+  category: string | null;
+  humanType: string | null;
 }
 
 const BottomBar = () => {
   const [message, setMessage] = useState<string>('');
   const textarea = useRef<HTMLTextAreaElement>(null);
-  const [optionsData, setOptionsData] = useState<OptionsType>({ category: '', humanType: '' });
+  const [optionsData, setOptionsData] = useState<OptionsType>({ category: null, humanType: null });
   const { setIsChat, addChatData } = useTodoActions();
 
   const handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -91,19 +91,24 @@ const BottomBar = () => {
   };
 
   const sendMessage = () => {
-    console.log('채팅전송', message, optionsData);
+    const data = {
+      category: optionsData.category,
+      victim: optionsData.humanType,
+      question: message,
+    };
+    console.log('채팅전송', data);
     setMessage('');
     setIsChat(true);
-    addChatData({ chat: message, type: 'user' });
-  
+    addChatData({ chat: message, data: data, type: 'user' });
+
     // 메시지 전송 후 textarea 초기화 및 높이 재조정
     if (textarea.current) {
       textarea.current.value = ''; // textarea 내용 초기화
       textarea.current.style.height = 'auto'; // 먼저, 높이를 auto로 설정하여 재조정할 준비를 함
       handleResizeHeight(); // 이 함수 호출을 통해 textarea의 높이를 재조정. 여기서는 textarea의 scrollHeight를 기반으로 높이를 설정.
     }
-  };  
-  
+  };
+
   return (
     <Wrapper>
       <ContentBox setOptionsData={setOptionsData} />

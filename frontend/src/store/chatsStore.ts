@@ -10,9 +10,14 @@ interface ChatBotData {
   };
   relatedLaws: Array<string>;
 }
-
+interface OptionsType {
+  category: string | null;
+  victim: string | null;
+  question: string;
+}
 interface UserChatData {
   chat: string;
+  data: OptionsType;
   type: 'user';
 }
 

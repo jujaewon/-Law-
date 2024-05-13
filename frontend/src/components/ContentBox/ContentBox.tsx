@@ -110,7 +110,7 @@ const Color = styled.div`
 
 interface CategoryModalProps {
   onCategoryClick: (category: string) => void;
-  selectedCategory: string;
+  selectedCategory: string | null;
 }
 
 const CategoryModal = ({ onCategoryClick, selectedCategory }: CategoryModalProps) => {
@@ -145,7 +145,7 @@ const CategoryModal = ({ onCategoryClick, selectedCategory }: CategoryModalProps
 };
 
 interface SecondContentProps {
-  selectedText: string;
+  selectedText: string | null;
   onTextClick: (text: string) => void;
 }
 
@@ -161,8 +161,8 @@ const SecondContent = ({ selectedText, onTextClick }: SecondContentProps) => (
 );
 
 interface OptionsType {
-  category: string;
-  humanType: string;
+  category: string | null;
+  humanType: string | null;
 }
 
 interface PropsType {
