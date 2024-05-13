@@ -23,6 +23,18 @@ public class CategoryConverter {
 		categoryMap.put("행정소송", ADMINISTRATIVE_LITIGATION);
 		categoryMap.put("소비자분쟁", CONSUMER_DISPUTES);
 		categoryMap.put("기타", OTHER);
+		categoryMap.put("STAKING", STAKING);
+		categoryMap.put("SEX_CRIME", SEX_CRIME);
+		categoryMap.put("TRAFFIC_ACCIDENT_AND_DRINKING_DRIVING", TRAFFIC_ACCIDENT_AND_DRINKING_DRIVING);
+		categoryMap.put("ASSAULT_AND_INJURY", ASSAULT_AND_INJURY);
+		categoryMap.put("DRUGS", DRUGS);
+		categoryMap.put("FRAUD", FRAUD);
+		categoryMap.put("DIVORCE", DIVORCE);
+		categoryMap.put("INHERITANCE_AND_HOUSEHOLD", INHERITANCE_AND_HOUSEHOLD);
+		categoryMap.put("LOAN_AND_UNPAID_AND_BOND_COLLECTION", LOAN_AND_UNPAID_AND_BOND_COLLECTION);
+		categoryMap.put("ADMINISTRATIVE_LITIGATION", ADMINISTRATIVE_LITIGATION);
+		categoryMap.put("CONSUMER_DISPUTES", CONSUMER_DISPUTES);
+		categoryMap.put("OTHER", OTHER);
 	}
 
 	public static Category getCategoryInEnum(String koreanCategory) {

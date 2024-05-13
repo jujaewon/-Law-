@@ -26,9 +26,7 @@ import com.hellolaw.hellolaw.internal.dto.PrecedentSummaryResponse;
 import com.hellolaw.hellolaw.internal.service.BERTService;
 import com.hellolaw.hellolaw.internal.service.LawInformationService;
 import com.hellolaw.hellolaw.internal.service.OpenAiService;
-import com.hellolaw.hellolaw.internal.service.SuggestionService;
 import com.hellolaw.hellolaw.mapper.AnswerMapper;
-import com.hellolaw.hellolaw.mapper.LawMapper;
 import com.hellolaw.hellolaw.mapper.QuestionMapper;
 import com.hellolaw.hellolaw.mapper.SummaryAnswerMapper;
 import com.hellolaw.hellolaw.repository.AnswerRepository;
@@ -39,6 +37,7 @@ import com.hellolaw.hellolaw.repository.RelatedAnswerRepository;
 import com.hellolaw.hellolaw.repository.SummaryAnswerRepository;
 import com.hellolaw.hellolaw.repository.UserRepository;
 import com.hellolaw.hellolaw.util.CategoryConstant;
+import com.hellolaw.hellolaw.util.CategoryConverter;
 import com.hellolaw.hellolaw.util.ErrorBase;
 
 import jakarta.transaction.Transactional;
@@ -57,10 +56,8 @@ public class QuestionServiceImpl implements QuestionService {
 	private final SummaryAnswerRepository summaryAnswerRepository;
 	private final RelatedAnswerRepository relatedAnswerRepository;
 	private final BERTService bertService;
-	private final SuggestionService suggestionService;
 	private final LawInformationService lawInformationService;
 	private final OpenAiService openAiService;
-	private final LawMapper lawMapper = LawMapper.INSTANCE;
 	private final QuestionMapper questionMapper = QuestionMapper.INSTANCE;
 	private final UserRepository userRepository;
 	private final AnswerMapper answerMapper;
@@ -78,12 +75,13 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
+	@Transactional
 	public QuestionAnswerResponse generateAnswer(Long userId, QuestionRequest questionRequest)
 		throws JsonProcessingException {
 		Question question = saveQuestion(userId, questionRequest);
 		String prompt = makePrompt(questionRequest);
 
-		String suggestion = suggestionService.getSuggestion(prompt).getText(); // 대처 방안
+		String suggestion = bertService.getSuggestion(prompt).getText(); // 대처 방안
 		Answer answer = answerRepository.save(answerMapper.toAnswer(question, suggestion)); // 대처방안 저장
 
 		PrecedentDto similarPrecedent = bertService.getSimilarPrecedent(prompt); // 유사판례
@@ -114,7 +112,7 @@ public class QuestionServiceImpl implements QuestionService {
 		Optional<Law> law = lawRepository.findByName(lawName);
 		if (law.isEmpty()) {
 			Law newLaw = new Law(lawName, null, Category.OTHER);
-			CompletableFuture.runAsync(() -> updateLawInformation(lawName));
+			CompletableFuture.runAsync(() -> updateLawInformation(newLaw));
 			return lawRepository.save(newLaw);
 		} else {
 			Law newLaw = law.get();
@@ -129,10 +127,11 @@ public class QuestionServiceImpl implements QuestionService {
 		return questionRepository.save(questionMapper.toQuestion(questionRequest, user));
 	}
 
-	private void updateLawInformation(String lawName) {
-		LawInformationDto lawInformationDto = lawInformationService.getLawInformation(lawName);
-		lawRepository.updateLawInformationByName(lawName, lawInformationDto.getContents(),
-			lawInformationDto.getCategory());
+	private void updateLawInformation(Law law) {
+		LawInformationDto lawInformationDto = lawInformationService.getLawInformation(law.getName());
+		law.setContents(lawInformationDto.getContents());
+		law.setCategory(CategoryConverter.getCategoryInEnum(lawInformationDto.getCategory()));
+		lawRepository.save(law);
 	}
 
 	@Override

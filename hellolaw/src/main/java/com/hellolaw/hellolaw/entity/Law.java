@@ -25,9 +25,11 @@ public class Law extends BaseEntity {
 	@Column(name = "name", unique = true, nullable = false)
 	private String name;
 
+	@Setter
 	@Column(name = "contents", columnDefinition = "TEXT")
 	private String contents;
 
+	@Setter
 	@Enumerated(EnumType.STRING)
 	@Column(name = "category")
 	private Category category;

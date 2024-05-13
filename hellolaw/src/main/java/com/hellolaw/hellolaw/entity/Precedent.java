@@ -1,10 +1,11 @@
 package com.hellolaw.hellolaw.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -56,7 +57,7 @@ public class Precedent extends BaseEntity {
 	@Column(name = "court_dcss", columnDefinition = "TEXT")
 	private String courtDcss;
 
-	@OneToOne(mappedBy = "precedent")
-	private RelatedAnswer relatedAnswers;
+	@OneToMany(mappedBy = "precedent")
+	private List<RelatedAnswer> relatedAnswers;
 
 }
