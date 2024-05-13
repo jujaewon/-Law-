@@ -157,8 +157,12 @@ const Sidebar = ({ nickname }: SidebarProps) => {
     setIsOpen(true);
   };
   const logout = () => {
+    const env = import.meta.env.VITE_DEV;
+    let url = '';
+    if (env === 'real') url = getUrl('real');
+    else url = getUrl('auth');
     axios
-      .get(getUrl('auth') + '/auth/logout')
+      .get(url + '/auth/logout')
       .then((res) => {
         console.log(res);
         removeCookie('access-token');
