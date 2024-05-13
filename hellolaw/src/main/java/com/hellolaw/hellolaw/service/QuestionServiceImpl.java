@@ -6,17 +6,17 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import org.springframework.scheduling.annotation.EnableAsync;
-import com.hellolaw.hellolaw.dto.QuestionHistoryResponse;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hellolaw.hellolaw.dto.QuestionAnswerResponse;
+import com.hellolaw.hellolaw.dto.QuestionHistoryResponse;
 import com.hellolaw.hellolaw.dto.QuestionRequest;
 import com.hellolaw.hellolaw.entity.Law;
 import com.hellolaw.hellolaw.entity.Question;
 import com.hellolaw.hellolaw.internal.dto.LawInformationDto;
 import com.hellolaw.hellolaw.internal.dto.PrecedentDto;
-import com.hellolaw.hellolaw.internal.dto.PredecentSummaryResponse;
+import com.hellolaw.hellolaw.internal.dto.PrecedentSummaryResponse;
 import com.hellolaw.hellolaw.internal.service.BERTService;
 import com.hellolaw.hellolaw.internal.service.LawInformationService;
 import com.hellolaw.hellolaw.internal.service.OpenAiService;
@@ -50,21 +50,18 @@ public class QuestionServiceImpl implements QuestionService {
 
 		// TODO : 최근 2개의 질문 가져오기
 		return questions.stream()
-				.map(QuestionHistoryResponse::createQuestionHistoryResponse)
-				.collect(Collectors.toList());
+			.map(QuestionHistoryResponse::createQuestionHistoryResponse)
+			.collect(Collectors.toList());
 	}
+
 	@Override
 	public QuestionAnswerResponse generateAnswer(QuestionRequest questionRequest) throws JsonProcessingException {
 		String question = makePrompt(questionRequest);
 
-		String suggestionDto = suggestionService.getSuggestion(question).getText();
-		// String suggestion = suggestionService.getSuggestionString(question); // 대처방안
+		String suggestion = suggestionService.getSuggestion(question).getText();
 		PrecedentDto precedent = bertService.getSimilarPrecedent(questionRequest.getQuestion()); // 유사판례
 
-		PrecedentSummaryResponse precedentSummary = openAiService.getBasicFactInformation(precedent.getDisposal(),
-			precedent.getBasicFact());
-		//판례 요약하고 카테고리 뽑아오기
-		PrecedentSummaryResponse predecentSummary = openAiService.getBasicFactInformation(
+		PrecedentSummaryResponse precedentSummary = openAiService.getBasicFactInformation(
 			precedent.getDisposal_content(),
 			precedent.getBasic_fact());
 
@@ -72,12 +69,10 @@ public class QuestionServiceImpl implements QuestionService {
 		list.forEach(lawName -> CompletableFuture.runAsync(() -> saveRelatedLaw(lawName)));
 
 		return QuestionAnswerResponse.builder()
-			.suggestion(suggestionDto)
 			.suggestion(suggestion)
 			.category(CategoryConstant.getCategoryInKorean(precedentSummary.getCategory()))
 			.precedentId(precedent.getIndex())
-			.precedentSummary(predecentSummary.getSummary())
-			.lawType(precedent.getCase_nm())
+			.precedentSummary(precedentSummary.getSummary())
 			.lawType(precedent.getCase_nm())
 			.relatedLaws(precedent.getRelate_laword())
 			.build();
