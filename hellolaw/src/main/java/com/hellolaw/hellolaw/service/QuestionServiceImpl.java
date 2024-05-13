@@ -2,25 +2,25 @@ package com.hellolaw.hellolaw.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import com.hellolaw.hellolaw.dto.AnswerResultResponse;
-import com.hellolaw.hellolaw.dto.QuestionHistoryResponse;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hellolaw.hellolaw.dto.QuestionAnswerResponse;
+import com.hellolaw.hellolaw.dto.QuestionHistoryResponse;
 import com.hellolaw.hellolaw.dto.QuestionRequest;
 import com.hellolaw.hellolaw.entity.Law;
 import com.hellolaw.hellolaw.entity.Question;
 import com.hellolaw.hellolaw.internal.dto.LawInformationDto;
 import com.hellolaw.hellolaw.internal.dto.PrecedentDto;
-import com.hellolaw.hellolaw.internal.dto.PredecentSummaryResponse;
+import com.hellolaw.hellolaw.internal.dto.PrecedentSummaryResponse;
 import com.hellolaw.hellolaw.internal.service.BERTService;
-import com.hellolaw.hellolaw.internal.service.BERTServiceMockImpl;
 import com.hellolaw.hellolaw.internal.service.LawInformationService;
 import com.hellolaw.hellolaw.internal.service.OpenAiService;
+import com.hellolaw.hellolaw.internal.service.SuggestionService;
 import com.hellolaw.hellolaw.mapper.LawMapper;
 import com.hellolaw.hellolaw.repository.LawRepository;
 import com.hellolaw.hellolaw.repository.QuestionRepository;
@@ -28,26 +28,21 @@ import com.hellolaw.hellolaw.util.CategoryConstant;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
+@EnableAsync(proxyTargetClass = true)
 public class QuestionServiceImpl implements QuestionService {
+
 	private final QuestionRepository questionRepository;
-
-	@Override
-	public Void deleteQuestion(Long userId, Long questionId) {
-		Question question = questionRepository.findQuestionByUserIdAndQuestionId(userId, questionId).orElseThrow();
-		questionRepository.delete(question);
-		return null;
-	}
-
-	private final BERTService bertService = new BERTServiceMockImpl(); // TODO : MOCK 삭제
+	private final BERTService bertService;
+	private final SuggestionService suggestionService;
 	private final LawInformationService lawInformationService;
 	private final OpenAiService openAiService;
 	private final LawRepository lawRepository;
-	private final LawMapper lawMapper;
+	private final LawMapper lawMapper = LawMapper.INSTANCE;
 
 	@Override
 	public List<QuestionHistoryResponse> getTwoQuestionHistoryList(Long userId) {
@@ -55,46 +50,63 @@ public class QuestionServiceImpl implements QuestionService {
 
 		// TODO : 최근 2개의 질문 가져오기
 		return questions.stream()
-				.map(QuestionHistoryResponse::createQuestionHistoryResponse)
-				.collect(Collectors.toList());
+			.map(QuestionHistoryResponse::createQuestionHistoryResponse)
+			.collect(Collectors.toList());
 	}
+
 	@Override
-	public QuestionAnswerResponse generateAnswer(QuestionRequest questionRequest) {
-		// TODO : 대처방안
-		String suggestion = "이렇게 해보세용";
+	public QuestionAnswerResponse generateAnswer(QuestionRequest questionRequest) throws JsonProcessingException {
+		String question = makePrompt(questionRequest);
 
-		// 유사판례
-		PrecedentDto precedent = bertService.getSimilarPrecedent(questionRequest.getQuestion());
+		String suggestion = suggestionService.getSuggestion(question).getText();
+		PrecedentDto precedent = bertService.getSimilarPrecedent(questionRequest.getQuestion()); // 유사판례
 
-		//판례 요약하고 카테고리 뽑아오기
-		PredecentSummaryResponse predecentSummary = openAiService.getBasicFactInformation(
+		PrecedentSummaryResponse precedentSummary = openAiService.getBasicFactInformation(
 			precedent.getDisposal_content(),
 			precedent.getBasic_fact());
 
-		// 관련 법안 0~3개에 대해 저장
 		List<String> list = precedent.getRelate_laword();
-		list.forEach(lawName -> {
-			saveRelatedLaw(lawName);
-		});
+		list.forEach(lawName -> CompletableFuture.runAsync(() -> saveRelatedLaw(lawName)));
 
 		return QuestionAnswerResponse.builder()
 			.suggestion(suggestion)
+			.category(CategoryConstant.getCategoryInKorean(precedentSummary.getCategory()))
 			.precedentId(precedent.getIndex())
-			.precedentSummary(predecentSummary.getSummary())
+			.precedentSummary(precedentSummary.getSummary())
 			.lawType(precedent.getCase_nm())
-			.category(CategoryConstant.getCategoryInKorean(predecentSummary.getCategory()))
 			.relatedLaws(precedent.getRelate_laword())
 			.build();
 	}
 
-	private Law saveRelatedLaw(String lawName) {
+	private void saveRelatedLaw(String lawName) {
 		Optional<Law> law = lawRepository.findByName(lawName);
-		if (lawRepository.findByName(lawName).isEmpty()) {
+		if (law.isEmpty()) {
 			LawInformationDto lawInformationDto = lawInformationService.getLawInformation(lawName);
 			Law newLaw = lawMapper.toLaw(lawInformationDto);
-			return lawRepository.save(newLaw);
+			lawRepository.save(newLaw);
 		} else {
-			return law.orElse(null);
+			Law newLaw = law.get();
+			newLaw.setCount(newLaw.getCount() + 1);
+			lawRepository.save(newLaw);
 		}
+	}
+
+	@Override
+	@Transactional
+	public Void deleteQuestion(Long userId, Long questionId) {
+		Question question = questionRepository.findQuestionByUserIdAndQuestionId(userId, questionId).orElseThrow();
+		questionRepository.delete(question);
+		return null;
+	}
+
+	private String makePrompt(QuestionRequest questionRequest) {
+		String question = questionRequest.getQuestion();
+		if (questionRequest.getVictim() != null) {
+			question = "i am " + (questionRequest.getVictim() ? "피해자" : "가해자") + "\n" + question;
+		}
+		if (questionRequest.getCategory() != null) {
+			question = "this is about " + questionRequest.getCategory() + "\n" + question;
+		}
+		return question;
 	}
 }

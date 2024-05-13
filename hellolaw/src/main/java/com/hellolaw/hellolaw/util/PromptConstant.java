@@ -5,7 +5,7 @@ public class PromptConstant {
 	public static class Precedent {
 		public static String prefix = """
 			summary my script in Korean,
-			It doesn't have to be too short. 3 sentences, please.
+			And your summary result must not be too short. more than 5 sentences, you should.
 						
 			and Please pick the most correct one out of the 12 categories I provided below that correspond to my original script
 			The category must also be one of the 12 I provided

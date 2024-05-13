@@ -20,7 +20,7 @@ public class OpenAiConfig {
 		return WebClient.builder()
 			.filter((request, next) -> {
 				ClientRequest filteredRequest = ClientRequest.from(request)
-					.header("Authorization", "Bearer " + secretKey)
+					.header(AuthorizationHeader, tokenPrefix + secretKey)
 					.build();
 				return next.exchange(filteredRequest);
 			})

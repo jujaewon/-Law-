@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hellolaw.hellolaw.exception.HelloLawBaseException;
 import com.hellolaw.hellolaw.internal.dto.OpenAiRequestDto;
 import com.hellolaw.hellolaw.internal.dto.OpenAiResponseDto;
-import com.hellolaw.hellolaw.internal.dto.PredecentSummaryResponse;
+import com.hellolaw.hellolaw.internal.dto.PrecedentSummaryResponse;
 import com.hellolaw.hellolaw.util.ErrorBase;
 import com.hellolaw.hellolaw.util.PromptConstant;
 
@@ -27,7 +27,7 @@ public class OpenAiServiceImpl implements OpenAiService {
 	@Value("${openai.api.url}")
 	private String openAiUrl;
 
-	public PredecentSummaryResponse getBasicFactInformation(String disposal, String basicFact) {
+	public PrecedentSummaryResponse getBasicFactInformation(String disposal, String basicFact) {
 		// TODO : 분리
 		String prompt = PromptConstant.Precedent.prefix + disposal + "\n" + basicFact + PromptConstant.Precedent.suffix;
 		OpenAiRequestDto request = new OpenAiRequestDto(model, prompt);
@@ -41,11 +41,11 @@ public class OpenAiServiceImpl implements OpenAiService {
 			throw new HelloLawBaseException(ErrorBase.E500_INTERNAL_SERVER);
 		}
 		String json = response.getChoices().get(0).getMessage().getContent();
-		PredecentSummaryResponse precedentSummaryResponse;
+		PrecedentSummaryResponse precedentSummaryResponse;
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 			precedentSummaryResponse = objectMapper.readValue(json,
-				PredecentSummaryResponse.class);
+				PrecedentSummaryResponse.class);
 			System.out.println(precedentSummaryResponse.toString());
 		} catch (Exception e) {
 			throw new HelloLawBaseException(ErrorBase.E500_INTERNAL_SERVER);
