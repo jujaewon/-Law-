@@ -40,7 +40,7 @@ public class QuestionController {
 	}
 
 	@GetMapping("/v1")
-	public void questionHelloV1() {
+	public void questionHelloV1() throws JsonProcessingException {
 		log.info(bertService.getSimilarPrecedent("test").toString());
 		return;
 	}
