@@ -34,17 +34,17 @@ public class Law extends BaseEntity {
 
 	@Setter
 	@Column(name = "count")
-	@ColumnDefault("1")
+	@ColumnDefault("0")
 	private Long count;
 
 	@OneToMany(mappedBy = "law")
 	private List<RelatedAnswer> relatedAnswers;
 
 	@Builder
-	Law(String name, String contents, Category category) {
+	public Law(String name, String contents, Category category) {
 		this.name = name;
 		this.contents = contents;
 		this.category = category;
-		this.count = 1L;
+		this.count = 0L;
 	}
 }
