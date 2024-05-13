@@ -28,8 +28,10 @@ public class CorsConfig {
 		config.setAllowCredentials(true);
 
 		// 개발 중에는 모든 오리진 허용
-		List<String> origin = Arrays.asList("http://localhost:5173", "https://k10a506.p.ssafy.io",
-			"https://accounts.kakao.com");
+		List<String> origin = Arrays.asList("http://localhost:3000", "https://k10a506.p.ssafy.io",
+			"https://accounts.kakao.com",
+			"https://test.hellolaw.kr",
+			"https://hellolaw.kr");
 		config.setAllowedOrigins(origin);
 
 		config.addExposedHeader("Authorization"); // 클라이언트에서 이거 읽을 수 있음
