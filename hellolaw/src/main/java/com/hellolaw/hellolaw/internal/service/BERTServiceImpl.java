@@ -30,21 +30,6 @@ public class BERTServiceImpl implements BERTService {
 		ObjectMapper objectMapper = new ObjectMapper();
 		PrecedentDto responseData = objectMapper.readValue(response.block(), PrecedentDto.class);
 		return responseData;
-
-		// String questionJson = "{\n" +
-		// 	"    \"text\": \"" + text + "\"\n" +
-		// 	"}";
-		//
-		// Mono<PrecedentDto> response = WebClient.create(AIUrl).post()
-		// 	.uri("/search/")
-		// 	.header("Content-Type", "application/json")
-		// 	.body(Mono.just(questionJson), String.class)
-		// 	.retrieve()
-		// 	.bodyToMono(PrecedentDto.class);
-		//
-		// PrecedentDto result = response.block();
-		// result.setIndex(result.getIndex() + 1);
-		// return result;
 	}
 
 	@Override
