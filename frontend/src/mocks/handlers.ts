@@ -1,8 +1,8 @@
 import { delay, http, HttpResponse } from 'msw';
-const baseUrl = 'https://test.hellolaw.kr:8000';
+const baseUrl = 'http://msw:8080';
 
 export const handlers = [
-  http.get('/api/login/kakao', () => {
+  http.get(baseUrl + '/auth/oauth2/authorize/kakao', () => {
     return new HttpResponse(null, {
       status: 200,
       statusText: 'Save Cookie',

@@ -100,7 +100,22 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
           }
         })
         .catch((err) => {
-          return console.log('에러', err);
+          console.log('에러', err);
+          items = [
+            {
+              id: 1,
+              summary: '음주운전 2회로 집행유예 기간 중, 무면허 음주운전으로 적발되었습니다.',
+              lawType: '형사',
+              category: '음주운전',
+            },
+            {
+              id: 2,
+              summary: '최근 교통사고를 당해 상당한 피해를 입었습니다',
+              lawType: '형사',
+              category: '교통사고/음주운전',
+            },
+          ];
+          return setChildrenData(items);
         });
     } else if (data.type === 'category') {
       items = AccordionSData;

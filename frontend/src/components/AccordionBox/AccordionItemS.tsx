@@ -55,7 +55,7 @@ const AccordionItemS = ({ item }: AccordionItemQProps) => {
         }
       })
       .catch((err) => {
-        return console.log('에러', err);
+        return console.log('실시간 랭킹 API 호출 결과 에러', err.response.data);
       });
   };
 

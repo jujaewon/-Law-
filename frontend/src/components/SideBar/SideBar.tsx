@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
-import { instance } from '@api/instance';
 import { FaRegStar } from 'react-icons/fa';
 import { GoSearch } from 'react-icons/go';
 import { LuPlusSquare } from 'react-icons/lu';
@@ -14,6 +13,8 @@ import Button from '@components/Button/Button';
 import { useTodoActions } from '@store/chatsStore';
 import { getCategoryTitle, getCategorySelect } from '@store/sidebarStore';
 import { removeCookie } from '@utils/cookies';
+import axios from 'axios';
+import getUrl from '@utils/getUrl';
 
 const SidebarContainer = styled.div<{ $isOpen: boolean }>`
   background-color: ${(props) => props.theme.white};
@@ -156,8 +157,8 @@ const Sidebar = ({ nickname }: SidebarProps) => {
     setIsOpen(true);
   };
   const logout = () => {
-    instance
-      .get('/auth/logout')
+    axios
+      .get(getUrl('auth') + '/auth/logout')
       .then((res) => {
         console.log(res);
         removeCookie('access-token');
