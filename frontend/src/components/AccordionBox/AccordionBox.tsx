@@ -79,45 +79,32 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
   };
 
   const renderAccordionItem = (item: AccordionItemType) => {
+    if (item === null) return null;
     if ('lawType' in item) {
-      return <AccordionItemQ key={item.id} item={item} onClick={() => {}} onDelete={handleDelete} />;
+      return <AccordionItemQ key={item.questionId} item={item} onClick={() => {}} onDelete={handleDelete} />;
     } else if ('text' in item) {
       return <AccordionItemS key={item.id} item={item} />;
     } else {
       return <AccordionItemR key={item.rank} item={item} />;
     }
   };
+  const getQuestions = () => {
+    instance.get('/api/question/history').then((res) => {
+      if (res.data) {
+        console.log('질문 API 호출 결과', res.data.data);
+        return setChildrenData(res.data.data);
+      }
+      return setChildrenData([]);
+    });
+  };
+
+  useEffect(() => {
+    if (data.type === 'question' && isActive === true) getQuestions();
+  }, [data.type, isActive]);
 
   useEffect(() => {
     let items: AccordionItemType[] = [];
-    if (data.type === 'question') {
-      instance
-        .get('/api/question/history')
-        .then((res) => {
-          if (res.data) {
-            items = res.data;
-            setChildrenData(items);
-          }
-        })
-        .catch((err) => {
-          console.log('에러', err);
-          items = [
-            {
-              id: 1,
-              summary: '음주운전 2회로 집행유예 기간 중, 무면허 음주운전으로 적발되었습니다.',
-              lawType: '형사',
-              category: '음주운전',
-            },
-            {
-              id: 2,
-              summary: '최근 교통사고를 당해 상당한 피해를 입었습니다',
-              lawType: '형사',
-              category: '교통사고/음주운전',
-            },
-          ];
-          return setChildrenData(items);
-        });
-    } else if (data.type === 'category') {
+    if (data.type === 'category') {
       items = AccordionSData;
       setChildrenData(items);
     } else if (data.type === 'rank') {
