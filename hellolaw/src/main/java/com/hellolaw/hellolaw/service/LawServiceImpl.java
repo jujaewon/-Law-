@@ -40,18 +40,24 @@ public class LawServiceImpl implements LawService {
 	@Override
 	public List<LawRankingResponse> getLawRanking(String category) {
 		Category categoryKey = CategoryConverter.getCategoryInEnum(category);
+		log.info("category: {}", categoryKey.toString().trim());
 		Object lawsObj = redisTemplate.opsForList().leftPop(categoryKey.toString().trim());
 		List<LawRankingResponse> lawsList = (List<LawRankingResponse>)lawsObj;
 		List<LawRankingResponse> lawRankingResponseList = new ArrayList<>();
 
-		if (lawsList.isEmpty() || lawsList == null) {
-			log.info("lawSet is null or empty");
+		if (lawsList == null || lawsList.isEmpty()) {
+			log.info("lawList is null or empty");
 			List<Law> lawRanking = lawRepository.findTop10ByCategoryOrderByCountDesc(categoryKey);
-			for (Law law : lawRanking) {
-				LawRankingResponse lawRankingResponse = lawMapper.toLawRankingResponse(law);
-				lawRankingResponseList.add(lawRankingResponse);
+			int length = lawRanking.size();
+			if (length > 0) {
+				for (int i = 0; i < length; i++) {
+					LawRankingResponse lawRankingResponse = lawMapper.toLawRankingResponse(lawRanking.get(i));
+					lawRankingResponse.setRank(i + 1);
+					lawRankingResponseList.add(lawRankingResponse);
+				}
 			}
 		} else {
+			log.info("lawList: {}", lawsList);
 			for (LawRankingResponse resonse : lawsList) {
 				lawRankingResponseList.add(resonse);
 			}
