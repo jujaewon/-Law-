@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PrecedentDto {
-	private Integer index;
+	private Long index;
 	private String case_no;
 	private LocalDate judmn_adju_de;
 	private String court_nm;

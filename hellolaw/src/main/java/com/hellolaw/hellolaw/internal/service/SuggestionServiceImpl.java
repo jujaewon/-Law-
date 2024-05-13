@@ -19,16 +19,20 @@ public class SuggestionServiceImpl implements SuggestionService {
 	@Override
 	public SuggestionDto getSuggestion(String text) throws JsonProcessingException {
 
+		text = "{\n" +
+			"    \"text\": \"" + text + "\"\n" +
+			"}";
+
 		SuggestionDto request = new SuggestionDto(text);
-		Mono<String> response = WebClient.create(AIUrl).post()
+		Mono<SuggestionDto> response = WebClient.create(AIUrl).post()
 			.uri("/answer/")
 			.header("Content-Type", "application/json")
-			.bodyValue(request)
+			.body(Mono.just(text), String.class)
 			.retrieve()
-			.bodyToMono(String.class);
+			.bodyToMono(SuggestionDto.class);
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		SuggestionDto responseData = objectMapper.readValue(response.block(), SuggestionDto.class);
-		return responseData;
+		// SuggestionDto responseData = objectMapper.readValue(response.block(), SuggestionDto.class);
+		return response.block();
 	}
 }

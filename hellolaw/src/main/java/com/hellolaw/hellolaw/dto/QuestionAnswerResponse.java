@@ -9,7 +9,7 @@ import lombok.Data;
 @Builder
 public class QuestionAnswerResponse {
 	private String suggestion;
-	private Integer precedentId;
+	private Long precedentId;
 	private String precedentSummary;
 	private String lawType;
 	private String category;

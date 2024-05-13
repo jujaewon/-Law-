@@ -1,6 +1,5 @@
 package com.hellolaw.hellolaw.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -10,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hellolaw.hellolaw.common.ApiResponse;
-import com.hellolaw.hellolaw.entity.Category;
 import com.hellolaw.hellolaw.service.LawService;
-import com.hellolaw.hellolaw.util.CategoryConverter;
 
 import lombok.RequiredArgsConstructor;
 
