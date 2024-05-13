@@ -87,6 +87,7 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
       return <AccordionItemR key={item.rank} item={item} />;
     }
   };
+
   useEffect(() => {
     let items: AccordionItemType[] = [];
     if (data.type === 'question') {

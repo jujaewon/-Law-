@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
-
 import styled from '@emotion/styled';
 
 import { CategoryType } from '@@types/custom';
 import Icon from '@components/Icon/Icon';
-import { getCategoryTitle, setCategoryData } from '@store/sidebarStore';
+import { setCategoryData } from '@store/sidebarStore';
+import { instance } from '@api/instance';
 const ContentContainer = styled.div`
   background: #ffffff;
   border-bottom: solid 1px ${(props) => props.theme.gray1};
@@ -34,58 +33,31 @@ interface AccordionItemQProps {
 }
 const AccordionItemS = ({ item }: AccordionItemQProps) => {
   const setCategory = setCategoryData();
-  const title = getCategoryTitle();
+
   const handleSelect = async () => {
-    setCategory({
-      isSelect: true,
-      title: item.text,
-      data: [
-        {
-          rank: 1,
-          title: '법 1조 1항',
+    let category = item.text.includes('/') ? item.text.replace('/', ' 및 ') : item.text;
+    if (category.includes('대여금')) category = '대여금 및 미수금';
+
+    instance
+      .get(`/api/law/ranking`, {
+        params: {
+          category: category,
         },
-        {
-          rank: 2,
-          title: '법 1조 1항',
-        },
-        {
-          rank: 3,
-          title: '법 1조 1항',
-        },
-        {
-          rank: 4,
-          title: '법 1조 1항',
-        },
-        {
-          rank: 5,
-          title: '법 1조 1항',
-        },
-        {
-          rank: 6,
-          title: '법 1조 1항',
-        },
-        {
-          rank: 7,
-          title: '법 1조 1항',
-        },
-        {
-          rank: 8,
-          title: '법 1조 1항',
-        },
-        {
-          rank: 9,
-          title: '법 1조 1항',
-        },
-        {
-          rank: 10,
-          title: '법 1조 1항',
-        },
-      ],
-    });
+      })
+      .then((res) => {
+        console.log('실시간 랭킹 API 호출 결과', res);
+        if (res.data) {
+          return setCategory({
+            isSelect: true,
+            title: item.text,
+            data: res.data,
+          });
+        }
+      })
+      .catch((err) => {
+        return console.log('에러', err);
+      });
   };
-  useEffect(() => {
-    console.log('Updated title:', title);
-  }, [title]);
 
   return (
     <ContentContainer onClick={handleSelect}>

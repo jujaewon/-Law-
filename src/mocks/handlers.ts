@@ -1,4 +1,5 @@
 import { delay, http, HttpResponse } from 'msw';
+import { R } from 'msw/lib/core/HttpResponse-B07UKAkU';
 const baseUrl = 'https://test.hellolaw.kr:8000';
 
 export const handlers = [
@@ -57,6 +58,38 @@ export const handlers = [
     return HttpResponse.json(null, {
       status: 200,
       statusText: `${questionId} DeleteSuccess`,
+    });
+  }),
+  http.get(baseUrl + '/api/law/ranking', ({ request }) => {
+    const url = new URL(request.url);
+    const category = url.searchParams.get('category');
+
+    const datas = [
+      {
+        rank: 1,
+        lawId: 5,
+        lawName: '제 1조 5항',
+      },
+      {
+        rank: 2,
+        lawId: 11,
+        lawName: '제 2조 10항',
+      },
+      {
+        rank: 3,
+        lawId: 16,
+        lawName: '제 2조 10항',
+      },
+      {
+        rank: 4,
+        lawId: 1,
+        lawName: '제 2조 10항',
+      },
+    ];
+
+    return HttpResponse.json(datas, {
+      status: 200,
+      statusText: ` Success`,
     });
   }),
 ];
