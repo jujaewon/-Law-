@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw';
+import { delay, http, HttpResponse } from 'msw';
 const baseUrl = 'https://test.hellolaw.kr:8000';
 
 export const handlers = [
@@ -14,7 +14,7 @@ export const handlers = [
       statusText: 'Logut Success',
     });
   }),
-  http.post(baseUrl + '/api/question', () => {
+  http.post(baseUrl + '/api/question', async () => {
     const data = {
       suggestion: '이렇게 하세요',
       precedent: {
@@ -25,7 +25,7 @@ export const handlers = [
       },
       relatedLaws: ['관세법 제107조', '관세법 제108조', '관세법 제109조'],
     };
-
+    await delay(20000);
     return HttpResponse.json(data, {
       status: 200,
       statusText: 'QuestionSuccess',

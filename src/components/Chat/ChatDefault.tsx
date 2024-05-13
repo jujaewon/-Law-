@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { chatsStore } from '@store/chatsStore';
 import { breakpoints } from '@styles/breakpoints';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
 import ChatMessage from './ChatMessage';
 import { useEffect, useState } from 'react';
 import { instance } from '@api/instance';
@@ -59,19 +58,28 @@ const ChatDefault = () => {
   const data = chatsStore((state) => state.data);
   const { addChatData } = chatsStore((state) => state.actions);
 
-  const [chatBotText, setChatBotText] = useState(null);
+  const [chatBotAnswer, setChatBotAnswer] = useState(null);
 
-  // const { data, isLoading, isError } = useQuery(['getCommnet', post.id], () => fetchComments(post.id));
   useEffect(() => {
+    addChatData({
+      chat: {
+        suggestion: '',
+        precedent: {
+          precedentId: 0,
+          lawType: '',
+          precedentSummary: '',
+          category: '',
+        },
+        relatedLaws: [''],
+      },
+      type: 'bot',
+    });
     instance
       .post('/api/question')
       .then((res) => {
+        console.log('응답', res);
         if (res.data) {
-          addChatData({ chat: res.data, type: 'bot' });
-          ///20초 지연후에 응답
-          setTimeout(() => {
-            setChatBotText(res.data);
-          }, 20000);
+          return setChatBotAnswer(res.data);
         }
       })
       .catch((err) => {
@@ -86,7 +94,7 @@ const ChatDefault = () => {
           {chat.type === 'user' ? (
             <ChatMessageWrapper>{chat.chat}</ChatMessageWrapper>
           ) : (
-            <ChatMessage chatdata={chatBotText} />
+            <ChatMessage chatdata={chatBotAnswer} />
           )}
         </ChatWrapper>
       ))}
