@@ -9,7 +9,7 @@ export interface RankDataType {
   lawName: string;
 }
 export interface AQuestionType {
-  id: number;
+  questionId: number;
   summary: string;
   lawType: string;
   category: string;
