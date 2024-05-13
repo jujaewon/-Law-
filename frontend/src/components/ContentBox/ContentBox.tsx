@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
 
 import styled from '@emotion/styled';
+import { chatsStore } from '@store/chatsStore';
 
 const ContentBoxContainer = styled.div`
   width: 100%;
@@ -100,12 +101,12 @@ const OptionText = styled.div`
   font-size: 15px;
   line-height: 20px;
   position: relative;
-  color: #0080FF;
+  color: #0080ff;
 `;
 
 const Color = styled.div`
-  color: #0080FF;
-`
+  color: #0080ff;
+`;
 
 interface CategoryModalProps {
   onCategoryClick: (category: string) => void;
@@ -173,6 +174,8 @@ const ContentBox = ({ setOptionsData }: PropsType) => {
   const [showOptions2, setShowOptions2] = useState(false);
   const [showGuide, setShowGuide] = useState(true);
 
+  const isChat = chatsStore((state) => state.isChat);
+
   const [options, setOptions] = useState<OptionsType>({
     category: '-',
     humanType: '-',
@@ -182,11 +185,19 @@ const ContentBox = ({ setOptionsData }: PropsType) => {
 
   const handleOptionsShow = (type: string) => {
     if (type === 'category') {
-      setShowOptions1(!showOptions1); // showOptions1의 상태를 토글
+      setShowOptions1(!showOptions1);
     } else if (type === 'humanType') {
-      setShowOptions2(!showOptions2); // showOptions2의 상태를 토글
+      setShowOptions2(!showOptions2);
     }
-  };  
+  };
+
+  useEffect(() => {
+    //초기화
+    setOptions({
+      category: '-',
+      humanType: '-',
+    });
+  }, [isChat]);
 
   const handleCategoryClick = (value: string) => {
     setOptions((prev) => ({

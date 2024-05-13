@@ -2,7 +2,8 @@ import { create } from 'zustand';
 
 interface RankData {
   rank: number;
-  title: string;
+  lawId: number;
+  lawName: string;
 }
 interface CategoryData {
   isSelect: boolean;

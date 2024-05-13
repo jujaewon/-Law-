@@ -4,8 +4,9 @@ export interface AccordionDataType {
   type: string;
 }
 export interface RankDataType {
+  lawId: number;
   rank: number;
-  title: string;
+  lawName: string;
 }
 export interface AQuestionType {
   id: number;
