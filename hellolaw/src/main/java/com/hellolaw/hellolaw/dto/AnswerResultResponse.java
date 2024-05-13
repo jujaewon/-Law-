@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.hellolaw.hellolaw.entity.Answer;
 import com.hellolaw.hellolaw.entity.RelatedAnswer;
+import com.hellolaw.hellolaw.util.CategoryConstant;
 
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +32,8 @@ public class AnswerResultResponse {
 		return AnswerResultResponse.builder()
 			.precedentId(answer.getRelatedAnswers().get(0).getPrecedent().getId())
 			.precedentType(answer.getRelatedAnswers().get(0).getPrecedent().getCaseName())
-			.precedentCategory(answer.getRelatedAnswers().get(0).getLaw().getCategory().name())
+			.precedentCategory(
+				CategoryConstant.getCategoryInKorean(answer.getRelatedAnswers().get(0).getLaw().getCategory().name()))
 			.summaryPrecedent(answer.getSummaryAnswer().getContents())
 			.suggest(answer.getContents())
 			.laws(lawNames)
