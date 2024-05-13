@@ -94,7 +94,8 @@ public class AuthController {
 	}
 
 	@GetMapping("/authentication")
-	ResponseEntity<ApiResponse<Long>> authentication(Authentication authentication) {
-		return ResponseEntity.ok(ApiResponse.success((Long)authentication.getPrincipal()));
+	Long authentication(Authentication authentication) {
+		CustomPrincipal principal = (CustomPrincipal)authentication.getPrincipal();
+		return principal.getId();
 	}
 }
