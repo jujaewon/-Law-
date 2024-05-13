@@ -129,7 +129,7 @@ public class QuestionServiceImpl implements QuestionService {
 		return questionRepository.save(questionMapper.toQuestion(questionRequest, user));
 	}
 
-	private void updateLawInformation(String lawName) { // TODO : 법안 정보 크롤링해서 해당 법 업데이트
+	private void updateLawInformation(String lawName) {
 		LawInformationDto lawInformationDto = lawInformationService.getLawInformation(lawName);
 		lawRepository.updateLawInformationByName(lawName, lawInformationDto.getContents(),
 			lawInformationDto.getCategory());
