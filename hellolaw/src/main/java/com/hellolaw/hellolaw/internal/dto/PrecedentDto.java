@@ -1,17 +1,18 @@
 package com.hellolaw.hellolaw.internal.dto;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class PrecedentDto {
 	private Long index;
 	private String case_no;
-	private LocalDate judmn_adju_de;
+	private String judmn_adju_de;
 	private String court_nm;
 	private String case_nm;
 	private Integer case_field;

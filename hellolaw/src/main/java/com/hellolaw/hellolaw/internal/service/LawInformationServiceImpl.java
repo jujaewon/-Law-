@@ -13,9 +13,10 @@ public class LawInformationServiceImpl implements LawInformationService {
 	private String CrawlingUrl;
 
 	public LawInformationDto getLawInformation(String lawName) {
-		return RestClient.create(CrawlingUrl).get()
+		LawInformationDto response = RestClient.create(CrawlingUrl).get()
 			.uri("/law?name=" + lawName)
 			.retrieve()
 			.body(LawInformationDto.class);
+		return response;
 	}
 }
