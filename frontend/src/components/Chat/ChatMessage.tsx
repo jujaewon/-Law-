@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import TypingText from './TypingText';
 import Loading from '@components/Loading/Loading';
-import useModal from '@hooks/useModal'
+import useModal from '@hooks/useModal';
 
 const FieldContainer = styled.div`
   align-self: stretch;
