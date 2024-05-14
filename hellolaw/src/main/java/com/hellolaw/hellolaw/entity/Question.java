@@ -1,5 +1,6 @@
 package com.hellolaw.hellolaw.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,7 +31,7 @@ public class Question extends BaseEntity {
 	@Column(name = "category")
 	private String category;
 
-	@OneToOne(mappedBy = "question")
+	@OneToOne(mappedBy = "question", cascade = CascadeType.ALL)
 	private Answer answer;
 
 	@ManyToOne(fetch = FetchType.LAZY)
