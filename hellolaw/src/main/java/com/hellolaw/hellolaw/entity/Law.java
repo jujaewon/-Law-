@@ -48,6 +48,6 @@ public class Law extends BaseEntity {
 		this.name = name;
 		this.contents = contents;
 		this.category = category;
-		this.count = 0L;
+		this.count = 1L;
 	}
 }

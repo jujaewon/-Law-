@@ -83,6 +83,8 @@ public class QuestionServiceImpl implements QuestionService {
 	public QuestionAnswerResponse generateAnswer(Long userId, QuestionRequest questionRequest)
 		throws JsonProcessingException {
 		Question question = saveQuestion(userId, questionRequest);
+		Category questionCategory = questionRequest.getCategory() == null ? Category.OTHER :
+			CategoryConverter.getCategoryInEnum(questionRequest.getCategory());
 		String prompt = makePrompt(questionRequest);
 
 		String suggestion = bertService.getSuggestion(prompt).getText(); // 대처 방안
@@ -98,7 +100,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 		List<String> list = similarPrecedent.getRelate_laword();
 		list.forEach(lawName -> {
-			Law law = saveRelatedLaw(lawName);
+			Law law = saveRelatedLaw(lawName, questionCategory);
 			relatedAnswerRepository.save(new RelatedAnswer(answer, precedent, law));
 		});
 
@@ -112,11 +114,11 @@ public class QuestionServiceImpl implements QuestionService {
 			.build();
 	}
 
-	private Law saveRelatedLaw(String lawName) {
+	private Law saveRelatedLaw(String lawName, Category category) {
 		Optional<Law> law = lawRepository.findByName(lawName);
 		if (law.isEmpty()) {
-			Law newLaw = new Law(lawName, null, Category.OTHER);
-			CompletableFuture.runAsync(() -> updateLawInformation(newLaw));
+			Law newLaw = new Law(lawName, null, category);
+			CompletableFuture.runAsync(() -> updateLawInformation(newLaw, category));
 			return lawRepository.save(newLaw);
 		} else {
 			Law newLaw = law.get();
@@ -131,10 +133,11 @@ public class QuestionServiceImpl implements QuestionService {
 		return questionRepository.save(questionMapper.toQuestion(questionRequest, user));
 	}
 
-	private void updateLawInformation(Law law) {
+	private void updateLawInformation(Law law, Category category) {
 		LawInformationDto lawInformationDto = lawInformationService.getLawInformation(law.getName());
 		law.setContents(lawInformationDto.getContents());
-		law.setCategory(CategoryConverter.getCategoryInEnum(lawInformationDto.getCategory()));
+		law.setCategory(
+			category == null ? CategoryConverter.getCategoryInEnum(lawInformationDto.getCategory()) : category);
 		lawRepository.save(law);
 	}
 
