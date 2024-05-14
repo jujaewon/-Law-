@@ -94,26 +94,9 @@ const LawContainerAlign = styled.div`
   gap: 8px;
 `;
 
-const MoreButton = styled.div`
-  align-self: stretch;
-  height: 26px;
-  padding: 5px;
-  background: ${(props) => props.theme.primary};
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 12px;
-  font-weight: 500;
-
-  cursor: pointer;
-`;
-
 const LawTitle = styled.div`
   width: 100%;
   text-align: center;
-
   font-size: 14px;
   font-weight: bold;
 `;
