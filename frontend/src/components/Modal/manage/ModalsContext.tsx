@@ -2,18 +2,34 @@
 import { createContext } from 'react';
 
 import { TestModal, LogoModal, InfoModal } from '@components/Modal/Modal';
+import PrecedentModal from '@components/Modal/PrecedentModal';
 
-export type ModalType = 'test' | 'logo' | 'info';
+export type ModalType = 'test' | 'logo' | 'info' | 'precedent';
 
 export const MODAL_COMPONENTS = {
   test: TestModal,
   logo: LogoModal,
   info: InfoModal,
+  precedent: PrecedentModal,
 };
 export interface Modals {
   type: ModalType;
   props?: any;
   isOpen?: boolean;
+}
+export interface precedentData {
+  caseNo: string | null; // 사건번호
+  judmnAdjuDe: [number, number, number]; // 판결선고일 (year, month, day)
+  courtNm: string | null; // 법원명
+  caseNnm: string | null; // 사건명
+  caseField: number | null; // 사건유형
+  detailField: number | null; // 세부유형
+  trailField: number | null; // 심급유형
+  relateLaword: string[]; // 관련법령
+  disposalContent: string | null; // 처분내용
+  basicFact: string | null; // 기초사실
+  courtDcss: string | null; // 재판부의 판단
+  conclusion: string | null; // 결론
 }
 export interface ModalProps {
   onClose: () => void;
@@ -23,6 +39,7 @@ export interface ModalProps {
   title?: string;
   message?: string;
   btnText?: string;
+  precedentData?: precedentData;
 }
 
 // 현재 열린 모달 상태를 관리하는 Context

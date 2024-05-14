@@ -21,10 +21,17 @@ const QuestionTitle = styled.div`
   color: ${(props) => props.theme.black};
   text-align: left;
   font-size: 1.2rem;
+  line-height: 1.2;
   font-weight: 700;
   position: relative;
   width: 188px;
-  height: 17px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-word;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3; // 원하는 라인수
+  -webkit-box-orient: vertical;
 `;
 
 const ButtonsWrapper = styled.div`
@@ -52,7 +59,8 @@ const ContentContainer = styled.div`
   justify-content: center;
   align-self: stretch;
   flex-shrink: 0;
-  height: 125px;
+  height: auto;
+  max-height: 250px;
   position: relative;
 `;
 const DeleteButton = styled.button`
@@ -85,16 +93,25 @@ const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
 
   const handleDelete = async () => {
     onClick();
-    instance.delete(`/api/question/v1/${questionId}`).then((res) => {
-      if (res && res.status === 200) {
-        console.log('삭제 성공');
+    instance.delete(`/api/question/v1?questionId=${questionId}`).then((res) => {
+      if (res) {
+        console.log('삭제 성공', res);
         onDelete(item.questionId);
       }
     });
   };
 
   const getDetailQuest = () => {
-    console.log('ffff');
+    instance.get(`/api/answer/detail?questionId=${questionId}`).then((res) => {
+      if (res) {
+        console.log('질문 상세 조회성공', res);
+      }
+    });
+  };
+
+  const lawTypeShort = (lawType: string) => {
+    if (lawType.length > 14) return lawType.slice(0, 14) + '...';
+    else return lawType;
   };
   return (
     <ContentContainer
@@ -110,7 +127,7 @@ const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
       </QuestionTitleWrapper>
       <ButtonsWrapper>
         <Button type="button" color="secondary3" custom="category">
-          {lawType}
+          {lawTypeShort(lawType)}
         </Button>
         <Button type="button" color="secondary1" custom="category">
           {GetCategoryIcon(category)}

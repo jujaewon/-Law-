@@ -189,8 +189,8 @@ const ChatMessage = ({ chatdata }: ChatMessageProps) => {
   const { openModal } = useModal();
 
   const getDetailLaw = (lawName: string) => {
-    console.log('상세 내용 보기');
-    instance.get(`api/law/detail?name=${lawName}`).then((res) => {
+    console.log('법안 상세 내용 보기');
+    instance.get(`/api/law/detail?name=${lawName}`).then((res) => {
       console.log(res.data);
       openModal({
         type: 'info',
@@ -202,15 +202,16 @@ const ChatMessage = ({ chatdata }: ChatMessageProps) => {
     });
   };
 
-  const test = () => {
-    console.log('상세 내용 보기');
-    openModal({
-      type: 'info',
-      props: {
-        title: chatdata?.relatedLaws[0],
-        message:
-          '대한민국은 민주공화국이다, 제2항은 대한민국의 주권은 국민에게 있고, 모든 권력은 국민으로부터 나온다라고 규정한다...',
-      },
+  const getDetailPrecedent = (id: number) => {
+    console.log('판례 상세 내용 보기');
+    instance.get(`/api/precedent/entire?precedentId=${id}`).then((res) => {
+      console.log(res.data.data);
+      openModal({
+        type: 'precedent',
+        props: {
+          precedentData: res.data.data,
+        },
+      });
     });
   };
 
@@ -219,7 +220,15 @@ const ChatMessage = ({ chatdata }: ChatMessageProps) => {
       <DefaultMessageContainer>
         <ContainerAlign>
           <TypingText text={defaultText} />
-          {chatdata && <Button onClick={test}>더보기</Button>}
+          {chatdata && (
+            <Button
+              onClick={() => {
+                getDetailPrecedent(chatdata.precedentId);
+              }}
+            >
+              더보기
+            </Button>
+          )}
         </ContainerAlign>
       </DefaultMessageContainer>
       {chatdata === null ? (
@@ -245,9 +254,9 @@ const ChatMessage = ({ chatdata }: ChatMessageProps) => {
             </AddressSection>
           </Container>
           <LawsContainer>
-            {chatdata?.relatedLaws.map((law) => {
+            {chatdata?.relatedLaws.map((law, index) => {
               return (
-                <LawContainerAlign>
+                <LawContainerAlign key={index}>
                   <LawTitle>{law}</LawTitle>
                   <MoreButton
                     onClick={() => {
