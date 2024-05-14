@@ -30,9 +30,9 @@ def crawlLawContents(url):
             if law_content:
                 return law_content.get_text(strip=True)
             else:
-                return "Law content not found in the frame"
+                return "더 이상 시행되지 않는 법입니다."
         else:
-            return "Frame with ID 'lawService' not found"
+            return "더 이상 시행되지 않는 법입니다."
     except Exception as e:
         print("Error: ", str(e))
         return str(e)
