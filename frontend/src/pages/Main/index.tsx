@@ -4,12 +4,12 @@ import styled from '@emotion/styled';
 
 import BottomBar from '@components/BottomBar/BottomBar';
 import ChatDefault from '@components/Chat/ChatDefault';
-import GuideBox from '@components/GuideBox/GuideBox';
 import SideBar from '@components/SideBar/SideBar';
 import useModal from '@hooks/useModal';
 import { chatsStore } from '@store/chatsStore';
 import { breakpoints } from '@styles/breakpoints';
 import { getCookie } from '@utils/cookies';
+import GuideDefault from '@pages/Guide/GuideDefault';
 
 const MainContainer = styled.div`
   background-color: ${(props) => props.theme.white};
@@ -74,7 +74,7 @@ const Main = () => {
     <MainContainer>
       <SideBar nickname={nickname} />
       <ContentsContainer>
-        <AnswerContainer>{isChat ? <ChatDefault /> : <GuideBox />}</AnswerContainer>
+        <AnswerContainer>{isChat ? <ChatDefault /> : <GuideDefault />}</AnswerContainer>
         <BottomBar />
       </ContentsContainer>
     </MainContainer>
