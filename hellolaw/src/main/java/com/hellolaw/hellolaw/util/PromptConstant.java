@@ -18,7 +18,7 @@ public class PromptConstant {
 			 "category": your category here }
 			 
 			next is my script(about law precedent) that you should summary and categorize
-						
+					
 			""";
 		public static String suffix = """
 						
@@ -28,7 +28,8 @@ public class PromptConstant {
 			{ "summary" : your summary here(in Korean),
 			 "category": your category here }
 			 
-			 summary must be in Korean
+			 summary must be in Korean!!! you should in Korean
+			 you must translate in Korean
 			and The category must also be one of the 12 I provided above.
 			""";
 	}
