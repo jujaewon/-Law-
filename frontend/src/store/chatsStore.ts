@@ -2,52 +2,62 @@ import { create } from 'zustand';
 
 interface ChatBotData {
   suggestion: string;
-  precedent: {
-    precedentId: number;
-    lawType: string;
-    precedentSummary: string;
-    category: string;
-  };
+  precedentId: number;
+  lawType: string;
+  precedentSummary: string;
+  category: string;
   relatedLaws: Array<string>;
 }
-interface OptionsType {
-  category: string | null;
-  victim: string | null;
-  question: string;
+interface OptionsTypeData {
+  category?: string | null;
+  victim?: boolean | null;
+  question?: string;
 }
 interface UserChatData {
   chat: string;
-  data: OptionsType;
   type: 'user';
 }
 
 interface BotChatData {
-  chat: ChatBotData;
+  chat: ChatBotData | null;
   type: 'bot';
 }
 type ChatData = UserChatData | BotChatData;
 
 interface ChatsData {
   isChat: boolean;
-  isBoatLoading: boolean;
   data: Array<ChatData>;
+  chatBotAnswer: ChatBotData | null;
+  optionsData: OptionsTypeData;
 }
 interface ChatsDataInfo extends ChatsData {
   actions: {
     addChatData: (chat: ChatData) => void;
     setIsChat: (value: boolean) => void;
-    setIsBoatLoading: (value: boolean) => void;
+    setOptionsData: (value: OptionsTypeData) => void;
+    setChatBotAnswer: (value: ChatBotData) => void;
+    //초기화 모든 데이터
+    resetData: () => void;
   };
 }
 
 export const chatsStore = create<ChatsDataInfo>((set) => ({
   isChat: false,
-  isBoatLoading: false,
   data: [],
+  optionsData: { category: null, victim: null, question: '' },
+  chatBotAnswer: null,
   actions: {
     addChatData: (chat) => set((state) => ({ data: [...state.data, chat] })),
     setIsChat: (value) => set({ isChat: value }),
-    setIsBoatLoading: (value) => set({ isBoatLoading: value }),
+    setOptionsData: (value) => set((state) => ({ optionsData: { ...state.optionsData, ...value } })),
+    resetData: () =>
+      set({
+        isChat: false,
+        data: [],
+        optionsData: { category: null, victim: null, question: '' },
+        chatBotAnswer: null,
+      }),
+    setChatBotAnswer: (value) => set({ chatBotAnswer: value }),
   },
 }));
 

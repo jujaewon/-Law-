@@ -5,6 +5,7 @@ import { breakpoints } from '@styles/breakpoints';
 import ChatMessage from './ChatMessage';
 import { useEffect, useState } from 'react';
 import { instance } from '@api/instance';
+import { useTodoActions } from '@store/chatsStore';
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.white};
@@ -53,54 +54,24 @@ const ChatMessageWrapper = styled.div`
   background-color: ${(props) => props.theme.gray2};
   padding: 16px 16px;
   border-radius: 10px;
-  width: 600px;
+  max-width: 600px;
+  width: auto;
 `;
 
 const ChatDefault = () => {
   const data = chatsStore((state) => state.data);
-  const { addChatData } = chatsStore((state) => state.actions);
-
-  const [chatBotAnswer, setChatBotAnswer] = useState(null);
-
-  useEffect(() => {
-    addChatData({
-      chat: {
-        suggestion: '',
-        precedent: {
-          precedentId: 0,
-          lawType: '',
-          precedentSummary: '',
-          category: '',
-        },
-        relatedLaws: [''],
-      },
-      type: 'bot',
-    });
-    console.log('Fff');
-    instance
-      .post('/api/question')
-      .then((res) => {
-        console.log('응답', res);
-        if (res.data) {
-          return setChatBotAnswer(res.data);
-        }
-      })
-      .catch((err) => {
-        return console.log('에러', err);
-      });
-  }, []);
+  const chatBotAnswer = chatsStore((state) => state.chatBotAnswer);
 
   return (
     <Container>
       {data.map((chat, index) => (
         <ChatWrapper $type={chat.type} key={index}>
-          {chat.type === 'user' ? (
-            <ChatMessageWrapper>{chat.chat}</ChatMessageWrapper>
-          ) : (
-            <ChatMessage chatdata={chatBotAnswer} />
-          )}
+          {chat.type === 'user' && <ChatMessageWrapper>{chat.chat}</ChatMessageWrapper>}
         </ChatWrapper>
       ))}
+      <ChatWrapper $type="boat">
+        <ChatMessage chatdata={chatBotAnswer}></ChatMessage>
+      </ChatWrapper>
     </Container>
   );
 };
