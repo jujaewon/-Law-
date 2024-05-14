@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -39,7 +40,7 @@ public class Law extends BaseEntity {
 	@ColumnDefault("0")
 	private Long count;
 
-	@OneToMany(mappedBy = "law")
+	@OneToMany(mappedBy = "law", cascade = CascadeType.ALL)
 	private List<RelatedAnswer> relatedAnswers;
 
 	@Builder

@@ -25,6 +25,6 @@ public class SocialProvider extends BaseEntity {
 	private String provider;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user")
+	@JoinColumn(name = "user_id")
 	private User user;
 }

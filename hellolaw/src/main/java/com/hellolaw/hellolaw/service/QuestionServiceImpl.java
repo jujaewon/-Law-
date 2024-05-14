@@ -141,7 +141,7 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	@Transactional
 	public Void deleteQuestion(Long userId, Long questionId) {
-		Question question = questionRepository.findQuestionByUserIdAndQuestionId(userId, questionId).orElseThrow();
+		Question question = questionRepository.findQuestionByQuestionIdUsingFetchJoin(questionId).orElseThrow();
 		questionRepository.delete(question);
 		return null;
 	}
