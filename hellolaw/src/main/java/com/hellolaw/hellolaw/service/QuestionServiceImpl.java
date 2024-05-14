@@ -1,5 +1,7 @@
 package com.hellolaw.hellolaw.service;
 
+import static com.hellolaw.hellolaw.dto.QuestionHistoryResponse.*;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -44,8 +46,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.hellolaw.hellolaw.dto.QuestionHistoryResponse.createQuestionHistoryResponse;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -86,7 +86,7 @@ public class QuestionServiceImpl implements QuestionService {
 		String prompt = makePrompt(questionRequest);
 
 		String suggestion = bertService.getSuggestion(prompt).getText(); // 대처 방안
-		Answer answer = answerRepository.save(answerMapper.toAnswer(question, suggestion)); // 대처방안 저장
+		Answer answer = answerRepository.save(answerMapper.toAnswer(suggestion, question)); // 대처방안 저장
 
 		PrecedentDto similarPrecedent = bertService.getSimilarPrecedent(prompt); // 유사판례
 		Precedent precedent = precedentRepository.findById(similarPrecedent.getIndex())

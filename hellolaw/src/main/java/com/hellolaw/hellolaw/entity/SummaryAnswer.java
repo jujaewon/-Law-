@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "summary_answer")
 public class SummaryAnswer extends BaseEntity {
 
-	@Column(name = "contents")
+	@Column(name = "contents", columnDefinition = "TEXT")
 	private String contents;
 
 	@OneToOne(fetch = FetchType.LAZY)
