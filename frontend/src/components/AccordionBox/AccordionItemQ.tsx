@@ -21,10 +21,17 @@ const QuestionTitle = styled.div`
   color: ${(props) => props.theme.black};
   text-align: left;
   font-size: 1.2rem;
+  line-height: 1.2;
   font-weight: 700;
   position: relative;
   width: 188px;
-  height: 17px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-word;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3; // 원하는 라인수
+  -webkit-box-orient: vertical;
 `;
 
 const ButtonsWrapper = styled.div`
@@ -52,7 +59,8 @@ const ContentContainer = styled.div`
   justify-content: center;
   align-self: stretch;
   flex-shrink: 0;
-  height: 125px;
+  height: auto;
+  max-height: 250px;
   position: relative;
 `;
 const DeleteButton = styled.button`
