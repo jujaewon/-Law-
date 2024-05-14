@@ -3,6 +3,7 @@ import TypingText from './TypingText';
 import Loading from '@components/Loading/Loading';
 import useModal from '@hooks/useModal';
 import { useEffect } from 'react';
+import { instance } from '@api/instance';
 
 const FieldContainer = styled.div`
   align-self: stretch;
@@ -187,6 +188,20 @@ const ChatMessage = ({ chatdata }: ChatMessageProps) => {
     '안녕하세요. 저는 법률 전문 챗봇 ‘헬로(Law)’ 입니다.\r\n 질문하신 내용에 대한 최적의 답변을 제공하고자 열심히 답변을 생성하고 있습니다.\r\n  보다 정확한 답변과 유용한 정보를 제공하기 위해 일부 시간이 소요될 수 있으니 잠시만 기다려주시기 바랍니다.\r\n 사용자의 사건과 가장 유사한 판례는 아래와 같습니다.';
   const { openModal } = useModal();
 
+  const getDetailLaw = (lawName: string) => {
+    console.log('상세 내용 보기');
+    instance.get(`api/law/detail?name=${lawName}`).then((res) => {
+      console.log(res.data);
+      openModal({
+        type: 'info',
+        props: {
+          title: res.data.lawName,
+          message: res.data.lawDetail,
+        },
+      });
+    });
+  };
+
   const test = () => {
     console.log('상세 내용 보기');
     openModal({
@@ -234,7 +249,13 @@ const ChatMessage = ({ chatdata }: ChatMessageProps) => {
               return (
                 <LawContainerAlign>
                   <LawTitle>{law}</LawTitle>
-                  <MoreButton onClick={test}>더보기</MoreButton>
+                  <MoreButton
+                    onClick={() => {
+                      getDetailLaw(law);
+                    }}
+                  >
+                    더보기
+                  </MoreButton>
                 </LawContainerAlign>
               );
             })}

@@ -50,12 +50,11 @@ const AccordionItemS = ({ item }: AccordionItemQProps) => {
   const test = () => {
     instance.get(`api/law/detail?name=${item.lawName}`).then((res) => {
       console.log(res.data);
-      const data = res.data.data.lawDetail;
       openModal({
         type: 'info',
         props: {
-          title: item.lawName,
-          message: data,
+          title: res.data.lawName,
+          message: res.data.lawDetail,
         },
       });
     });
