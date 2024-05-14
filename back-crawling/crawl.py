@@ -18,6 +18,9 @@ def crawlLawContents(url):
         lawContent = driver.find_element(By.CLASS_NAME, "lawcon")
         return lawContent.text
     except Exception:
+        print("Error: ", url)
+        print("Error: ", Exception)
+        print("Error: ", Exception.with_traceback())
         return Exception
 
 
