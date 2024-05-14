@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import traceback
 
 baseUrl = "https://law.go.kr/%EB%B2%95%EB%A0%B9/"
 
@@ -20,7 +21,7 @@ def crawlLawContents(url):
     except Exception:
         print("Error: ", url)
         print("Error: ", Exception)
-        print("Error: ", Exception.with_traceback())
+        print("Error: ", traceback.format_exc())
         return Exception
 
 
