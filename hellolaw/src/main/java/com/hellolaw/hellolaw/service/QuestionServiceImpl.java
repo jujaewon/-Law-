@@ -69,6 +69,7 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public List<QuestionHistoryResponse> getTwoQuestionHistoryList(Long userId) {
 		List<Question> questions = questionRepository.findTop2ByUserIdOrderByCreatedAtDesc(userId);
+		log.info("history-questions : " + questions.size());
 
 		// TODO : 최근 2개의 질문 가져오기
 		return questions.stream()

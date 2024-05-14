@@ -20,8 +20,11 @@ public class QuestionHistoryResponse {
     public static QuestionHistoryResponse createQuestionHistoryResponse(Question question) {
 
         Answer answer = question.getAnswer();
+        log.info("history-answer : " + answer);
+
         //answer이 없을때
         if (answer == null || answer.getRelatedAnswers().isEmpty()) {
+            log.info("answer is null");
             return null;
         }
         return QuestionHistoryResponse.builder()
