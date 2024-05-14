@@ -10,7 +10,7 @@ import useModal from '@hooks/useModal';
 
 import { ModalProps } from './manage/ModalsContext';
 
-const ModalOverlay = styled.div<{ $isOpen: boolean }>`
+export const ModalOverlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -23,7 +23,7 @@ const ModalOverlay = styled.div<{ $isOpen: boolean }>`
   visibility: ${({ $isOpen }) => ($isOpen ? 'visible' : 'hidden')};
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
   animation: ${({ $isOpen }) => ($isOpen ? 'overlay-in 1s both' : 'none')};
-
+  display: block;
   @keyframes overlay-in {
     0% {
       transform: scale(0.004);
@@ -37,7 +37,7 @@ const ModalOverlay = styled.div<{ $isOpen: boolean }>`
     }
   }
 `;
-const ModalContainer = styled.div<{ $type?: string }>`
+export const ModalContainer = styled.div<{ $type?: string }>`
   z-index: 2;
   width: 430px;
   min-height: 200px;
