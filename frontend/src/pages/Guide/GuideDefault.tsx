@@ -75,6 +75,10 @@ const TextGroup = styled.div`
   margin-bottom: 10px;
   color: #282c37;
   font-weight: 600;
+
+  ${breakpoints.md} {
+    font-size: 20px;
+  }
 `;
 
 const GuideDefault = () => {
