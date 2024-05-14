@@ -76,33 +76,36 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
 
   const handleDelete = (id: number) => {
     setChildrenData(childrenData?.filter((item: any) => item.id !== id));
+    getQuestions();
   };
 
   const renderAccordionItem = (item: AccordionItemType) => {
+    if (item === null) return null;
     if ('lawType' in item) {
-      return <AccordionItemQ key={item.id} item={item} onClick={() => {}} onDelete={handleDelete} />;
+      return <AccordionItemQ key={item.questionId} item={item} onClick={() => {}} onDelete={handleDelete} />;
     } else if ('text' in item) {
       return <AccordionItemS key={item.id} item={item} />;
     } else {
       return <AccordionItemR key={item.rank} item={item} />;
     }
   };
+  const getQuestions = () => {
+    instance.get('/api/question/history').then((res) => {
+      if (res.data) {
+        console.log('질문 API 호출 결과', res.data.data);
+        return setChildrenData(res.data.data);
+      }
+      return setChildrenData([]);
+    });
+  };
+
+  useEffect(() => {
+    if (data.type === 'question' && isActive === true) getQuestions();
+  }, [data.type, isActive]);
 
   useEffect(() => {
     let items: AccordionItemType[] = [];
-    if (data.type === 'question') {
-      instance
-        .get('/api/question/history')
-        .then((res) => {
-          if (res.data) {
-            items = res.data;
-            setChildrenData(items);
-          }
-        })
-        .catch((err) => {
-          return console.log('에러', err);
-        });
-    } else if (data.type === 'category') {
+    if (data.type === 'category') {
       items = AccordionSData;
       setChildrenData(items);
     } else if (data.type === 'rank') {

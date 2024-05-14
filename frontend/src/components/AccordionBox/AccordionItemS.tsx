@@ -45,17 +45,17 @@ const AccordionItemS = ({ item }: AccordionItemQProps) => {
         },
       })
       .then((res) => {
-        console.log('실시간 랭킹 API 호출 결과', res);
         if (res.data) {
+          console.log('실시간 랭킹 API 호출 결과', res.data.data);
           return setCategory({
             isSelect: true,
             title: item.text,
-            data: res.data,
+            data: res.data.data,
           });
         }
       })
       .catch((err) => {
-        return console.log('에러', err);
+        return console.log('실시간 랭킹 API 호출 결과 에러', err.response.data);
       });
   };
 

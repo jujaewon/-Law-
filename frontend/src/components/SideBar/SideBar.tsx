@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
-import { instance } from '@api/instance';
 import { FaRegStar } from 'react-icons/fa';
 import { GoSearch } from 'react-icons/go';
 import { LuPlusSquare } from 'react-icons/lu';
@@ -14,6 +13,8 @@ import Button from '@components/Button/Button';
 import { useTodoActions } from '@store/chatsStore';
 import { getCategoryTitle, getCategorySelect } from '@store/sidebarStore';
 import { removeCookie } from '@utils/cookies';
+import axios from 'axios';
+import getUrl from '@utils/getUrl';
 
 const SidebarContainer = styled.div<{ $isOpen: boolean }>`
   background-color: ${(props) => props.theme.white};
@@ -135,10 +136,11 @@ interface SidebarProps {
 const Sidebar = ({ nickname }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isSelect, setIsSelect] = useState(false);
-  const { setIsChat } = useTodoActions();
+  const { setIsChat, resetData } = useTodoActions();
 
   const createNewChat = () => {
     setIsChat(false);
+    resetData();
   };
 
   const selectStatus = getCategorySelect();
@@ -156,8 +158,12 @@ const Sidebar = ({ nickname }: SidebarProps) => {
     setIsOpen(true);
   };
   const logout = () => {
-    instance
-      .get('/auth/logout')
+    const env = import.meta.env.VITE_DEV;
+    let url = '';
+    if (env === 'real') url = getUrl(env);
+    else url = getUrl('auth');
+    axios
+      .get(url + '/auth/logout')
       .then((res) => {
         console.log(res);
         removeCookie('access-token');
