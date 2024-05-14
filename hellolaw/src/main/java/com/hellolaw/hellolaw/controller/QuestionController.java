@@ -49,7 +49,7 @@ public class QuestionController {
 	public ResponseEntity<QuestionAnswerResponse> generateAnswer(@UserId Long userId,
 		@RequestBody QuestionRequest questionRequest) throws
 		JsonProcessingException {
-		return ResponseEntity.ok(questionService.generateAnswer(1L, questionRequest)); // TODO : userId로 수정
+		return ResponseEntity.ok(questionService.generateAnswer(userId, questionRequest));
 	}
 
 	@DeleteMapping("/v1")
