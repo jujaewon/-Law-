@@ -26,12 +26,7 @@ def crawlLawContents(url):
 
 
 def getLawContents(name):
-    path = name.split()
-    url = ""
-    name = ""
-    for p in path:
-        url = url + p + "/"
-        name = name + p + " "
-    url = baseUrl + url
+    index = name.find("제")
+    url = baseUrl + name[:(index-1)] + "/" + name[index:]
     print(url, name, sep="\n")
     return name.strip(), crawlLawContents(url)
