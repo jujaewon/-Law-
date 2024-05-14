@@ -3,9 +3,6 @@ import { chatsStore } from '@store/chatsStore';
 import { breakpoints } from '@styles/breakpoints';
 
 import ChatMessage from './ChatMessage';
-import { useEffect, useState } from 'react';
-import { instance } from '@api/instance';
-import { useTodoActions } from '@store/chatsStore';
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.white};
