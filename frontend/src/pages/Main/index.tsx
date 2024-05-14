@@ -9,7 +9,8 @@ import useModal from '@hooks/useModal';
 import { chatsStore } from '@store/chatsStore';
 import { breakpoints } from '@styles/breakpoints';
 import { getCookie } from '@utils/cookies';
-import GuideDefault from '@pages/Guide/GuideDefault';
+// import GuideDefault from '@pages/Guide/GuideDefault';
+import GuideBox from '@components/GuideBox/GuideBox';
 
 const MainContainer = styled.div`
   background-color: ${(props) => props.theme.white};
@@ -74,7 +75,7 @@ const Main = () => {
     <MainContainer>
       <SideBar nickname={nickname} />
       <ContentsContainer>
-        <AnswerContainer>{isChat ? <ChatDefault /> : <GuideDefault />}</AnswerContainer>
+        <AnswerContainer>{isChat ? <ChatDefault /> : <GuideBox />}</AnswerContainer>
         <BottomBar />
       </ContentsContainer>
     </MainContainer>
