@@ -29,4 +29,5 @@ def getLawContents(name):
         url = url + p + "/"
         name = name + p + " "
     url = baseUrl + url
+    print(url, name, sep="\n")
     return name.strip(), crawlLawContents(url)
