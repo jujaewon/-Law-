@@ -93,16 +93,25 @@ const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
 
   const handleDelete = async () => {
     onClick();
-    instance.delete(`/api/question/v1/${questionId}`).then((res) => {
-      if (res && res.status === 200) {
-        console.log('삭제 성공');
+    instance.delete(`/api/question/v1?questionId=${questionId}`).then((res) => {
+      if (res) {
+        console.log('삭제 성공', res);
         onDelete(item.questionId);
       }
     });
   };
 
   const getDetailQuest = () => {
-    console.log('ffff');
+    instance.get(`/api/answer/detail?questionId=${questionId}`).then((res) => {
+      if (res) {
+        console.log('질문 상세 조회성공', res);
+      }
+    });
+  };
+
+  const lawTypeShort = (lawType: string) => {
+    if (lawType.length > 14) return lawType.slice(0, 14) + '...';
+    else return lawType;
   };
   return (
     <ContentContainer
@@ -118,7 +127,7 @@ const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
       </QuestionTitleWrapper>
       <ButtonsWrapper>
         <Button type="button" color="secondary3" custom="category">
-          {lawType}
+          {lawTypeShort(lawType)}
         </Button>
         <Button type="button" color="secondary1" custom="category">
           {GetCategoryIcon(category)}
