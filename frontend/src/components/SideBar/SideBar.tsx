@@ -136,10 +136,11 @@ interface SidebarProps {
 const Sidebar = ({ nickname }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isSelect, setIsSelect] = useState(false);
-  const { setIsChat } = useTodoActions();
+  const { setIsChat, resetData } = useTodoActions();
 
   const createNewChat = () => {
     setIsChat(false);
+    resetData();
   };
 
   const selectStatus = getCategorySelect();

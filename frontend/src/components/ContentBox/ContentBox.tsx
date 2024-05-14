@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
 
 import styled from '@emotion/styled';
-import { chatsStore } from '@store/chatsStore';
+import { chatsStore, useTodoActions } from '@store/chatsStore';
 
 const ContentBoxContainer = styled.div`
   width: 100%;
@@ -110,7 +110,7 @@ const Color = styled.div`
 
 interface CategoryModalProps {
   onCategoryClick: (category: string) => void;
-  selectedCategory: string;
+  selectedCategory: string | null;
 }
 
 const CategoryModal = ({ onCategoryClick, selectedCategory }: CategoryModalProps) => {
@@ -145,7 +145,7 @@ const CategoryModal = ({ onCategoryClick, selectedCategory }: CategoryModalProps
 };
 
 interface SecondContentProps {
-  selectedText: string;
+  selectedText: string | null;
   onTextClick: (text: string) => void;
 }
 
@@ -161,42 +161,36 @@ const SecondContent = ({ selectedText, onTextClick }: SecondContentProps) => (
 );
 
 interface OptionsType {
-  category: string;
-  humanType: string;
+  category: string | null;
+  victim: string | null;
 }
 
-interface PropsType {
-  setOptionsData: React.Dispatch<React.SetStateAction<OptionsType>>;
-}
-
-const ContentBox = ({ setOptionsData }: PropsType) => {
+const ContentBox = () => {
   const [showOptions1, setShowOptions1] = useState(false);
   const [showOptions2, setShowOptions2] = useState(false);
   const [showGuide, setShowGuide] = useState(true);
 
   const isChat = chatsStore((state) => state.isChat);
+  const { setOptionsData } = useTodoActions();
 
   const [options, setOptions] = useState<OptionsType>({
     category: '-',
-    humanType: '-',
+    victim: '-',
   });
 
-  const { category, humanType } = options;
+  const { category, victim } = options;
 
   const handleOptionsShow = (type: string) => {
     if (type === 'category') {
       setShowOptions1(!showOptions1);
-    } else if (type === 'humanType') {
+    } else if (type === 'victim') {
       setShowOptions2(!showOptions2);
     }
   };
 
   useEffect(() => {
     //초기화
-    setOptions({
-      category: '-',
-      humanType: '-',
-    });
+    setOptionsData({ category: null, victim: null });
   }, [isChat]);
 
   const handleCategoryClick = (value: string) => {
@@ -204,28 +198,23 @@ const ContentBox = ({ setOptionsData }: PropsType) => {
       ...prev,
       category: value,
     }));
-    setOptionsData((prev) => ({
-      ...prev,
-      category: value,
-    }));
+    setOptionsData({ category: value });
     setShowOptions1(false);
   };
 
   const handleTextClick = (text: string) => {
     setOptions((prev) => ({
       ...prev,
-      humanType: text,
+      victim: text,
     }));
-    setOptionsData((prev) => ({
-      ...prev,
-      humanType: text,
-    }));
+    if (text === '피해자') setOptionsData({ victim: true });
+    if (text === '가해자') setOptionsData({ victim: false });
     setShowOptions2(false);
   };
 
   useEffect(() => {
-    if (category !== '-' || humanType !== '-') setShowGuide(false);
-  }, [category, humanType]);
+    if (category !== '-' || victim !== '-') setShowGuide(false);
+  }, [category, victim]);
 
   return (
     <SearchOptionContainer>
@@ -244,10 +233,10 @@ const ContentBox = ({ setOptionsData }: PropsType) => {
           </CategoryWrapper>
         </Color>
 
-        <CategoryWrapper onClick={() => handleOptionsShow('humanType')}>
-          {humanType}
+        <CategoryWrapper onClick={() => handleOptionsShow('victim')}>
+          {victim}
           <RiArrowDownSLine />
-          {showOptions2 && <SecondContent onTextClick={handleTextClick} selectedText={humanType} />}
+          {showOptions2 && <SecondContent onTextClick={handleTextClick} selectedText={victim} />}
         </CategoryWrapper>
       </ContentBoxContainer>
     </SearchOptionContainer>
