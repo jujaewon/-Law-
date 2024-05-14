@@ -17,7 +17,7 @@ public class AnswerServiceImpl implements AnswerService {
 
 	@Override
 	public AnswerResultResponse getAnswerResult(Long userId, Long questionId) {
-		Answer answer = answerRepository.findQuestionByUserIdAndQuestionIdWithLawAndPrecedent(userId, questionId)
+		Answer answer = answerRepository.findAnswerByQuestionIdUsingFetchJoin(questionId)
 			.orElseThrow();
 
 		return AnswerResultResponse.createAnswerResultResponse(answer);
