@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useState } from 'react';
 
 import styled from '@emotion/styled';
 import { IoClose } from 'react-icons/io5';
@@ -9,7 +8,6 @@ import Icon from '@components/Icon/Icon';
 import useModal from '@hooks/useModal';
 
 import { ModalProps } from './manage/ModalsContext';
-import GuideDefault from '@components/GuideBox/GuideDefault';
 
 export const ModalOverlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -152,7 +150,6 @@ export const InfoModal = ({ onClose, isOpen, title, message }: ModalProps) => {
 
 export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
   const { openModal, closeModal } = useModal();
-  const [showGuide, setShowGuide] = useState(false);
 
   const goLogin = () => {
     openModal({
@@ -177,65 +174,67 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
     window.location.href = '/login/kakao';
   };
 
-  useEffect(() => {
-    console.log(isOpen);
-  }, [isOpen]);
-
-  const closeGuide = () => {
-    onClose();
-  };
-
   return (
     <ModalOverlay $isOpen={isOpen!}>
-      <ModalContainer>
-        <ModalHeader>헬로(Law)</ModalHeader>
-        {type === 'first' && (
-          <>
-            <CustomButton
-              type="button"
-              color="gray"
-              size="medium_small"
-              onClick={() => {
-                onClose();
-                goLogin();
-              }}
-            >
-              처음 오셨나요?
-            </CustomButton>
-            <CustomButton type="button" color="primary" size="medium_small" onClick={() => {
+      {type === 'first' && (
+        <ModalContainer>
+          <ModalHeader>헬로(Law)</ModalHeader>
+          <CustomButton
+            type="button"
+            color="gray"
+            size="medium_small"
+            onClick={() => {
               onClose();
               goVisit();
-            }}>
-              방문 해보셨나요?
-            </CustomButton>
-          </>
-        )}
-        {type === 'visit' && (
-          <>
-            <CustomButton type="button" size="medium_small" color="primary" onClick={() => {
-              setShowGuide(true);
-            }}>
-              헬로에 대해서
-            </CustomButton>
-            <CustomButton type="button" size="medium_small" color="gray" onClick={onClose}>
-              건너뛰기
-            </CustomButton>
-          </>
-        )}
-        {showGuide && <GuideDefault onClose={closeGuide} />}
-        {type === 'login' && (
-          <>
-            <CustomButton type="button" size="medium_small" color="kakao" onClick={moveKaKaoLogin}>
-              <KakaoLoginButtonImg>
-                <Icon icon="kakao" />
-              </KakaoLoginButtonImg>
-              카카오로그인
-            </CustomButton>
-          </>
-        )}
-      </ModalContainer>
+            }}
+          >
+            처음 오셨나요?
+          </CustomButton>
+          <CustomButton
+            type="button"
+            color="primary"
+            size="medium_small"
+            onClick={() => {
+              onClose();
+              goLogin();
+            }}
+          >
+            방문 해보셨나요?
+          </CustomButton>
+        </ModalContainer>
+      )}
+      {type === 'visit' && (
+        <ModalContainer>
+          <ModalHeader>헬로(Law)</ModalHeader>
+          <CustomButton
+            type="button"
+            size="medium_small"
+            color="primary"
+            onClick={() => {
+              openModal({
+                type: 'guide',
+                props: {},
+              });
+            }}
+          >
+            헬로에 대해서
+          </CustomButton>
+          <CustomButton type="button" size="medium_small" color="gray" onClick={goLogin}>
+            건너뛰기
+          </CustomButton>
+        </ModalContainer>
+      )}
+      {type === 'login' && (
+        <ModalContainer>
+          <ModalHeader>헬로(Law)</ModalHeader>
+          <CustomButton type="button" size="medium_small" color="kakao" onClick={moveKaKaoLogin}>
+            <KakaoLoginButtonImg>
+              <Icon icon="kakao" />
+            </KakaoLoginButtonImg>
+            카카오로그인
+          </CustomButton>
+        </ModalContainer>
+      )}
     </ModalOverlay>
   );
 };
-
-

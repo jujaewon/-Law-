@@ -145,40 +145,29 @@ const CategoryModal = ({ onCategoryClick, selectedCategory }: CategoryModalProps
 };
 
 interface SecondContentProps {
-  selectedText: string | null;
-  onTextClick: (text: string) => void;
+  selectedVictim: boolean | null;
+  onVictimClick: (text: boolean) => void;
 }
 
-const SecondContent = ({ selectedText, onTextClick }: SecondContentProps) => (
+const SecondContent = ({ selectedVictim, onVictimClick }: SecondContentProps) => (
   <ModalWrapper>
-    <DynamicColorText $isSelected={selectedText === '피해자'} onClick={() => onTextClick('피해자')}>
+    <DynamicColorText $isSelected={selectedVictim === true} onClick={() => onVictimClick(true)}>
       <ModalCategoryButtonWrapper>피해자</ModalCategoryButtonWrapper>
     </DynamicColorText>
-    <DynamicColorText $isSelected={selectedText === '가해자'} onClick={() => onTextClick('가해자')}>
+    <DynamicColorText $isSelected={selectedVictim === false} onClick={() => onVictimClick(false)}>
       <ModalCategoryButtonWrapper>가해자</ModalCategoryButtonWrapper>
     </DynamicColorText>
   </ModalWrapper>
 );
-
-interface OptionsType {
-  category: string | null;
-  victim: string | null;
-}
 
 const ContentBox = () => {
   const [showOptions1, setShowOptions1] = useState(false);
   const [showOptions2, setShowOptions2] = useState(false);
   const [showGuide, setShowGuide] = useState(true);
 
-  const isChat = chatsStore((state) => state.isChat);
+  const optionsData = chatsStore((state) => state.optionsData);
   const { setOptionsData } = useTodoActions();
-
-  const [options, setOptions] = useState<OptionsType>({
-    category: '-',
-    victim: '-',
-  });
-
-  const { category, victim } = options;
+  const { category, victim } = optionsData;
 
   const handleOptionsShow = (type: string) => {
     if (type === 'category') {
@@ -188,32 +177,18 @@ const ContentBox = () => {
     }
   };
 
-  useEffect(() => {
-    //초기화
-    setOptionsData({ category: null, victim: null });
-  }, [isChat]);
-
   const handleCategoryClick = (value: string) => {
-    setOptions((prev) => ({
-      ...prev,
-      category: value,
-    }));
     setOptionsData({ category: value });
     setShowOptions1(false);
   };
 
-  const handleTextClick = (text: string) => {
-    setOptions((prev) => ({
-      ...prev,
-      victim: text,
-    }));
-    if (text === '피해자') setOptionsData({ victim: true });
-    if (text === '가해자') setOptionsData({ victim: false });
+  const handleVictimClick = (type: boolean) => {
+    setOptionsData({ victim: type });
     setShowOptions2(false);
   };
 
   useEffect(() => {
-    if (category !== '-' || victim !== '-') setShowGuide(false);
+    if (category !== null || victim !== null) setShowGuide(false);
   }, [category, victim]);
 
   return (
@@ -227,16 +202,16 @@ const ContentBox = () => {
       <ContentBoxContainer>
         <Color>
           <CategoryWrapper onClick={() => handleOptionsShow('category')}>
-            {category}
+            {category === null ? '-' : category}
             <RiArrowDownSLine />
-            {showOptions1 && <CategoryModal onCategoryClick={handleCategoryClick} selectedCategory={category} />}
+            {showOptions1 && <CategoryModal onCategoryClick={handleCategoryClick} selectedCategory={category!} />}
           </CategoryWrapper>
         </Color>
 
         <CategoryWrapper onClick={() => handleOptionsShow('victim')}>
-          {victim}
+          {victim === null ? '-' : victim ? '피해자' : '가해자'}
           <RiArrowDownSLine />
-          {showOptions2 && <SecondContent onTextClick={handleTextClick} selectedText={victim} />}
+          {showOptions2 && <SecondContent onVictimClick={handleVictimClick} selectedVictim={victim!} />}
         </CategoryWrapper>
       </ContentBoxContainer>
     </SearchOptionContainer>

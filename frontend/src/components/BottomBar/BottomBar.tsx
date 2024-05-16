@@ -72,7 +72,7 @@ const BottomBar = () => {
   const isChat = chatsStore((state) => state.isChat);
   const [message, setMessage] = useState<string>('');
   const textarea = useRef<HTMLTextAreaElement>(null);
-  const { setIsChat, addChatData, setChatBotAnswer, setOptionsData } = useTodoActions();
+  const { setIsChat, addChatData, setChatBotAnswer } = useTodoActions();
   const optionsData = chatsStore((state) => state.optionsData);
 
   const handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -100,8 +100,6 @@ const BottomBar = () => {
       setMessage('');
       setIsChat(true);
       addChatData({ chat: message, type: 'user' });
-      setOptionsData(data);
-
       instance
         .post('/api/question', data)
         .then((res) => {

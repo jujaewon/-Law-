@@ -5,10 +5,8 @@ import styled from '@emotion/styled';
 import BottomBar from '@components/BottomBar/BottomBar';
 import ChatDefault from '@components/Chat/ChatDefault';
 import SideBar from '@components/SideBar/SideBar';
-import { chatsStore } from '@store/chatsStore';
 import { breakpoints } from '@styles/breakpoints';
 import { getCookie } from '@utils/cookies';
-import GuideDefault from '@components/GuideBox/GuideDefault';
 
 const HomeContainer = styled.div`
   background-color: ${(props) => props.theme.white};
@@ -52,7 +50,6 @@ const AnswerContainer = styled.div`
 `;
 
 const Home = () => {
-  const isChat = chatsStore((state) => state.isChat);
   const [nickname, setNickname] = useState('');
   const nickFromCookie = getCookie('nickname');
   useEffect(() => {
@@ -66,7 +63,9 @@ const Home = () => {
     <HomeContainer>
       <SideBar nickname={nickname} />
       <ContentsContainer>
-        <AnswerContainer>{isChat ? <ChatDefault /> : <GuideDefault />}</AnswerContainer>
+        <AnswerContainer>
+          <ChatDefault />
+        </AnswerContainer>
         <BottomBar />
       </ContentsContainer>
     </HomeContainer>
