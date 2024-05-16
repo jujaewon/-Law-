@@ -9,7 +9,6 @@ import Icon from '@components/Icon/Icon';
 import useModal from '@hooks/useModal';
 
 import { ModalProps } from './manage/ModalsContext';
-// import GuideDefault from '@components/GuideBox/GuideDefault';
 
 export const ModalOverlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
