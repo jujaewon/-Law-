@@ -14,17 +14,18 @@ const TypingText = ({ text, speed = 100 }: TypingTextProps) => {
   const [displayedText, setDisplayedText] = useState('');
 
   useEffect(() => {
+    const words = text.split(' ');
     let index = 0;
     const timer = setInterval(() => {
-      setDisplayedText((prev) => prev + text.charAt(index));
+      setDisplayedText((prev) => prev + (index > 0 ? ' ' : '') + words[index]);
       index++;
-      if (index === text.length) {
+      if (index === words.length) {
         clearInterval(timer);
       }
     }, speed);
 
     return () => clearInterval(timer);
-  }, [speed]);
+  }, [text, speed]);
 
   return <StyledTextDiv>{displayedText}</StyledTextDiv>;
 };
