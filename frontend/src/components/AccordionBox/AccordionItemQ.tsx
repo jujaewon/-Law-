@@ -91,7 +91,7 @@ interface AccordionItemQProps {
 
 const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
   const { questionId, summary, lawType, category } = item;
-  const { addChatData, setChatBotAnswer, setIsChat } = useTodoActions();
+  const { addChatData, setChatBotAnswer, setIsChat, resetData } = useTodoActions();
   const handleDelete = async () => {
     onClick();
     instance.delete(`/api/question/v1?questionId=${questionId}`).then((res) => {
@@ -103,12 +103,17 @@ const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
   };
 
   const getDetailQuest = () => {
+    resetData();
     setIsChat(true);
     addChatData({ chat: summary, type: 'user' });
     instance.get(`/api/answer/detail?questionId=${questionId}`).then((res) => {
       if (res) {
         console.log('질문 상세 조회성공', res.data.data);
-        setChatBotAnswer(res.data.data);
+        const data = {
+          ...res.data.data,
+          type: 'past',
+        };
+        setChatBotAnswer(data);
         addChatData({
           chat: res.data.data,
           type: 'bot',
