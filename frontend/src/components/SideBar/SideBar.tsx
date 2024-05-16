@@ -157,6 +157,7 @@ const Sidebar = ({ nickname }: SidebarProps) => {
 
   const handleOpen = () => {
     setIsOpen(true);
+    console.log('open');
   };
   const logout = () => {
     const env = import.meta.env.VITE_DEV;
