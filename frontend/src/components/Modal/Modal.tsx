@@ -1,6 +1,8 @@
 // 사용가능한 모달종류
 import { useEffect } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 import styled from '@emotion/styled';
 import { IoClose } from 'react-icons/io5';
 
@@ -120,6 +122,7 @@ const CloseButton = styled.div`
     background-color: ${(props) => props.theme.gray2};
   }
 `;
+
 export const TestModal = ({ onClose, isOpen }: ModalProps) => {
   useEffect(() => {
     console.log(isOpen);
@@ -146,8 +149,16 @@ export const InfoModal = ({ onClose, isOpen, title, message }: ModalProps) => {
     </ModalOverlay>
   );
 };
+
 export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
   const { openModal, closeModal } = useModal();
+  const navigate = useNavigate();
+
+  const goToHome = () => {
+    onClose(); // 모달을 닫고
+    navigate('/home'); // Home 컴포넌트로 이동
+  };
+
   const goLogin = () => {
     openModal({
       type: 'logo',
@@ -181,7 +192,7 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
             >
               처음 오셨나요?
             </CustomButton>
-            <CustomButton type="button" color="primary" size="medium_small" onClick={onClose}>
+            <CustomButton type="button" color="primary" size="medium_small" onClick={goToHome}>
               방문 해보셨나요?
             </CustomButton>
           </>
