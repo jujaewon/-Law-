@@ -31,7 +31,7 @@ public class QuestionHistoryResponse {
 		return QuestionHistoryResponse.builder()
 			.questionId(question.getId())
 			.summary(question.getContents())
-			.lawType(answer.getRelatedAnswers().get(0).getPrecedent().getCaseName())
+			.lawType(answer.getRelatedAnswers().get(0).getPrecedent().getDetailField().toString())
 			.category(category)
 			.build();
 
