@@ -4,6 +4,7 @@ import { AQuestionType } from '@@types/custom';
 import Button from '@components/Button/Button';
 import GetCategoryIcon from '@utils/findIcon';
 import { instance } from '@api/instance';
+import { useTodoActions } from '@store/chatsStore';
 
 const QuestionTitleWrapper = styled.div`
   padding: 5px 0px 5px 0px;
@@ -21,8 +22,8 @@ const QuestionTitle = styled.div`
   color: ${(props) => props.theme.black};
   text-align: left;
   font-size: 1.2rem;
-  line-height: 1.2;
-  font-weight: 700;
+  line-height: 1.3;
+  font-weight: 600;
   position: relative;
   width: 188px;
   text-overflow: ellipsis;
@@ -90,7 +91,7 @@ interface AccordionItemQProps {
 
 const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
   const { questionId, summary, lawType, category } = item;
-
+  const { addChatData, setChatBotAnswer } = useTodoActions();
   const handleDelete = async () => {
     onClick();
     instance.delete(`/api/question/v1?questionId=${questionId}`).then((res) => {
@@ -105,13 +106,30 @@ const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
     instance.get(`/api/answer/detail?questionId=${questionId}`).then((res) => {
       if (res) {
         console.log('질문 상세 조회성공', res);
+        addChatData({ chat: summary, type: 'user' });
+        setChatBotAnswer(res.data.data);
+        addChatData({
+          chat: res.data.data,
+          type: 'bot',
+        });
       }
     });
   };
 
-  const lawTypeShort = (lawType: string) => {
-    if (lawType.length > 14) return lawType.slice(0, 14) + '...';
-    else return lawType;
+  const lawTypeShort = (lawType: number) => {
+    if (lawType === 1) {
+      return '민사';
+    } else if (lawType === 2) {
+      return '신청';
+    } else if (lawType === 3) {
+      return '가사';
+    } else if (lawType === 4) {
+      return '특허';
+    } else if (lawType === 5) {
+      return '행정';
+    } else {
+      return '형사';
+    }
   };
   return (
     <ContentContainer

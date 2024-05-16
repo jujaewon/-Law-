@@ -41,7 +41,6 @@ const HeaderText = styled.div`
   text-align: left;
   font-size: 14px;
   line-height: 14px;
-  font-weight: 400;
   position: relative;
   flex: 1;
 `;
@@ -64,14 +63,23 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
   const setCategory = setCategoryData();
 
   useEffect(() => {
+    console.log('use');
     if (!isOpen) setIsActive(false);
   }, [isOpen]);
 
   const handleActive = () => {
     if (!isOpen) {
+      console.log('handleOpen');
       handleOpen();
       setIsActive(!isActive);
-    } else setIsActive(!isActive);
+    }
+    if (data.type === 'rank') {
+      setCategory({ isSelect: false, title: '', data: [] });
+      console.log('backCategory');
+      setIsActive(true);
+    } else {
+      setIsActive(!isActive);
+    }
   };
 
   const handleDelete = (id: number) => {
@@ -114,16 +122,14 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
     }
   }, [data.type, rankData]);
 
-  const backCategory = () => {
-    if (data.type === 'rank') {
-      setCategory({ isSelect: false, title: '', data: [] });
-    }
-  };
-
+  useEffect(() => {
+    console.log('isOpen', isOpen);
+    console.log('isActive', isActive);
+  }, [isOpen, isActive]);
   return (
     <AccordionBoxContainer>
       <Header onClick={handleActive} $isActive={isActive} $isOpen={isOpen}>
-        <div onClick={backCategory}>{data.icon}</div>
+        <div>{data.icon}</div>
         {isOpen && <HeaderText>{data.title}</HeaderText>}
         {isOpen ? isActive ? <IoIosArrowUp /> : <IoIosArrowDown /> : null}
       </Header>
