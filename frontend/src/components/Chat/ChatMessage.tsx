@@ -111,6 +111,7 @@ const AddressBox = styled.div`
   display: inline-flex;
   overflow: hidden;
   justify-content: first;
+  flex-direction: column;
   align-items: center;
   padding: 16px 25px 16px 18px;
   font-size: 14px;
