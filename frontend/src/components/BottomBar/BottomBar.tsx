@@ -100,8 +100,6 @@ const BottomBar = () => {
       setMessage('');
       setIsChat(true);
       addChatData({ chat: message, type: 'user' });
-      setOptionsData(data);
-
       instance
         .post('/api/question', data)
         .then((res) => {
