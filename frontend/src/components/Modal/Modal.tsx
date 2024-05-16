@@ -231,7 +231,13 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
             <KakaoLoginButtonImg>
               <Icon icon="kakao" />
             </KakaoLoginButtonImg>
-            카카오로그인
+            카카오 로그인
+          </CustomButton>
+          <CustomButton type="button" size="medium_small" color="google" onClick={moveKaKaoLogin}>
+            <KakaoLoginButtonImg>
+              <Icon icon="google" />
+            </KakaoLoginButtonImg>
+            구글 로그인
           </CustomButton>
         </ModalContainer>
       )}
