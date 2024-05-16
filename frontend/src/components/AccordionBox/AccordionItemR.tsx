@@ -38,7 +38,7 @@ const RankWrapper = styled.div<{ $isTop: boolean }>`
   color: ${(props) => (props.$isTop ? props.theme.primary : '9E9E9E')};
   font-size: 14px;
   line-height: 14px;
-  font-weight: 700;
+  font-weight: 600;
   position: relative;
 `;
 interface AccordionItemQProps {

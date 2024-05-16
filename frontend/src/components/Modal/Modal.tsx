@@ -73,7 +73,7 @@ const ModalHeader = styled.div`
   height: 140px;
   display: flex;
   font-size: 40px;
-  font-weight: 700;
+  font-weight: 600;
   color: white;
   text-align: center;
   justify-content: center;
@@ -82,7 +82,7 @@ const ModalHeader = styled.div`
 `;
 
 const CustomButton = styled(Button)`
-  font-weight: 700;
+  font-weight: 600;
   width: 100%;
   margin-top: 1.5rem;
 `;
@@ -98,7 +98,7 @@ const InfoTitleWrapper = styled.div`
   min-height: 30px;
   padding: 10px 0;
   color: ${(props) => props.theme.primary};
-  font-weight: 700;
+  font-weight: 600;
   font-size: 20px;
 `;
 const InfoMessageWrapper = styled.div`

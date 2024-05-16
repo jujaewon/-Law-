@@ -4,14 +4,9 @@ const baseStyle = css`
     margin: 0;
     padding: 0;
   }
-  @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('@styles/fonts/Pretendard-Regular.ttf') format('truetype');
-  }
 
   html {
     height: 100%;
-    font-family: 'Pretendard Variable', sans-serif;
     font-size: 62.5%; //1rem = 10px;
     margin: 0;
     padding: 0;
@@ -21,6 +16,7 @@ const baseStyle = css`
     font-size: 1.6rem;
     font-weight: 400;
     line-height: 1.2;
+    font-family: SUIT, sans-serif;
     background-color: white;
     color: black;
     margin: 0;

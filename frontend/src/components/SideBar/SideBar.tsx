@@ -79,6 +79,7 @@ const SidebarContentsContainer = styled.nav<{ $isOpen: boolean }>`
 `;
 
 const StyledParagraph = styled.p<{ $isOpen: boolean }>`
+  font-family: YJ_Obang_TTF;
   opacity: ${(props) => (props.$isOpen ? '1' : '0')};
   transition: 0.3s;
   color: ${(props) => props.theme.primary};

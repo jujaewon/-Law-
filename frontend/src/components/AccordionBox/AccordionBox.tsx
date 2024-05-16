@@ -41,7 +41,6 @@ const HeaderText = styled.div`
   text-align: left;
   font-size: 14px;
   line-height: 14px;
-  font-weight: 400;
   position: relative;
   flex: 1;
 `;
