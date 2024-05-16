@@ -129,6 +129,14 @@ const StyledR = styled(ReactMarkdown)`
     margin-left: 18px;
     list-style: disc !important;
   }
+  > ol > li {
+    margin-left: 18px;
+    list-style: disc !important;
+  }
+  li {
+    margin-left: 18px;
+    list-style: disc !important;
+  }
 `;
 
 const LawContainerAlign = styled.div`
