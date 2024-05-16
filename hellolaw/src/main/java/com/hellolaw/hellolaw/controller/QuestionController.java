@@ -33,9 +33,9 @@ public class QuestionController {
 	private final QuestionService questionService;
 
 	@GetMapping("/history")
-	public ResponseEntity<ApiResponse<List<QuestionHistoryResponse>>> getTwoQuestionHistoryList() {
-		log.info("-----------------------------------------getTwoQuestionsList");
-		List<QuestionHistoryResponse> list = questionService.getTwoQuestionHistoryList(1L);
+	public ResponseEntity<ApiResponse<List<QuestionHistoryResponse>>> getTwoQuestionHistoryList(@UserId Long userId) {
+		log.info("-----------getTwoQuestionsList");
+		List<QuestionHistoryResponse> list = questionService.getTwoQuestionHistoryList(userId);
 		return ResponseEntity.ok(ApiResponse.success(list));
 	}
 
