@@ -1,7 +1,4 @@
-// 사용가능한 모달종류
 import { useEffect } from 'react';
-
-import { useNavigate } from 'react-router-dom';
 
 import styled from '@emotion/styled';
 import { IoClose } from 'react-icons/io5';
@@ -152,13 +149,7 @@ export const InfoModal = ({ onClose, isOpen, title, message }: ModalProps) => {
 
 export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
   const { openModal, closeModal } = useModal();
-  const navigate = useNavigate();
-
-  const goToHome = () => {
-    onClose(); // 모달을 닫고
-    navigate('/home'); // Home 컴포넌트로 이동
-  };
-
+  
   const goLogin = () => {
     openModal({
       type: 'logo',
@@ -167,6 +158,16 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
       },
     });
   };
+
+  const goVisit = () => {
+    openModal({
+      type: 'logo',
+      props: {
+        type: 'visit',
+      },
+    });
+  };
+
   const moveKaKaoLogin = () => {
     closeModal('logo');
     window.location.href = '/login/kakao';
@@ -175,6 +176,7 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
   useEffect(() => {
     console.log(isOpen);
   }, [isOpen]);
+
   return (
     <ModalOverlay $isOpen={isOpen!}>
       <ModalContainer>
@@ -192,8 +194,21 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
             >
               처음 오셨나요?
             </CustomButton>
-            <CustomButton type="button" color="primary" size="medium_small" onClick={goToHome}>
+            <CustomButton type="button" color="primary" size="medium_small" onClick={() => {
+              onClose();
+              goVisit();
+            }}>
               방문 해보셨나요?
+            </CustomButton>
+          </>
+        )}
+        {type === 'visit' && (
+          <>
+            <CustomButton type="button" size="medium_small" color="primary" onClick={onClose}>
+              헬로에 대해서
+            </CustomButton>
+            <CustomButton type="button" size="medium_small" color="gray" onClick={onClose}>
+              건너뛰기
             </CustomButton>
           </>
         )}
@@ -211,3 +226,4 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
     </ModalOverlay>
   );
 };
+

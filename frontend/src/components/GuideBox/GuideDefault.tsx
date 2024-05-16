@@ -94,7 +94,20 @@ const GuideDefault = () => {
                         <TextGroup>안녕하세요. 누구나 쉽게 받는 법률 조언 헬로입니다!</TextGroup>
                         <TextGroup>법률 조언을 받는 방법을 제가 안내해드리겠습니다!</TextGroup>
                         <TextGroup>하단의 옵션 두 가지를 선택하고 내용을 입력해주시면</TextGroup>
-                        <TextGroup>저 헬로가 관련 법안들을 친절하게 알려드리겠습니다!</TextGroup>
+                        <TextGroup>저 헬로가 채팅으로 알려드립니다!</TextGroup>
+                    </TextAlign>
+                </LawHeader>
+            </LawContainer>
+        </HellolawGuideContainer>
+        <HellolawGuideContainer>
+            <LawContainer>
+                <LawHeader>
+                <StyledAvatar />
+                    <TextAlign>
+                        <TextGroup>채팅에 대해서 보다 자세히 알려드리겠습니다!</TextGroup>
+                        <TextGroup>채팅 메세지를 통해 판례 요약과 제안을 안내해드립니다.</TextGroup>
+                        <TextGroup>채팅 상단의 더보기 버튼으로 이전 사례와 결론을 알 수 있으며</TextGroup>
+                        <TextGroup>하단의 더보기 버튼을 통해 구체적인 법률을 알 수 있습니다.</TextGroup>
                     </TextAlign>
                 </LawHeader>
             </LawContainer>
