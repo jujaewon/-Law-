@@ -112,10 +112,22 @@ const AddressBox = styled.div`
   overflow: hidden;
   justify-content: first;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   padding: 16px 25px 16px 18px;
   font-size: 14px;
   font-weight: 400;
+`;
+
+const StyledR = styled(ReactMarkdown)`
+  > h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 10px 0;
+  }
+  > li {
+    margin-left: 18px;
+    list-style: circle !important;
+  }
 `;
 
 const LawContainerAlign = styled.div`
@@ -253,7 +265,7 @@ const ChatMessage = ({ chatdata }: ChatMessageProps) => {
             <AddressSection>
               <AddressSectionDiv>제안</AddressSectionDiv>
               <AddressBox>
-                <ReactMarkdown>{chatdata?.suggestion}</ReactMarkdown>
+                <StyledR>{chatdata?.suggestion}</StyledR>
               </AddressBox>
             </AddressSection>
           </Container>
