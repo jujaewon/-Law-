@@ -1,16 +1,13 @@
-package com.hellolaw.hellolaw.filter;
+package com.hellolaw.hellolaw.interceptor;
 
-import java.io.IOException;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.HandlerInterceptor;
 
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,27 +15,25 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 @RequiredArgsConstructor
-public class AuthenticationFilter implements Filter {
-	private final String authUrl;
+public class AuthenticationInterceptor implements HandlerInterceptor {
+	@Value("${my.filters.url-patterns}")
+	private List<String> urlPatterns;
+
+	@Value("${hellolaw.auth.url}")
+	private String authUrl;
 
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-		Filter.super.init(filterConfig);
-	}
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws
+		Exception {
 
-	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws
-		IOException,
-		ServletException {
-		HttpServletRequest request = (HttpServletRequest)servletRequest;
-		HttpServletResponse response = (HttpServletResponse)servletResponse;
 		String cookieValue = getCookieValue(request, "access-token");
 		Long userId;
 
 		if (cookieValue == null) {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No access-token found");
-			return;
+			return true;
 		}
 
 		try {
@@ -54,20 +49,15 @@ public class AuthenticationFilter implements Filter {
 
 			if (userId == null || userId <= 0) {
 				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid User ID");
-				return;
+				return true;
 			}
 		} catch (ResponseStatusException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Authentication server error");
-			return;
+			return true;
 		}
 
 		request.setAttribute("userId", userId);
-		filterChain.doFilter(servletRequest, servletResponse);
-	}
-
-	@Override
-	public void destroy() {
-		Filter.super.destroy();
+		return true;
 	}
 
 	private static String getCookieValue(HttpServletRequest request, String name) {
