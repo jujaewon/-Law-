@@ -1,5 +1,3 @@
-package com.hellolaw.auth.util;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -11,8 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import com.hellolaw.auth.dto.ErrorBase;
-import com.hellolaw.auth.exception.InvalidException;
+import com.hellolaw.auth.dto.internal.GeneratedToken;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -35,7 +32,7 @@ public class JWTProvider {
 	@Value("${jwt.refresh-token.expiration}")
 	private Long refreshTokenExpirationTime;
 
-	public String createToken(String subject, Long id, String socialId, String provider, Long expirationTIme) {
+	public String createToken(String subject, Long id, String provider, Long expirationTIme) {
 		long now = System.currentTimeMillis();
 
 		return Jwts.builder()
@@ -43,19 +40,24 @@ public class JWTProvider {
 			.setHeaderParam("alg", "HS512")
 			.setSubject(subject)
 			.claim("id", id)
-			.claim("socialId", socialId)
 			.claim("provider", provider)
 			.setExpiration(new Date(now + expirationTIme))
 			.signWith(SignatureAlgorithm.HS512, secretKey)
 			.compact();
 	}
 
-	public String createAccessToken(Long id, String socialId, String provider) {
-		return createToken("access", id, socialId, provider, accessTokenExpirationTime);
+	public GeneratedToken generatedToken(Long id, String provider) {
+		String accessToken = createAccessToken(id, provider);
+		String refreshToken = createRefreshToken(id, provider);
+		return new GeneratedToken("Bearer", accessToken, refreshToken);
 	}
 
-	public String createRefreshToken(Long id, String socialId, String provider) {
-		return createToken("refresh", id, socialId, provider, refreshTokenExpirationTime);
+	public String createAccessToken(Long id, String provider) {
+		return createToken("access-token", id, provider, accessTokenExpirationTime);
+	}
+
+	public String createRefreshToken(Long id, String provider) {
+		return createToken("refresh-token", id, provider, refreshTokenExpirationTime);
 	}
 
 	public Long getId(String token) {
@@ -66,7 +68,7 @@ public class JWTProvider {
 				.getBody()
 				.get("id", Long.class);
 		} catch (ExpiredJwtException e) {
-			return e.getClaims().get("id", Long.class);
+			throw new RuntimeException();
 		}
 	}
 
@@ -78,7 +80,7 @@ public class JWTProvider {
 				.getBody()
 				.get("socialId", String.class);
 		} catch (ExpiredJwtException e) {
-			throw new InvalidException(ErrorBase.E400_INVALID_TOKEN);
+			throw new RuntimeException();
 		}
 	}
 
@@ -90,7 +92,7 @@ public class JWTProvider {
 				.getBody()
 				.get("provider", String.class);
 		} catch (ExpiredJwtException e) {
-			throw new InvalidException(ErrorBase.E400_INVALID_TOKEN);
+			throw new RuntimeException();
 		}
 	}
 
@@ -126,16 +128,13 @@ public class JWTProvider {
 				.getExpiration()
 				.getTime();
 		} catch (ExpiredJwtException e) {
-			throw new InvalidException(ErrorBase.E400_INVALID_TOKEN);
+			throw new RuntimeException();
 		}
 	}
 
 	public Authentication getAuthentication(String token) {
 		Long id = getId(token);
-		String socialId = getSocialId(token);
-		String provider = getProvider(token);
-		CustomPrincipal principal = new CustomPrincipal(id, socialId, provider);
-		Collection<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-		return new UsernamePasswordAuthenticationToken(principal, null, authorities);
+		Collection<GrantedAuthority> authorities = Collections.singleton((new SimpleGrantedAuthority("USER")));
+		return new UsernamePasswordAuthenticationToken(id, null, authorities);
 	}
 }

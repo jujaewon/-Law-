@@ -1,15 +1,19 @@
 package com.hellolaw.auth.repository;
 
-import java.util.Optional;
-
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
-import com.hellolaw.auth.entity.SocialProvider;
-import com.hellolaw.auth.entity.User;
+import com.hellolaw.auth.model.User;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends ReactiveCrudRepository<User, Long> {
 
-	Optional<User> findUserBySocialProvider(SocialProvider socialProviders);
+	Mono<User> findByEmail(String email);
+
+	@NonNull
+	Flux<User> findAllById(@NonNull Iterable<Long> userIds);
 }

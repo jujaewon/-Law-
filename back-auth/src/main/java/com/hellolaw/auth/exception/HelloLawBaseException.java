@@ -1,6 +1,6 @@
 package com.hellolaw.auth.exception;
 
-import com.hellolaw.auth.dto.ErrorBase;
+import com.hellolaw.auth.dto.exception.ErrorBase;
 
 import lombok.Getter;
 

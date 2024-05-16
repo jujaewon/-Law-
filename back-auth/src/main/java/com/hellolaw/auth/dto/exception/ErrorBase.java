@@ -1,4 +1,4 @@
-package com.hellolaw.auth.dto;
+package com.hellolaw.auth.dto.exception;
 
 import static org.springframework.http.HttpStatus.*;
 

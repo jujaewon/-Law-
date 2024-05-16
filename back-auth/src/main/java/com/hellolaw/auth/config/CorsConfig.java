@@ -9,7 +9,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.cors.reactive.CorsWebFilter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +20,7 @@ public class CorsConfig {
 	// 가장 먼저 적용
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
-	public CorsFilter corsFilter() {
+	public CorsWebFilter corsWebFilter() {
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
@@ -28,10 +28,13 @@ public class CorsConfig {
 		config.setAllowCredentials(true);
 
 		// 개발 중에는 모든 오리진 허용
-		List<String> origin = Arrays.asList("http://localhost:3000", "https://k10a506.p.ssafy.io",
+		List<String> origin = Arrays.asList(
+			"http://localhost:3000",
+			"https://k10a506.p.ssafy.io",
 			"https://accounts.kakao.com",
 			"https://test.hellolaw.kr",
-			"https://hellolaw.kr");
+			"https://hellolaw.kr"
+		);
 		config.setAllowedOrigins(origin);
 
 		config.addExposedHeader("Authorization"); // 클라이언트에서 이거 읽을 수 있음
@@ -40,6 +43,6 @@ public class CorsConfig {
 
 		source.registerCorsConfiguration("/**", config); // 모든 경로에서 config 적용
 
-		return new CorsFilter(source);
+		return new CorsWebFilter(source);
 	}
 }

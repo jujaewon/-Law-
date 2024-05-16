@@ -1,9 +1,10 @@
-package com.hellolaw.auth.dto;
+package com.hellolaw.auth.dto.api;
 
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.hellolaw.auth.dto.exception.ErrorBase;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

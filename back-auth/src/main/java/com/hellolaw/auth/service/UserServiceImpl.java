@@ -4,12 +4,9 @@ import org.springframework.stereotype.Service;
 
 import com.hellolaw.auth.dto.TokenResponse;
 import com.hellolaw.auth.dto.UserInfoResponse;
-import com.hellolaw.auth.entity.SocialProvider;
-import com.hellolaw.auth.entity.User;
+import com.hellolaw.auth.model.User;
 import com.hellolaw.auth.provider.AuthProvider;
 import com.hellolaw.auth.redis.RedisService;
-import com.hellolaw.auth.repository.SocialProviderRepository;
-import com.hellolaw.auth.repository.UserRepository;
 import com.hellolaw.auth.util.JWTProvider;
 
 import jakarta.transaction.Transactional;

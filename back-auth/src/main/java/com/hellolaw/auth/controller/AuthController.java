@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hellolaw.auth.dto.ApiResponse;
 import com.hellolaw.auth.dto.TokenResponse;
 import com.hellolaw.auth.dto.UserInfoResponse;
+import com.hellolaw.auth.dto.api.ApiResponse;
 import com.hellolaw.auth.provider.AuthProvider;
 import com.hellolaw.auth.provider.AuthProviderFinder;
 import com.hellolaw.auth.service.AuthService;
