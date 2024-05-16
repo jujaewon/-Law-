@@ -49,6 +49,7 @@ public class QuestionController {
 	public ResponseEntity<QuestionAnswerResponse> generateAnswer(@UserId Long userId,
 		@RequestBody QuestionRequest questionRequest) throws
 		JsonProcessingException {
+		log.info("-----------generateAnswer" + userId);
 		return ResponseEntity.ok(questionService.generateAnswer(userId, questionRequest));
 	}
 
