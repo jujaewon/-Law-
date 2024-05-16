@@ -2,6 +2,34 @@ import styled from '@emotion/styled';
 import React from 'react';
 import { breakpoints } from '@styles/breakpoints';
 import Avatar from '@components/Avatar/Avatar';
+import { ModalOverlay } from '@components/Modal/Modal';
+
+// const LawDetailContainer = styled(ModalContainer)`
+//   width: 80%;
+//   height: 85%;
+//   overflow: hidden;
+//   overflow-y: scroll;
+//   padding: 50px 46px 32px 26px;
+//   border-radius: 10px;
+//   background-color: ${(props) => props.theme.secondary2};
+//   display: inline-flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   align-items: flex-start;
+//   gap: 16px;
+
+//   ::-webkit-scrollbar {
+//     width: 8px;
+//   }
+
+//   ::-webkit-scrollbar-thumb {
+//     background: ${(props) => props.theme.secondary1};
+//     border-radius: 10px;
+//   }
+//   ::-webkit-scrollbar-track {
+//     background: ${(props) => props.theme.secondary3};
+//   }
+// `;
 
 const LawContainer = styled.div`
   min-height: 100px;
@@ -18,8 +46,8 @@ const LawContainer = styled.div`
 `;
 
 const StyledAvatar = styled(Avatar)`
-  width: 50px; 
-  height: 50px; 
+  width: 50px;
+  height: 50px;
   margin-right: 10px;
 `;
 
@@ -84,26 +112,27 @@ const GuideDefault = ({ onClose }: GuideDefaultProps) => {
 
   return (
     isOpen && (
-      <Container>
-        <CloseButton onClick={handleClose}>X</CloseButton>
-            <LawContainer>
-                <LawHeader>
-                <StyledAvatar />
-                      <TextGroup>안녕하세요. 누구나 쉽게 받는 법률 조언 헬로입니다!</TextGroup>
-                      <TextGroup>법률 조언을 받는 방법을 제가 안내해드리겠습니다!</TextGroup>
-                      <TextGroup>하단의 옵션 두 가지를 선택하고 내용을 입력해주시면</TextGroup>
-                      <TextGroup>저 헬로가 채팅으로 알려드립니다!</TextGroup>  
-                      <TextGroup>채팅에 대해서 보다 자세히 알려드리겠습니다!</TextGroup>
-                      <TextGroup>채팅 메세지를 통해 판례 요약과 제안을 안내해드립니다.</TextGroup>
-                      <TextGroup>채팅 상단의 더보기 버튼으로 이전 사례와 결론을 알 수 있으며</TextGroup>
-                      <TextGroup>하단의 더보기 버튼을 통해 구체적인 법률을 알 수 있습니다.</TextGroup>   
-                      <TextGroup>그 외의 다른 기능들에 대해 설명드리겠습니다!</TextGroup>
-                      <TextGroup>사이드 바를 통해 사용자께서 최근에 질문하셨던 내용들을 확인할 수 있으며</TextGroup>
-                      <TextGroup>카테고리마다 가장 많이 조회된 법안들을 알아보실 수 있습니다!</TextGroup>
-              </LawHeader>
+      <ModalOverlay $isOpen={isOpen!}>
+        <Container>
+          <CloseButton onClick={handleClose}>X</CloseButton>
+          <LawContainer>
+            <LawHeader>
+              <StyledAvatar />
+              <TextGroup>안녕하세요. 누구나 쉽게 받는 법률 조언 헬로입니다!</TextGroup>
+              <TextGroup>법률 조언을 받는 방법을 제가 안내해드리겠습니다!</TextGroup>
+              <TextGroup>하단의 옵션 두 가지를 선택하고 내용을 입력해주시면</TextGroup>
+              <TextGroup>저 헬로가 채팅으로 알려드립니다!</TextGroup>
+              <TextGroup>채팅에 대해서 보다 자세히 알려드리겠습니다!</TextGroup>
+              <TextGroup>채팅 메세지를 통해 판례 요약과 제안을 안내해드립니다.</TextGroup>
+              <TextGroup>채팅 상단의 더보기 버튼으로 이전 사례와 결론을 알 수 있으며</TextGroup>
+              <TextGroup>하단의 더보기 버튼을 통해 구체적인 법률을 알 수 있습니다.</TextGroup>
+              <TextGroup>그 외의 다른 기능들에 대해 설명드리겠습니다!</TextGroup>
+              <TextGroup>사이드 바를 통해 사용자께서 최근에 질문하셨던 내용들을 확인할 수 있으며</TextGroup>
+              <TextGroup>카테고리마다 가장 많이 조회된 법안들을 알아보실 수 있습니다!</TextGroup>
+            </LawHeader>
           </LawContainer>
-        
-      </Container>
+        </Container>
+      </ModalOverlay>
     )
   );
 };
