@@ -236,11 +236,12 @@ const ChatMessage = ({ chatdata }: ChatMessageProps) => {
     <ChatContainer>
       <DefaultMessageContainer>
         <ContainerAlign>
-          {chatdata?.type === 'current' ? (
+          {/* {chatdata?.type === 'current' ? (
             <TypingText text={defaultText} />
           ) : (
             <TypingText text={defaultText} speed={0} />
-          )}
+          )} */}
+          <TypingText text={defaultText} speed={0} />
           {chatdata && (
             <Button
               onClick={() => {
