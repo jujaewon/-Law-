@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useState } from 'react';
 
 import styled from '@emotion/styled';
 import { IoClose } from 'react-icons/io5';
@@ -8,6 +9,7 @@ import Icon from '@components/Icon/Icon';
 import useModal from '@hooks/useModal';
 
 import { ModalProps } from './manage/ModalsContext';
+import GuideDefault from '@components/GuideBox/GuideDefault';
 
 export const ModalOverlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -149,7 +151,8 @@ export const InfoModal = ({ onClose, isOpen, title, message }: ModalProps) => {
 
 export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
   const { openModal, closeModal } = useModal();
-  
+  const [showGuide, setShowGuide] = useState(false);
+
   const goLogin = () => {
     openModal({
       type: 'logo',
@@ -176,6 +179,10 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
   useEffect(() => {
     console.log(isOpen);
   }, [isOpen]);
+
+  const closeGuide = () => {
+    onClose();
+  };
 
   return (
     <ModalOverlay $isOpen={isOpen!}>
@@ -204,7 +211,9 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
         )}
         {type === 'visit' && (
           <>
-            <CustomButton type="button" size="medium_small" color="primary" onClick={onClose}>
+            <CustomButton type="button" size="medium_small" color="primary" onClick={() => {
+              setShowGuide(true);
+            }}>
               헬로에 대해서
             </CustomButton>
             <CustomButton type="button" size="medium_small" color="gray" onClick={onClose}>
@@ -212,6 +221,7 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
             </CustomButton>
           </>
         )}
+        {showGuide && <GuideDefault onClose={closeGuide} />}
         {type === 'login' && (
           <>
             <CustomButton type="button" size="medium_small" color="kakao" onClick={moveKaKaoLogin}>
@@ -226,4 +236,5 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
     </ModalOverlay>
   );
 };
+
 
