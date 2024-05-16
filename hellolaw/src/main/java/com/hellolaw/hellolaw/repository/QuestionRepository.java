@@ -13,7 +13,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 	@Query("SELECT q FROM Question q JOIN FETCH q.user u WHERE q.id = :questionId")
 	Optional<Question> findQuestionByQuestionIdUsingFetchJoin(Long questionId);
 
-	@Query("SELECT q FROM Question q JOIN FETCH q.user u WHERE u.id = :userId ORDER BY q.createdAt DESC")
+	@Query("SELECT q FROM Question q WHERE q.user.id = :userId ORDER BY q.createdAt DESC")
 	List<Question> findTop2ByUserIdOrderByCreatedAtDesc(Long userId);
 
 }
