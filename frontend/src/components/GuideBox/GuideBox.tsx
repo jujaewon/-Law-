@@ -4,10 +4,11 @@ import styled from '@emotion/styled';
 import { breakpoints } from '@styles/breakpoints';
 
 const StyledText = styled.div`
+  font-family: ${(props) => (props.color === 'primary' ? 'YJ_Obang_TTF' : '')};
   font-size: 40px;
   font-weight: 600;
   text-align: center;
-  color: ${(props) => (props.color === 'sky-500' ? props.theme.primary : 'black')};
+  color: ${(props) => (props.color === 'primary' ? props.theme.primary : 'black')};
   ${breakpoints.md} {
     font-size: 30px;
   }
@@ -78,7 +79,7 @@ const GuideBox = () => {
   return (
     <Container>
       <StyledText>누구나 쉽게 받는 법률 조언</StyledText>
-      <StyledText color="sky-500">“헬로(Law)!“</StyledText>
+      <StyledText color="primary">“헬로(Law)!“</StyledText>
       <LawGuideContainer>
         <LawContainer>
           <LawHeader>

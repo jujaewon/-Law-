@@ -67,6 +67,7 @@ export const ModalContainer = styled.div<{ $type?: string }>`
   }
 `;
 const ModalHeader = styled.div`
+  font-family: YJ_Obang_TTF;
   background: linear-gradient(90deg, #0080ff, #80ccff);
   margin: -85px -20px 30px;
   border-radius: 12px;

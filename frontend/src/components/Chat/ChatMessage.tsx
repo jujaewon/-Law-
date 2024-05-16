@@ -4,6 +4,7 @@ import Loading from '@components/Loading/Loading';
 import useModal from '@hooks/useModal';
 import { useEffect } from 'react';
 import { instance } from '@api/instance';
+import ReactMarkdown from 'react-markdown';
 
 const FieldContainer = styled.div`
   align-self: stretch;
@@ -250,7 +251,9 @@ const ChatMessage = ({ chatdata }: ChatMessageProps) => {
             </FieldContainer>
             <AddressSection>
               <AddressSectionDiv>제안</AddressSectionDiv>
-              <AddressBox>{chatdata?.suggestion}</AddressBox>
+              <AddressBox>
+                <ReactMarkdown>{chatdata?.suggestion}</ReactMarkdown>
+              </AddressBox>
             </AddressSection>
           </Container>
           <LawsContainer>
