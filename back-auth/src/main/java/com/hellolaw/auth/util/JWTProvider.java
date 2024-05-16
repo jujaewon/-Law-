@@ -66,7 +66,7 @@ public class JWTProvider {
 				.getBody()
 				.get("id", Long.class);
 		} catch (ExpiredJwtException e) {
-			throw new InvalidException(ErrorBase.E400_INVALID_TOKEN);
+			return e.getClaims().get("id", Long.class);
 		}
 	}
 
