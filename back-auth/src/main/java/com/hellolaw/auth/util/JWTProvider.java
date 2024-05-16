@@ -1,3 +1,5 @@
+package com.hellolaw.auth.util;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;

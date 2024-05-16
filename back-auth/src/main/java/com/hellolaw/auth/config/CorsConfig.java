@@ -1,3 +1,4 @@
+/*
 package com.hellolaw.auth.config;
 
 import java.util.Arrays;
@@ -45,4 +46,4 @@ public class CorsConfig {
 
 		return new CorsWebFilter(source);
 	}
-}
+}*/

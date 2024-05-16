@@ -1,77 +1,74 @@
 package com.hellolaw.auth.filter;
 
-import java.io.IOException;
+import java.time.Duration;
 
+import org.springframework.http.HttpCookie;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
 
-import com.hellolaw.auth.service.AuthService;
 import com.hellolaw.auth.util.JWTProvider;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @RequiredArgsConstructor
-public class JWTAuthenticationFilter extends OncePerRequestFilter {
-
-	private final AuthService authService;
+public class JWTAuthenticationFilter implements WebFilter {
 	private final JWTProvider jwtProvider;
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest req,
-		HttpServletResponse res,
-		FilterChain filterChain) throws ServletException, IOException {
-		String accessToken = getAccessToken(req);
-
-		if (accessToken != null) {
-			if (jwtProvider.isValidateToken(accessToken)) {
-				Authentication authentication = jwtProvider.getAuthentication(accessToken);
-				SecurityContextHolder.getContext().setAuthentication(authentication);
-			} else if (authService.validateRefreshTokenInRedis(accessToken)) {
-				accessToken = reIssueAccessToken(accessToken);
-				Cookie cookie = new Cookie("access-token", accessToken);
-				cookie.setHttpOnly(true);
-				cookie.setMaxAge(60 * 60 * 24 * 30);
-				cookie.setPath("/");
-				res.addCookie(cookie);
-			} else {
-				// todo refreshToken 까지 만료시 재 로그인 하도록
-				SecurityContextHolder.clearContext();
-			}
-		}
-		filterChain.doFilter(req, res);
+	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+		log.info("JWT 필터 실행");
+		return getAccessToken(exchange.getRequest().getCookies())
+			.flatMap(this::updateSecurityContext)
+			.flatMap(securityContext -> chain
+				.filter(exchange)
+				.contextWrite(ReactiveSecurityContextHolder
+					.withSecurityContext(Mono.
+						just(securityContext))))
+			.onErrorResume(e -> {
+				log.error("Error during JWT filter processing", e);
+				return Mono.error(e);
+			});
 	}
 
-	private String getAccessToken(HttpServletRequest req) {
-		Cookie[] list = req.getCookies();
-		if (list != null) {
-			for (Cookie cookie : list) {
-				log.info(cookie.toString());
-				log.info(cookie.getName());
-				log.info(cookie.getValue());
-				if (cookie.getName().equals("access-token")) {
-					return cookie.getValue();
-				}
-			}
-		}
-		return null;
+	private Mono<String> getAccessToken(MultiValueMap<String, HttpCookie> cookies) {
+		log.info("쿠키에서 액세스 토큰 추출");
+		return Mono.justOrEmpty(cookies.getFirst("access-token"))
+			.map(HttpCookie::getValue);
+	}
+
+	private Mono<SecurityContext> updateSecurityContext(String accessToken) {
+		return Mono.defer(() -> {
+			Authentication authentication = jwtProvider.getAuthentication(accessToken);
+			SecurityContextImpl securityContext = new SecurityContextImpl(authentication);
+			SecurityContextHolder.setContext(securityContext);
+			log.info("인증 정보로 SecurityContext 업데이트: {}", securityContext.getAuthentication().isAuthenticated());
+			return Mono.just(securityContext);
+		});
 	}
 
 	private String reIssueAccessToken(String accessToken) {
-		// 토큰 재발급
-		String newAccessToken = jwtProvider.createAccessToken(jwtProvider.getId(accessToken),
-			jwtProvider.getSocialId(accessToken),
+		return jwtProvider.createAccessToken(jwtProvider.getId(accessToken),
 			jwtProvider.getProvider(accessToken));
+	}
 
-		// securityContext에 저장
-		SecurityContextHolder.getContext().setAuthentication(jwtProvider.getAuthentication(newAccessToken));
-		return newAccessToken;
+	private void addTokenToResponse(String accessToken, ServerHttpResponse response) {
+		ResponseCookie cookie = ResponseCookie.from("access-token", accessToken)
+			.httpOnly(true)
+			.maxAge(Duration.ofDays(30))
+			.path("/")
+			.build();
+		response.addCookie(cookie);
 	}
 }

@@ -15,7 +15,10 @@ import org.springframework.security.web.server.authentication.RedirectServerAuth
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.hellolaw.auth.dto.OAuth2UserInfo;
 import com.hellolaw.auth.dto.internal.GeneratedToken;
+import com.hellolaw.auth.model.User;
+import com.hellolaw.auth.repository.UserRepository;
 import com.hellolaw.auth.util.JWTProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -34,14 +37,19 @@ public class CustomOAuth2SuccessHandler extends RedirectServerAuthenticationSucc
 	public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
 		log.info("hi");
 		OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
+
+		String name = oAuth2User.getAttribute("name");
 		String email = oAuth2User.getAttribute("email");
 		OAuth2AuthenticationToken oAuth2AuthenticationToken = (OAuth2AuthenticationToken)authentication;
 
+		log.info(name);
 		log.info(email);
 		log.info(oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
 
-		Mono<GeneratedToken> monoGeneratedToken = generateTokenByEmail(email,
-			oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
+		OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfo.of(oAuth2AuthenticationToken.getAuthorizedClientRegistrationId(),
+			oAuth2User.getAttributes());
+
+		Mono<GeneratedToken> monoGeneratedToken = generateTokenByEmail(oAuth2UserInfo);
 
 		monoGeneratedToken.subscribe(generatedToken -> log.info(generatedToken.toString()));
 
@@ -94,17 +102,17 @@ public class CustomOAuth2SuccessHandler extends RedirectServerAuthenticationSucc
 			}));
 	}
 
-	public Mono<GeneratedToken> generateTokenByEmail(String email, String registrationId) {
-		return getUserIdByEmail(email)
-			.flatMap(userId -> {
+	public Mono<GeneratedToken> generateTokenByEmail(OAuth2UserInfo oAuth2UserInfo) {
+		return getUserIdByEmail(oAuth2UserInfo)
+			.flatMap(user -> {
 				// userId를 이용하여 토큰을 생성하고 Mono<GeneratedToken>을 반환
-				return Mono.just(jwtProvider.generatedToken(userId, registrationId));
+				return Mono.just(jwtProvider.generatedToken(user.getId(), oAuth2UserInfo.provider()));
 			});
 	}
 
-	public Mono<Long> getUserIdByEmail(String email) {
-		return userRepository.findByEmail(email)
-			.map(User::getId)
-			.switchIfEmpty(Mono.error(new RuntimeException("User not found"))); // 사용자를 찾지 못한 경우 예외 발생
+	public Mono<User> getUserIdByEmail(OAuth2UserInfo oAuth2UserInfo) {
+		return userRepository.findByEmail(oAuth2UserInfo.email())
+			.switchIfEmpty(Mono.defer(() -> Mono.just(oAuth2UserInfo.toEntity())
+				.flatMap(userRepository::save)));
 	}
 }
