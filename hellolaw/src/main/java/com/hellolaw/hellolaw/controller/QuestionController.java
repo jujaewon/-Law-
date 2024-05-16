@@ -49,12 +49,13 @@ public class QuestionController {
 	public ResponseEntity<QuestionAnswerResponse> generateAnswer(@UserId Long userId,
 		@RequestBody QuestionRequest questionRequest) throws
 		JsonProcessingException {
-		return ResponseEntity.ok(questionService.generateAnswer(1L, questionRequest));
+		return ResponseEntity.ok(questionService.generateAnswer(userId, questionRequest));
 	}
 
 	@DeleteMapping("/v1")
 	public ResponseEntity<ApiResponse<Void>> deleteQuestion(
+		@UserId Long userId,
 		@RequestParam(value = "questionId") Long questionId) {
-		return ResponseEntity.ok(ApiResponse.success(questionService.deleteQuestion(1L, questionId)));
+		return ResponseEntity.ok(ApiResponse.success(questionService.deleteQuestion(userId, questionId)));
 	}
 }
