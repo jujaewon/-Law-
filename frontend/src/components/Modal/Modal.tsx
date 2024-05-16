@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useState } from 'react';
 
 import styled from '@emotion/styled';
 import { IoClose } from 'react-icons/io5';
@@ -9,7 +8,6 @@ import Icon from '@components/Icon/Icon';
 import useModal from '@hooks/useModal';
 
 import { ModalProps } from './manage/ModalsContext';
-import GuideDefault from '@components/GuideBox/GuideDefault';
 
 export const ModalOverlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -152,7 +150,6 @@ export const InfoModal = ({ onClose, isOpen, title, message }: ModalProps) => {
 
 export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
   const { openModal, closeModal } = useModal();
-  const [showGuide, setShowGuide] = useState(false);
 
   const goLogin = () => {
     openModal({
@@ -177,17 +174,9 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
     window.location.href = '/login/kakao';
   };
 
-  useEffect(() => {
-    console.log(isOpen);
-  }, [isOpen]);
-
-  const closeGuide = () => {
-    onClose();
-  };
-
   return (
     <ModalOverlay $isOpen={isOpen!}>
-      {type === 'first' && !showGuide && (
+      {type === 'first' && (
         <ModalContainer>
           <ModalHeader>헬로(Law)</ModalHeader>
           <CustomButton
@@ -214,7 +203,7 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
           </CustomButton>
         </ModalContainer>
       )}
-      {type === 'visit' && !showGuide && (
+      {type === 'visit' && (
         <ModalContainer>
           <ModalHeader>헬로(Law)</ModalHeader>
           <CustomButton
@@ -222,7 +211,10 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
             size="medium_small"
             color="primary"
             onClick={() => {
-              setShowGuide(true);
+              openModal({
+                type: 'guide',
+                props: {},
+              });
             }}
           >
             헬로에 대해서
@@ -232,8 +224,7 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
           </CustomButton>
         </ModalContainer>
       )}
-      {showGuide && <GuideDefault onClose={closeGuide} />}
-      {type === 'login' && !showGuide && (
+      {type === 'login' && (
         <ModalContainer>
           <ModalHeader>헬로(Law)</ModalHeader>
           <CustomButton type="button" size="medium_small" color="kakao" onClick={moveKaKaoLogin}>

@@ -9,7 +9,6 @@ import useModal from '@hooks/useModal';
 import { chatsStore } from '@store/chatsStore';
 import { breakpoints } from '@styles/breakpoints';
 import { getCookie } from '@utils/cookies';
-// import GuideDefault from '@pages/Guide/GuideDefault';
 import GuideBox from '@components/GuideBox/GuideBox';
 
 const MainContainer = styled.div`

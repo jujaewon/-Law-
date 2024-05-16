@@ -2,10 +2,8 @@ import styled from '@emotion/styled';
 import TypingText from './TypingText';
 import Loading from '@components/Loading/Loading';
 import useModal from '@hooks/useModal';
-import { useEffect } from 'react';
 import { instance } from '@api/instance';
 import ReactMarkdown from 'react-markdown';
-import { chatsStore } from '@store/chatsStore';
 
 const FieldContainer = styled.div`
   align-self: stretch;
