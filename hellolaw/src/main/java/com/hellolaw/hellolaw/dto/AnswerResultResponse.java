@@ -14,11 +14,11 @@ import lombok.Data;
 @Builder
 public class AnswerResultResponse {
 	private Long precedentId;
-	private String precedentType;
-	private String precedentCategory;
-	private String summaryPrecedent;
-	private String suggest;
-	private List<String> laws;
+	private String lawType;
+	private String category;
+	private String precedentSummary;
+	private String suggestion;
+	private List<String> relatedLaws;
 
 	public static AnswerResultResponse createAnswerResultResponse(
 		Answer answer
@@ -31,12 +31,12 @@ public class AnswerResultResponse {
 
 		return AnswerResultResponse.builder()
 			.precedentId(answer.getRelatedAnswers().get(0).getPrecedent().getId())
-			.precedentType(answer.getRelatedAnswers().get(0).getPrecedent().getCaseName())
-			.precedentCategory(
+			.lawType(answer.getRelatedAnswers().get(0).getPrecedent().getCaseName())
+			.category(
 				CategoryConstant.getCategoryInKorean(answer.getRelatedAnswers().get(0).getLaw().getCategory().name()))
-			.summaryPrecedent(answer.getSummaryAnswer().getContents())
-			.suggest(answer.getContents())
-			.laws(lawNames)
+			.precedentSummary(answer.getSummaryAnswer().getContents())
+			.suggestion(answer.getContents())
+			.relatedLaws(lawNames)
 			.build();
 	}
 }
