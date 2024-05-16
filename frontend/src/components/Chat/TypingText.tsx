@@ -12,9 +12,6 @@ const StyledTextDiv = styled.div`
 `;
 const TypingText = ({ text, speed = 100 }: TypingTextProps) => {
   const [displayedText, setDisplayedText] = useState('');
-  //speed 0일때는
-  //한번에 다 나오게 하기
-
   useEffect(() => {
     if (speed == 0) return setDisplayedText(text);
     else {

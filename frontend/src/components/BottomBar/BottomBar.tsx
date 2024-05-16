@@ -69,6 +69,7 @@ const InputMessageWrapper = styled.textarea`
 `;
 
 const BottomBar = () => {
+  const isChat = chatsStore((state) => state.isChat);
   const [message, setMessage] = useState<string>('');
   const textarea = useRef<HTMLTextAreaElement>(null);
   const { setIsChat, addChatData, setChatBotAnswer, setOptionsData } = useTodoActions();
@@ -88,37 +89,41 @@ const BottomBar = () => {
   };
 
   const sendMessage = () => {
-    const data = {
-      ...optionsData,
-      question: message,
-    };
-    console.log('채팅전송', data);
-    setMessage('');
-    setIsChat(true);
-    addChatData({ chat: message, type: 'user' });
-    setOptionsData(data);
+    if (isChat) {
+      return;
+    } else {
+      const data = {
+        ...optionsData,
+        question: message,
+      };
+      console.log('채팅전송', data);
+      setMessage('');
+      setIsChat(true);
+      addChatData({ chat: message, type: 'user' });
+      setOptionsData(data);
 
-    instance
-      .post('/api/question', data)
-      .then((res) => {
-        if (res.data) {
-          console.log('응답', res.data);
+      instance
+        .post('/api/question', data)
+        .then((res) => {
+          if (res.data) {
+            console.log('응답', res.data);
 
-          const data = {
-            ...res.data,
-            type: 'current',
-          };
+            const data = {
+              ...res.data,
+              type: 'current',
+            };
 
-          setChatBotAnswer(data);
-          return addChatData({
-            chat: res.data,
-            type: 'bot',
-          });
-        }
-      })
-      .catch((err) => {
-        return console.log('에러', err);
-      });
+            setChatBotAnswer(data);
+            return addChatData({
+              chat: res.data,
+              type: 'bot',
+            });
+          }
+        })
+        .catch((err) => {
+          return console.log('에러', err);
+        });
+    }
 
     if (textarea.current) {
       textarea.current.value = '';
