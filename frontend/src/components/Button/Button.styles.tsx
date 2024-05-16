@@ -32,13 +32,13 @@ const SIZES = {
     width: 480px;
     padding: 19px 0px;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 600;
   `,
   medium: css`
     width: 220px;
     padding: 19px 0;
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 600;
   `,
   medium_small: css`
     width: 168px;
@@ -84,7 +84,7 @@ const COLORS = {
     background-color: ${theme.secondary3};
     border: 2px solid ${theme.secondary2};
     color: ${theme.primary};
-    font-weight: 700;
+    font-weight: 600;
   `,
   kakao: css`
     background-color: #fee500;

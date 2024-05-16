@@ -11,7 +11,7 @@ export interface RankDataType {
 export interface AQuestionType {
   questionId: number;
   summary: string;
-  lawType: string;
+  lawType: number;
   category: string;
 }
 export interface CategoryType {
