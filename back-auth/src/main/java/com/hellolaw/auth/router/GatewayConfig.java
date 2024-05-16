@@ -10,9 +10,9 @@ public class GatewayConfig {
 	@Bean
 	public RouteLocator precedentRouterLocator(RouteLocatorBuilder builder) {
 		return builder.routes()
-			.route("precedent-service", r -> r.path("/question/**")
-				.filters(f -> f.stripPrefix(1))
-				.uri("lb://QUESTION-SERVICE"))
+			.route("test_route", r -> r.path("/test")
+				.filters(f -> f.rewritePath("/test", "/api/test"))
+				.uri("http://localhost:8082"))
 			.build();
 	}
 }
