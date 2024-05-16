@@ -67,12 +67,13 @@ public class QuestionServiceImpl implements QuestionService {
 	private final PrecedentRepository precedentRepository;
 	@Override
 	public List<QuestionHistoryResponse> getTwoQuestionHistoryList(Long userId) {
-		Pageable pageable = PageRequest.of(0, 2);
-		List<Question> questions = questionRepository.findTop2QuestionsByUserId(userId, pageable);
+
+		List<Question> questions = questionRepository.findTop2ByUserIdOrderByCreatedAtDesc(userId);
 		log.info("history-questions : " + questions.size());
 
 		// TODO : 최근 2개의 질문 가져오기
 		return questions.stream()
+			.limit(2)
 			.map(question -> Optional.ofNullable(createQuestionHistoryResponse(question)))
 			.flatMap(Optional::stream) // 이렇게 하면 Optional.empty() 결과를 건너뜁니다
 			.collect(Collectors.toList());
