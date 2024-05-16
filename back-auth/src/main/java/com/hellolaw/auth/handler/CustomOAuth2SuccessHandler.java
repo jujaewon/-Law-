@@ -3,6 +3,7 @@ package com.hellolaw.auth.handler;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -32,6 +33,9 @@ import reactor.core.scheduler.Schedulers;
 public class CustomOAuth2SuccessHandler extends RedirectServerAuthenticationSuccessHandler {
 	private final JWTProvider jwtProvider;
 	private final UserRepository userRepository;
+
+	@Value("${auth.controller.redirect-url}")
+	private String OAuthRedirectURL;
 
 	@Override
 	public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
@@ -89,7 +93,7 @@ public class CustomOAuth2SuccessHandler extends RedirectServerAuthenticationSucc
 			.then(Mono.defer(() -> {
 				// 리다이렉트할 URL 생성
 				String targetUrl = UriComponentsBuilder.fromUriString(
-						"http://localhost:8080")
+						OAuthRedirectURL)
 					.build()
 					.encode(StandardCharsets.UTF_8)
 					.toUriString();

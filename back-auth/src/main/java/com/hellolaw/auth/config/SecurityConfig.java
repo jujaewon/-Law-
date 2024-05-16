@@ -44,6 +44,7 @@ public class SecurityConfig {
 				).authenticationSuccessHandler(customOAuth2SuccessHandler)
 			)
 			.oauth2Client(withDefaults())
+			.formLogin(withDefaults())
 			.addFilterAt(new JWTAuthenticationFilter(jwtProvider), SecurityWebFiltersOrder.AUTHENTICATION)
 		;
 
