@@ -88,7 +88,22 @@ const COLORS = {
   `,
   kakao: css`
     background-color: #fee500;
+    gap: 10px;
     margin-top: 4rem !important; //임시
+    box-shadow:
+      0px 0px 3px 0px rgba(0, 0, 0, 0.08),
+      0px 2px 3px 0px rgba(0, 0, 0, 0.17);
+    padding: 10px 13px !important;
+  `,
+  google: css`
+    background-color: #ffffff;
+    color: rgba(0, 0, 0, 0.54);
+    gap: 10px;
+    margin-top: 4rem !important; //임시
+    box-shadow:
+      0px 0px 3px 0px rgba(0, 0, 0, 0.08),
+      0px 2px 3px 0px rgba(0, 0, 0, 0.17);
+    padding: 10px 13px !important;
   `,
 };
 const CUSTOM = {
