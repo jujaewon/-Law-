@@ -121,12 +121,12 @@ const AddressBox = styled.div`
 const StyledR = styled(ReactMarkdown)`
   > h3 {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     margin: 10px 0;
   }
-  > li {
+  > ul > li {
     margin-left: 18px;
-    list-style: circle !important;
+    list-style: disc !important;
   }
 `;
 
