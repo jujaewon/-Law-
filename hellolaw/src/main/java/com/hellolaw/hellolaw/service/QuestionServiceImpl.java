@@ -65,10 +65,10 @@ public class QuestionServiceImpl implements QuestionService {
 	private final AnswerMapper answerMapper;
 	private final SummaryAnswerMapper summaryAnswerMapper;
 	private final PrecedentRepository precedentRepository;
-
 	@Override
 	public List<QuestionHistoryResponse> getTwoQuestionHistoryList(Long userId) {
-		List<Question> questions = questionRepository.findTop2ByUserIdOrderByCreatedAtDesc(userId);
+		Pageable pageable = PageRequest.of(0, 2);
+		List<Question> questions = questionRepository.findTop2QuestionsByUserId(userId, pageable);
 		log.info("history-questions : " + questions.size());
 
 		// TODO : 최근 2개의 질문 가져오기
