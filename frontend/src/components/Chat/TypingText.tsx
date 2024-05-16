@@ -12,20 +12,27 @@ const StyledTextDiv = styled.div`
 `;
 const TypingText = ({ text, speed = 100 }: TypingTextProps) => {
   const [displayedText, setDisplayedText] = useState('');
+  //speed 0일때는
+  //한번에 다 나오게 하기
 
   useEffect(() => {
-    const words = text.split(' ');
-    let index = 0;
-    const timer = setInterval(() => {
-      setDisplayedText((prev) => prev + (index > 0 ? ' ' : '') + words[index]);
-      index++;
-      if (index === words.length) {
-        clearInterval(timer);
-      }
-    }, speed);
+    if (speed == 0) return setDisplayedText(text);
+    else {
+      let index = 0;
+      const timer = setInterval(() => {
+        if (index < text.length) {
+          setDisplayedText((prev) => prev + text.charAt(index));
+          index++; // 다음 문자로 이동합니다.
+        }
 
-    return () => clearInterval(timer);
-  }, [text, speed]);
+        if (index === text.length) {
+          clearInterval(timer);
+        }
+      }, speed);
+
+      return () => clearInterval(timer);
+    }
+  }, [speed, text]);
 
   return <StyledTextDiv>{displayedText}</StyledTextDiv>;
 };

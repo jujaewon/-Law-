@@ -7,6 +7,7 @@ interface ChatBotData {
   precedentSummary: string;
   category: string;
   relatedLaws: Array<string>;
+  type: 'current' | 'past';
 }
 interface OptionsTypeData {
   category?: string | null;

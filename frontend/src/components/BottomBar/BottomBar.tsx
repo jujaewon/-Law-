@@ -103,7 +103,13 @@ const BottomBar = () => {
       .then((res) => {
         if (res.data) {
           console.log('응답', res.data);
-          setChatBotAnswer(res.data);
+
+          const data = {
+            ...res.data,
+            type: 'current',
+          };
+
+          setChatBotAnswer(data);
           return addChatData({
             chat: res.data,
             type: 'bot',
