@@ -86,11 +86,6 @@ const CustomButton = styled(Button)`
   width: 100%;
   margin-top: 1.5rem;
 `;
-const KakaoLoginButtonImg = styled.div`
-  svg {
-    padding-top: 2px;
-  }
-`;
 
 const InfoTitleWrapper = styled.div`
   position: relative;
@@ -228,15 +223,11 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
         <ModalContainer>
           <ModalHeader>헬로(Law)</ModalHeader>
           <CustomButton type="button" size="medium_small" color="kakao" onClick={moveKaKaoLogin}>
-            <KakaoLoginButtonImg>
-              <Icon icon="kakao" />
-            </KakaoLoginButtonImg>
+            <Icon icon="kakao" />
             카카오 로그인
           </CustomButton>
           <CustomButton type="button" size="medium_small" color="google" onClick={moveKaKaoLogin}>
-            <KakaoLoginButtonImg>
-              <Icon icon="google" />
-            </KakaoLoginButtonImg>
+            <Icon icon="google" />
             구글 로그인
           </CustomButton>
         </ModalContainer>
