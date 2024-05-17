@@ -9,13 +9,16 @@ import ModalsProvider from '@components/Modal/manage/ModalsProvider';
 const Router: React.FC = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={
-        <ModalsProvider>
-          <Main />
-        </ModalsProvider>
-      } />
+      <Route
+        path="/"
+        element={
+          <ModalsProvider>
+            <Main />
+          </ModalsProvider>
+        }
+      />
       <Route path="/home" element={<Home />} />
-      <Route path="/login/kakao" element={<AuthCheck />} />
+      <Route path="/login" element={<AuthCheck />} />
     </Routes>
   </BrowserRouter>
 );
