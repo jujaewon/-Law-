@@ -8,6 +8,7 @@ import Icon from '@components/Icon/Icon';
 import useModal from '@hooks/useModal';
 
 import { ModalProps } from './manage/ModalsContext';
+import { useNavigate } from 'react-router-dom';
 
 export const ModalOverlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -163,10 +164,10 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
       },
     });
   };
-
-  const moveKaKaoLogin = () => {
+  const navigate = useNavigate();
+  const moveLogin = (type: string) => {
     closeModal('logo');
-    window.location.href = '/login/kakao';
+    return navigate(`/login?type=${type}`);
   };
 
   return (
@@ -222,7 +223,25 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
       {type === 'login' && (
         <ModalContainer>
           <ModalHeader>헬로(Law)</ModalHeader>
-          <CustomButton type="button" size="medium_small" color="google" onClick={moveKaKaoLogin}>
+          <CustomButton
+            type="button"
+            size="medium_small"
+            color="kakao"
+            onClick={() => {
+              moveLogin('kakao');
+            }}
+          >
+            <Icon icon="kakao" />
+            카카오 로그인
+          </CustomButton>
+          <CustomButton
+            type="button"
+            size="medium_small"
+            color="google"
+            onClick={() => {
+              moveLogin('google');
+            }}
+          >
             <Icon icon="google" />
             구글 로그인
           </CustomButton>
