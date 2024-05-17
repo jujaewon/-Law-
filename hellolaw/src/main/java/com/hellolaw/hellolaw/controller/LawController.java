@@ -21,7 +21,9 @@ public class LawController {
 	private final LawService lawService;
 
 	@GetMapping("/detail")
-	public ResponseEntity<?> getLawDetail(@RequestParam(value = "name") String lawName) {
+	public ResponseEntity<?> getLawDetail(
+		@RequestParam(value = "name") String lawName
+	) {
 		return ResponseEntity.ok(lawService.getLawDetail(lawName));
 	}
 

@@ -24,10 +24,16 @@ public class User extends BaseEntity {
 	@Column(name = "nickname")
 	private String nickname;
 
+	@Column(name = "email")
+	private String email;
+
+	@Column(name = "provider")
+	private String provider;
+
+	@Column(name = "role")
+	private String role;
+
 	@OneToMany(mappedBy = "user")
 	private List<Question> question;
-
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-	private SocialProvider socialProvider;
 
 }

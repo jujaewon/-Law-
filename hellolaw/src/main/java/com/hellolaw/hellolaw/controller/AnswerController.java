@@ -2,6 +2,7 @@ package com.hellolaw.hellolaw.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +24,7 @@ public class AnswerController {
 
 	@GetMapping("/detail")
 	public ResponseEntity<ApiResponse<AnswerResultResponse>> getQuestionResultDetail(
-		@UserId Long userId,
+		@RequestHeader(value = "authorization") Long userId,
 		@RequestParam(value = "questionId") Long questionId
 	) {
 		return ResponseEntity.ok(ApiResponse.success(answerService.getAnswerResult(userId, questionId)));
