@@ -222,10 +222,6 @@ export const LogoModal = ({ onClose, isOpen, type }: ModalProps) => {
       {type === 'login' && (
         <ModalContainer>
           <ModalHeader>헬로(Law)</ModalHeader>
-          <CustomButton type="button" size="medium_small" color="kakao" onClick={moveKaKaoLogin}>
-            <Icon icon="kakao" />
-            카카오 로그인
-          </CustomButton>
           <CustomButton type="button" size="medium_small" color="google" onClick={moveKaKaoLogin}>
             <Icon icon="google" />
             구글 로그인

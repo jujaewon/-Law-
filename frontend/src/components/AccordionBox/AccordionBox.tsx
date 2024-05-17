@@ -95,7 +95,7 @@ const AccordionBox = ({ data, isOpen, handleOpen }: AccordionBoxProps) => {
     }
   };
   const getQuestions = () => {
-    instance.get('/api/question/history').then((res) => {
+    instance.get('/question/history').then((res) => {
       if (res.data) {
         console.log('질문 API 호출 결과', res.data.data);
         return setChildrenData(res.data.data);

@@ -94,7 +94,7 @@ const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
   const { addChatData, setChatBotAnswer, setIsChat, resetData } = useTodoActions();
   const handleDelete = async () => {
     onClick();
-    instance.delete(`/api/question/v1?questionId=${questionId}`).then((res) => {
+    instance.delete(`/question/v1?questionId=${questionId}`).then((res) => {
       if (res) {
         console.log('삭제 성공', res);
         onDelete(item.questionId);
@@ -106,7 +106,7 @@ const AccordionItemQ = ({ item, onClick, onDelete }: AccordionItemQProps) => {
     resetData();
     setIsChat(true);
     addChatData({ chat: summary, type: 'user' });
-    instance.get(`/api/answer/detail?questionId=${questionId}`).then((res) => {
+    instance.get(`/answer/detail?questionId=${questionId}`).then((res) => {
       if (res) {
         console.log('질문 상세 조회성공', res.data.data);
         const data = {

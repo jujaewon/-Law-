@@ -101,7 +101,7 @@ const BottomBar = () => {
       setIsChat(true);
       addChatData({ chat: message, type: 'user' });
       instance
-        .post('/api/question', data)
+        .post('/question', data)
         .then((res) => {
           if (res.data) {
             console.log('응답', res.data);

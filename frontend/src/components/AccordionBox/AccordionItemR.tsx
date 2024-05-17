@@ -48,7 +48,7 @@ const AccordionItemS = ({ item }: AccordionItemQProps) => {
   const { openModal } = useModal();
 
   const test = () => {
-    instance.get(`api/law/detail?name=${item.lawName}`).then((res) => {
+    instance.get(`/law/detail?name=${item.lawName}`).then((res) => {
       console.log(res.data);
       openModal({
         type: 'info',
