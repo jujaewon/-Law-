@@ -3,10 +3,10 @@ import { useEffect } from 'react';
 
 const AuthCheck = () => {
   const handleKaKaoLogin = () => {
-    console.log('카카오 로그인 진행중');
+    console.log('구글 로그인 진행중');
     const env = import.meta.env.VITE_DEV;
     console.log('환경', env);
-    window.location.href = getUrl(env) + '/auth/oauth2/authorize/kakao';
+    window.location.href = getUrl(env) + '/oauth2/authorization/google';
   };
   useEffect(() => {
     handleKaKaoLogin();

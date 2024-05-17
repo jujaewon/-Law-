@@ -39,7 +39,7 @@ const AccordionItemS = ({ item }: AccordionItemQProps) => {
     if (category.includes('대여금')) category = '대여금 및 미수금';
 
     instance
-      .get(`/api/law/ranking`, {
+      .get(`/law/ranking`, {
         params: {
           category: category,
         },

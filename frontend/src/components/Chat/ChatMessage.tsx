@@ -209,7 +209,7 @@ const ChatMessage = ({ chatdata }: ChatMessageProps) => {
 
   const getDetailLaw = (lawName: string) => {
     console.log('법안 상세 내용 보기');
-    instance.get(`/api/law/detail?name=${lawName}`).then((res) => {
+    instance.get(`/law/detail?name=${lawName}`).then((res) => {
       console.log(res.data);
       openModal({
         type: 'info',
@@ -223,7 +223,7 @@ const ChatMessage = ({ chatdata }: ChatMessageProps) => {
 
   const getDetailPrecedent = (id: number) => {
     console.log('판례 상세 내용 보기');
-    instance.get(`/api/precedent/entire?precedentId=${id}`).then((res) => {
+    instance.get(`/precedent/entire?precedentId=${id}`).then((res) => {
       console.log(res.data.data);
       openModal({
         type: 'precedent',
