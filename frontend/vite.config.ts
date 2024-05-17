@@ -8,7 +8,9 @@ export default defineConfig({
     port: 3000,
   },
   define: {
-    'process.env': process.env,
+    'process.env': {
+      VITE_ENV: process.env.VITE_ENV,
+    },
   },
   plugins: [react(), tsconfigPaths(), svgr()],
 });
