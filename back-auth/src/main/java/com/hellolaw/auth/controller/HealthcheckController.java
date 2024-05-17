@@ -13,8 +13,4 @@ public class HealthcheckController {
 		return Mono.just("health");
 	}
 
-	@GetMapping("/test")
-	public Mono<String> test() {
-		return Mono.just("test");
-	}
 }
