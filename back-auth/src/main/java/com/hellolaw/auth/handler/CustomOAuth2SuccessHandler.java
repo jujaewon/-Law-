@@ -2,6 +2,7 @@ package com.hellolaw.auth.handler;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,7 @@ import com.hellolaw.auth.dto.OAuth2UserInfo;
 import com.hellolaw.auth.dto.internal.GeneratedToken;
 import com.hellolaw.auth.model.User;
 import com.hellolaw.auth.repository.UserRepository;
+import com.hellolaw.auth.service.AuthService;
 import com.hellolaw.auth.util.JWTProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ import reactor.core.scheduler.Schedulers;
 public class CustomOAuth2SuccessHandler extends RedirectServerAuthenticationSuccessHandler {
 	private final JWTProvider jwtProvider;
 	private final UserRepository userRepository;
+	private final AuthService authService;
 
 	@Value("${auth.controller.redirect-url}")
 	private String OAuthRedirectURL;
@@ -58,32 +61,33 @@ public class CustomOAuth2SuccessHandler extends RedirectServerAuthenticationSucc
 		monoGeneratedToken.subscribe(generatedToken -> log.info(generatedToken.toString()));
 
 		return monoGeneratedToken.flatMap(generatedToken ->
-			handleTokens(webFilterExchange.getExchange().getResponse(), generatedToken.getAccessToken(),
-				generatedToken.getRefreshToken()));
+			authService.saveRefreshToken(generatedToken.getAccessToken(), generatedToken.getRefreshToken())
+				.then(
+					handleTokens(webFilterExchange.getExchange().getResponse(), generatedToken.getAccessToken(), name))
+		);
 	}
 
-	public Mono<Void> handleTokens(ServerHttpResponse response, String accessToken, String refreshToken) {
+	public Mono<Void> handleTokens(ServerHttpResponse response, String accessToken, String nickname) {
 		// 로그 출력
 		log.info("accessToken = {}", accessToken);
 
 		ResponseCookie accessTokenCookie = ResponseCookie.from("access-token", accessToken)
 			.path("/")
-			.secure(true)
 			.maxAge(Duration.ofMillis(60 * 60 * 24 * 30))
 			.httpOnly(true)
 			.build();
 
 		// 새로운 refreshToken 생성
-		ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", refreshToken)
+		ResponseCookie nicknameCookie = ResponseCookie.from("nickname", Base64.getUrlEncoder().encodeToString(
+				nickname.getBytes(StandardCharsets.UTF_8)))
 			.maxAge(Duration.ofDays(30)) // 예시로 30일 유지
-			.secure(true)
-			.httpOnly(true)
+			.httpOnly(false)
 			.path("/")
 			.build();
 
 		// response에 refreshToken 쿠키 추가
 		response.addCookie(accessTokenCookie);
-		response.addCookie(refreshTokenCookie);
+		response.addCookie(nicknameCookie);
 
 		// 리프레시 토큰 레디스에 저장 (비동기로 실행됨)
 		return Mono.fromRunnable(() -> {

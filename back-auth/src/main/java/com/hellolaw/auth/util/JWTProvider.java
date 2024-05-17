@@ -70,19 +70,7 @@ public class JWTProvider {
 				.getBody()
 				.get("id", Long.class);
 		} catch (ExpiredJwtException e) {
-			throw new RuntimeException();
-		}
-	}
-
-	public String getSocialId(String token) {
-		try {
-			return Jwts.parser()
-				.setSigningKey(secretKey)
-				.parseClaimsJws(token)
-				.getBody()
-				.get("socialId", String.class);
-		} catch (ExpiredJwtException e) {
-			throw new RuntimeException();
+			return e.getClaims().get("id", Long.class);
 		}
 	}
 
@@ -94,7 +82,7 @@ public class JWTProvider {
 				.getBody()
 				.get("provider", String.class);
 		} catch (ExpiredJwtException e) {
-			throw new RuntimeException();
+			return e.getClaims().get("provider", String.class);
 		}
 	}
 

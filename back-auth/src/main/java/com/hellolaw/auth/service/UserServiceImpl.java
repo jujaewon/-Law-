@@ -17,54 +17,9 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final JWTProvider jwtProvider;
 	private final RedisService redisService;
-	// private final AuthService authService;
 
-	//
-	// 	private void createUser(String socialId, String nickName) {
-	// 		User user = User.builder()
-	// 			.nickname(nickName)
-	// 			.build();
-	// 		SocialProvider socialProvider = SocialProvider.builder()
-	// 			.socialId(socialId)
-	// 			.provider("카카오")
-	// 			.user(user)
-	// 			.build();
-	//
-	// 		userRepository.save(user);
-	// 		socialProviderRepository.save(socialProvider);
-	//
-	// 		String collectionsKey = "userId:" + user.getId() + ":collections";
-	// 		redisService.setValueForSet(collectionsKey, "1");
-	// 	}
-	//
-	// 	@Override
-	// 	public TokenResponse login(UserInfoResponse userInfoResponse, AuthProvider authProvider) {
-	//
-	// 		// 첫 회원가입
-	// 		if (socialProviderRepository.findSocialProviderBySocialId(
-	// 			userInfoResponse.getId()).isEmpty()) {
-	// 			createUser(userInfoResponse.getId(), authProvider.getUserNickname(userInfoResponse));
-	// 		}
-	//
-	// 		SocialProvider socialProvider = socialProviderRepository.findSocialProviderBySocialId(
-	// 			userInfoResponse.getId()).orElseThrow();
-	// 		Long id = userRepository.findById(socialProvider.getUser().getId()).orElseThrow().getId();
-	//
-	// 		// jwt 발급
-	// 		String accessToken = jwtProvider.createAccessToken(id, socialProvider.getSocialId(),
-	// 			socialProvider.getProvider());
-	// 		String refreshToken = jwtProvider.createRefreshToken(id, socialProvider.getSocialId(),
-	// 			socialProvider.getProvider());
-	//
-	// 		// redis에 refresh token 저장
-	// 		authService.saveRefreshToken(accessToken, refreshToken);
-	//
-	// 		return new TokenResponse(accessToken, refreshToken);
-	// 	}
-	//
 	@Override
 	public void logout(Long id) {
 		redisService.deleteValues("RT:".concat(String.valueOf(id)));
-		// authProvider.logout(socialId);
 	}
 }

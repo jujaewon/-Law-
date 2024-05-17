@@ -4,7 +4,6 @@ import java.time.Duration;
 
 import org.springframework.http.HttpCookie;
 import org.springframework.http.ResponseCookie;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -15,6 +14,7 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 
+import com.hellolaw.auth.service.AuthService;
 import com.hellolaw.auth.util.JWTProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -25,17 +25,22 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class JWTAuthenticationFilter implements WebFilter {
 	private final JWTProvider jwtProvider;
+	private final AuthService authService;
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 		log.info("JWT 필터 실행");
 		return getAccessToken(exchange.getRequest().getCookies())
-			.flatMap(this::updateSecurityContext)
-			.flatMap(securityContext -> chain
-				.filter(exchange)
-				.contextWrite(ReactiveSecurityContextHolder
-					.withSecurityContext(Mono.
-						just(securityContext))))
+			.flatMap(accessToken -> {
+				if (jwtProvider.isValidateToken(accessToken)) {
+					return updateSecurityContext(accessToken)
+						.flatMap(securityContext -> chain.filter(exchange)
+							.contextWrite(
+								ReactiveSecurityContextHolder.withSecurityContext(Mono.just(securityContext))));
+				} else {
+					return validateRefreshTokenAndReIssueAccessToken(exchange, accessToken, chain);
+				}
+			})
 			.onErrorResume(e -> {
 				log.error("Error during JWT filter processing", e);
 				return Mono.error(e);
@@ -58,17 +63,37 @@ public class JWTAuthenticationFilter implements WebFilter {
 		});
 	}
 
-	private String reIssueAccessToken(String accessToken) {
-		return jwtProvider.createAccessToken(jwtProvider.getId(accessToken),
-			jwtProvider.getProvider(accessToken));
+	private Mono<String> reIssueAccessToken(String accessToken) {
+		return Mono.just(jwtProvider.createAccessToken(jwtProvider.getId(accessToken),
+			jwtProvider.getProvider(accessToken)));
 	}
 
-	private void addTokenToResponse(String accessToken, ServerHttpResponse response) {
+	private void addAccessTokenCookie(ServerWebExchange exchange, String accessToken) {
 		ResponseCookie cookie = ResponseCookie.from("access-token", accessToken)
 			.httpOnly(true)
 			.maxAge(Duration.ofDays(30))
 			.path("/")
 			.build();
-		response.addCookie(cookie);
+		exchange.getResponse().addCookie(cookie);
+	}
+
+	private Mono<Void> validateRefreshTokenAndReIssueAccessToken(ServerWebExchange exchange, String accessToken,
+		WebFilterChain chain) {
+		return authService.validateRefreshTokenInRedis(accessToken)
+			.flatMap(isValidRefreshToken -> {
+				if (isValidRefreshToken) {
+					return reIssueAccessToken(accessToken)
+						.flatMap(newAccessToken -> {
+							addAccessTokenCookie(exchange, newAccessToken);
+							return updateSecurityContext(newAccessToken)
+								.flatMap(securityContext -> chain.filter(exchange)
+									.contextWrite(
+										ReactiveSecurityContextHolder.withSecurityContext(Mono.just(securityContext))));
+						});
+				} else {
+					SecurityContextHolder.clearContext();
+					return chain.filter(exchange);
+				}
+			});
 	}
 }

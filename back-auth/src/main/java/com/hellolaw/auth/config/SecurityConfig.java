@@ -16,6 +16,7 @@ import org.springframework.security.web.server.util.matcher.PathPatternParserSer
 
 import com.hellolaw.auth.filter.JWTAuthenticationFilter;
 import com.hellolaw.auth.handler.CustomOAuth2SuccessHandler;
+import com.hellolaw.auth.service.AuthService;
 import com.hellolaw.auth.util.JWTProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SecurityConfig {
 
 	private final JWTProvider jwtProvider;
+	private final AuthService authService;
 	private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
 
 	@Bean
@@ -44,8 +46,7 @@ public class SecurityConfig {
 				).authenticationSuccessHandler(customOAuth2SuccessHandler)
 			)
 			.oauth2Client(withDefaults())
-			.formLogin(withDefaults())
-			.addFilterAt(new JWTAuthenticationFilter(jwtProvider), SecurityWebFiltersOrder.AUTHENTICATION)
+			.addFilterAt(new JWTAuthenticationFilter(jwtProvider, authService), SecurityWebFiltersOrder.AUTHENTICATION)
 		;
 
 		return http.build();
