@@ -54,17 +54,25 @@ const Wrapper = styled.div`
   gap: 10px;
 `;
 
+const CustomButton = styled(Button)`
+  font-weight: 600;
+  width: 100%;
+  margin-top: 1.5rem;
+  border: none;
+`;
+
 export const WithIcon = {
   render: () => (
     <Wrapper>
-      <Button type="button" size="medium_small" color="primary">
-        <Icon icon="default" />
-        상품 업로드
-      </Button>
-      <Button type="button" size="medium_small" color="primary">
-        <Icon icon="default" />
-        판매자 센터
-      </Button>
+      <Button type="button" size="large" color="primary" />
+      <CustomButton type="button" size="medium_small" color="kakao">
+        <Icon icon="kakao" />
+        카카오 로그인
+      </CustomButton>
+      <CustomButton type="button" size="medium_small" color="google">
+        <Icon icon="google" />
+        구글 로그인
+      </CustomButton>
     </Wrapper>
   ),
 };
