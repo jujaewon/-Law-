@@ -2,6 +2,9 @@ package com.hellolaw.auth.config;
 
 import static org.springframework.security.config.Customizer.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,6 +16,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import com.hellolaw.auth.filter.JWTAuthenticationFilter;
 import com.hellolaw.auth.handler.CustomOAuth2SuccessHandler;
@@ -34,8 +39,9 @@ public class SecurityConfig {
 
 	@Bean
 	SecurityWebFilterChain filterChain(ServerHttpSecurity http) {
-		http.
-			authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
+		http
+			.cors(withDefaults())
+			.authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
 				.pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.pathMatchers("/login/**").permitAll()
 				.pathMatchers("/health").permitAll()
@@ -50,6 +56,29 @@ public class SecurityConfig {
 		;
 
 		return http.build();
+	}
+
+	@Bean
+	public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration config = new CorsConfiguration();
+
+		config.setAllowCredentials(true);
+
+		List<String> origins = Arrays.asList(
+			"http://localhost:3000",
+			"https://k10a506.p.ssafy.io",
+			"https://accounts.kakao.com",
+			"https://test.hellolaw.kr",
+			"https://hellolaw.kr"
+		);
+		config.setAllowedOrigins(origins);
+		config.addExposedHeader("Authorization");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+
+		source.registerCorsConfiguration("/**", config);
+		return source;
 	}
 
 	@Bean
