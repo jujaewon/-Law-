@@ -7,5 +7,10 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  define: {
+    'process.env': {
+      VITE_ENV: process.env.VITE_ENV,
+    },
+  },
   plugins: [react(), tsconfigPaths(), svgr()],
 });
