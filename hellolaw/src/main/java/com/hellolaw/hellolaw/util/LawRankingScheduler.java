@@ -25,7 +25,8 @@ public class LawRankingScheduler {
 	private final RedisTemplate<String, Object> redisTemplate;
 
 	//@Scheduled(cron = "0 0/1 * * * ?")    // 1분마다 실행
-	@Scheduled(cron = "0 0 */1 * * ?")    // 정각마다 실행
+	// @Scheduled(cron = "0 0 */1 * * ?")    // 정각마다 실행
+	@Scheduled(cron = "0 0/1 * * * ?")    // 1분마다 실행
 	public void updateLawRanking() {
 		log.info("-----Running Scheduled Task-----");
 		Category[] categories = Category.values();
