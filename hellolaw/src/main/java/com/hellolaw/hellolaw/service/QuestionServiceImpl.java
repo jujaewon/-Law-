@@ -65,6 +65,7 @@ public class QuestionServiceImpl implements QuestionService {
 	private final AnswerMapper answerMapper;
 	private final SummaryAnswerMapper summaryAnswerMapper;
 	private final PrecedentRepository precedentRepository;
+	
 	@Override
 	public List<QuestionHistoryResponse> getTwoQuestionHistoryList(Long userId) {
 

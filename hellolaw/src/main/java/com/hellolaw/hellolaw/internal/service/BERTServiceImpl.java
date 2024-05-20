@@ -29,6 +29,7 @@ public class BERTServiceImpl implements BERTService {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		PrecedentDto responseData = objectMapper.readValue(response.block(), PrecedentDto.class);
+		responseData.setIndex(responseData.getIndex() + 1);
 		return responseData;
 	}
 
