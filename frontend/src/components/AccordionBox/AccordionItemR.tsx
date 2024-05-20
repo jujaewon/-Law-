@@ -24,6 +24,7 @@ const ContentContainer = styled.button`
 const TextWrapper = styled.div`
   font-size: 14px;
   font-weight: 500;
+  max-width: 190px;
 `;
 const RankWrapper = styled.div<{ $isTop: boolean }>`
   background: ${(props) => (props.$isTop ? props.theme.secondary2 : props.theme.gray2)};
