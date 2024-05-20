@@ -11,6 +11,9 @@ RUN pnpm install
 
 COPY . .
 
+ARG VITE_ENV
+ENV VITE_ENV=${VITE_ENV}
+
 RUN pnpm build
 
 ######
