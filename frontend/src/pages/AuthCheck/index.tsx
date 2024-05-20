@@ -9,9 +9,9 @@ const AuthCheck = () => {
     const params = new URLSearchParams(location.search);
     const type = params.get('type');
     console.log(type);
-    if (type === 'google') return (window.location.href = getUrl(env + '-auth') + '/oauth2/authorization/google');
-    if (type === 'kakao') return (window.location.href = getUrl(env + '-auth') + '/oauth2/authorization/kakao');
-    return (window.location.href = getUrl(env + '-auth') + '/oauth2/authorization/google');
+    if (type === 'google') return (window.location.href = getUrl(env + '-auth') + '/oauth2/authorize/google');
+    if (type === 'kakao') return (window.location.href = getUrl(env + '-auth') + '/oauth2/authorize/kakao');
+    return (window.location.href = getUrl(env + '-auth') + '/oauth2/authorize/google');
   };
   useEffect(() => {
     handleKaKaoLogin();
