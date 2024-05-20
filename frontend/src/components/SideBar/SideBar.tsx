@@ -162,7 +162,7 @@ const Sidebar = ({ nickname }: SidebarProps) => {
   const logout = () => {
     const env = import.meta.env.VITE_DEV;
     axios
-      .get(getUrl(env) + '/auth/logout')
+      .get(getUrl(env + '-auth') + '/logout')
       .then((res) => {
         console.log(res);
         removeCookie('access-token');
