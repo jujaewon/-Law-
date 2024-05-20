@@ -16,4 +16,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
+	private final UserIdArgumentResolver userIdArgumentResolver;
+	private final AuthenticationInterceptor authenticationInterceptor;
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(authenticationInterceptor);
+	}
+
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+		resolvers.add(userIdArgumentResolver);
+	}
 }

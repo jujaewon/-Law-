@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,8 +33,7 @@ public class QuestionController {
 	private final QuestionService questionService;
 
 	@GetMapping("/history")
-	public ResponseEntity<ApiResponse<List<QuestionHistoryResponse>>> getTwoQuestionHistoryList(
-		@RequestHeader(value = "authorization") Long userId) {
+	public ResponseEntity<ApiResponse<List<QuestionHistoryResponse>>> getTwoQuestionHistoryList(@UserId Long userId) {
 		log.info("-----------getTwoQuestionsList");
 		List<QuestionHistoryResponse> list = questionService.getTwoQuestionHistoryList(userId);
 		return ResponseEntity.ok(ApiResponse.success(list));
@@ -48,7 +46,7 @@ public class QuestionController {
 	}
 
 	@PostMapping
-	public ResponseEntity<QuestionAnswerResponse> generateAnswer(@RequestHeader(value = "authorization") Long userId,
+	public ResponseEntity<QuestionAnswerResponse> generateAnswer(@UserId Long userId,
 		@RequestBody QuestionRequest questionRequest) throws
 		JsonProcessingException {
 		log.info("-----------generateAnswer" + userId);
@@ -57,7 +55,7 @@ public class QuestionController {
 
 	@DeleteMapping("/v1")
 	public ResponseEntity<ApiResponse<Void>> deleteQuestion(
-		@RequestHeader(value = "authorization") Long userId,
+		@UserId Long userId,
 		@RequestParam(value = "questionId") Long questionId) {
 		return ResponseEntity.ok(ApiResponse.success(questionService.deleteQuestion(userId, questionId)));
 	}
