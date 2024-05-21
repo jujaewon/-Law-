@@ -9,6 +9,7 @@ import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -23,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @RequiredArgsConstructor
+@Component
 public class JWTAuthenticationFilter implements WebFilter {
 	private final JWTProvider jwtProvider;
 	private final AuthService authService;
@@ -30,6 +32,7 @@ public class JWTAuthenticationFilter implements WebFilter {
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 		log.info("JWT 필터 실행");
+		log.info(exchange.getRequest().getMethod().toString());
 		return getAccessToken(exchange.getRequest().getCookies())
 			.flatMap(accessToken -> {
 				if (jwtProvider.isValidateToken(accessToken)) {
@@ -38,19 +41,27 @@ public class JWTAuthenticationFilter implements WebFilter {
 							.contextWrite(
 								ReactiveSecurityContextHolder.withSecurityContext(Mono.just(securityContext))));
 				} else {
+					log.info("여기입니다.");
 					return validateRefreshTokenAndReIssueAccessToken(exchange, accessToken, chain);
 				}
 			})
+			.switchIfEmpty(chain.filter(exchange)) // 쿠키가 없는 경우 체인을 계속 진행
 			.onErrorResume(e -> {
 				log.error("Error during JWT filter processing", e);
-				return Mono.error(e);
+				return chain.filter(exchange);
 			});
 	}
 
 	private Mono<String> getAccessToken(MultiValueMap<String, HttpCookie> cookies) {
-		log.info("쿠키에서 액세스 토큰 추출");
-		return Mono.justOrEmpty(cookies.getFirst("access-token"))
-			.map(HttpCookie::getValue);
+		log.info("쿠키에서 액세스 토큰 추출 시도");
+		HttpCookie accessTokenCookie = cookies.getFirst("access-token");
+		if (accessTokenCookie == null) {
+			log.warn("액세스 토큰 쿠키가 존재하지 않습니다.");
+			return Mono.empty();
+		}
+		String accessToken = accessTokenCookie.getValue();
+		log.info("액세스 토큰 추출 성공: {}", accessToken);
+		return Mono.just(accessToken);
 	}
 
 	private Mono<SecurityContext> updateSecurityContext(String accessToken) {
@@ -64,13 +75,15 @@ public class JWTAuthenticationFilter implements WebFilter {
 	}
 
 	private Mono<String> reIssueAccessToken(String accessToken) {
+		log.info("액세스 토큰 재발급");
 		return Mono.just(jwtProvider.createAccessToken(jwtProvider.getId(accessToken),
 			jwtProvider.getProvider(accessToken)));
 	}
 
 	private void addAccessTokenCookie(ServerWebExchange exchange, String accessToken) {
+		log.info("액세스 토큰 쿠키에 더하기");
 		ResponseCookie cookie = ResponseCookie.from("access-token", accessToken)
-			.httpOnly(true)
+			.httpOnly(false)
 			.maxAge(Duration.ofDays(30))
 			.path("/")
 			.build();
@@ -79,6 +92,7 @@ public class JWTAuthenticationFilter implements WebFilter {
 
 	private Mono<Void> validateRefreshTokenAndReIssueAccessToken(ServerWebExchange exchange, String accessToken,
 		WebFilterChain chain) {
+		log.info("레디스 이용해서 재발급");
 		return authService.validateRefreshTokenInRedis(accessToken)
 			.flatMap(isValidRefreshToken -> {
 				if (isValidRefreshToken) {

@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.MapReactiveUserDetailsServi
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
@@ -36,6 +35,7 @@ public class SecurityConfig {
 	private final JWTProvider jwtProvider;
 	private final AuthService authService;
 	private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+	private final JWTAuthenticationFilter jwtAuthenticationFilter;
 
 	@Bean
 	SecurityWebFilterChain filterChain(ServerHttpSecurity http) {
@@ -47,12 +47,10 @@ public class SecurityConfig {
 				.pathMatchers("/health").permitAll()
 				.anyExchange().authenticated())
 			.oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec
-				.authenticationMatcher(
-					new PathPatternParserServerWebExchangeMatcher("/login/oauth2/code/{registrationId}")
-				).authenticationSuccessHandler(customOAuth2SuccessHandler)
+				.authenticationSuccessHandler(customOAuth2SuccessHandler)
 			)
 			.oauth2Client(withDefaults())
-			.addFilterAt(new JWTAuthenticationFilter(jwtProvider, authService), SecurityWebFiltersOrder.AUTHENTICATION)
+			.addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
 		;
 
 		return http.build();

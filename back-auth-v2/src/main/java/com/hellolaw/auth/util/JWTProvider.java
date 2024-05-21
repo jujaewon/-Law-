@@ -16,7 +16,9 @@ import com.hellolaw.auth.dto.internal.GeneratedToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -87,15 +89,23 @@ public class JWTProvider {
 	}
 
 	public boolean isValidateToken(String token) {
+		log.info("토큰검증");
 		try {
 			Jwts.parser()
 				.setSigningKey(secretKey)
 				.parseClaimsJws(token)
 				.getBody();
 			return true;
+		} catch (ExpiredJwtException e) {
+			log.error("Token has expired", e);
+		} catch (MalformedJwtException e) {
+			log.error("Token is malformed", e);
+		} catch (SignatureException e) {
+			log.error("Token signature is invalid", e);
 		} catch (Exception e) {
-			return false;
+			log.error("Token validation error", e);
 		}
+		return false;
 	}
 
 	public Claims getClaims(String token) {

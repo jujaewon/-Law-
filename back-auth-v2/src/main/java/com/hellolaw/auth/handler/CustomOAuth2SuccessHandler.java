@@ -119,7 +119,8 @@ public class CustomOAuth2SuccessHandler extends RedirectServerAuthenticationSucc
 	}
 
 	public Mono<User> getUserIdByEmail(OAuth2UserInfo oAuth2UserInfo) {
-		return userRepository.findByEmail(oAuth2UserInfo.email())
+		log.info("생성 or 찾기");
+		return userRepository.findUserByEmail(oAuth2UserInfo.email())
 			.switchIfEmpty(Mono.defer(() -> Mono.just(oAuth2UserInfo.toEntity())
 				.flatMap(userRepository::save)));
 	}

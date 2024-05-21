@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface UserRepository extends ReactiveCrudRepository<User, Long> {
 
-	Mono<User> findByEmail(String email);
+	Mono<User> findUserByEmail(String email);
 
 	@NonNull
 	Flux<User> findAllById(@NonNull Iterable<Long> userIds);
